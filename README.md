@@ -96,10 +96,12 @@ docker build -t dev-cart-go .
 
 ### El contenedor
 
+Mac | Windows
 ```bash
-# Mac | Windows
 docker run -it --name dev-cart-go -p 3003:3003 -v $PWD:/go/src/github.com/nmarsollier/cartgo dev-cart-go
+```
 
-# Linux
+Linux
+```bash
 docker run -it --add-host host.docker.internal:172.17.0.1 --name dev-cart-go -p 3003:3003 -v $PWD:/go/src/github.com/nmarsollier/cartgo dev-cart-go
 ```
