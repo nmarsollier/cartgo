@@ -1,0 +1,562 @@
+basePath: /v1
+definitions:
+  cart.AddArticleData:
+    properties:
+      articleId:
+        maxLength: 100
+        minLength: 1
+        type: string
+      quantity:
+        maximum: 100
+        minimum: 1
+        type: integer
+    required:
+    - articleId
+    - quantity
+    type: object
+  cart.Article:
+    properties:
+      articleId:
+        maxLength: 100
+        minLength: 1
+        type: string
+      quantity:
+        maximum: 100
+        minimum: 1
+        type: integer
+      valid:
+        type: boolean
+      validated:
+        type: boolean
+    required:
+    - articleId
+    - quantity
+    type: object
+  cart.Cart:
+    properties:
+      _id:
+        type: string
+      articles:
+        items:
+          $ref: '#/definitions/cart.Article'
+        type: array
+      created:
+        type: string
+      enabled:
+        type: boolean
+      orderId:
+        type: string
+      updated:
+        type: string
+      userId:
+        maxLength: 100
+        minLength: 1
+        type: string
+    required:
+    - articles
+    - userId
+    type: object
+  cart.OrderPlacedEvent:
+    properties:
+      cartId:
+        type: string
+      orderId:
+        type: string
+      valid:
+        type: boolean
+    type: object
+  cart.ValidationEvent:
+    properties:
+      articleId:
+        type: string
+      referenceId:
+        type: string
+      valid:
+        type: boolean
+    type: object
+  errors.ErrCustom:
+    properties:
+      error:
+        type: string
+    type: object
+  errors.ErrField:
+    properties:
+      message:
+        type: string
+      path:
+        type: string
+    type: object
+  errors.ErrValidation:
+    properties:
+      messages:
+        items:
+          $ref: '#/definitions/errors.ErrField'
+        type: array
+    type: object
+  r_consume.ConsumeArticleDataMessage:
+    properties:
+      exchange:
+        type: string
+      message:
+        $ref: '#/definitions/cart.ValidationEvent'
+      queue:
+        type: string
+      type:
+        type: string
+      version:
+        type: integer
+    type: object
+  r_consume.ConsumeOrderPlacedMessage:
+    properties:
+      exchange:
+        type: string
+      message:
+        $ref: '#/definitions/cart.OrderPlacedEvent'
+      queue:
+        type: string
+      type:
+        type: string
+      version:
+        type: integer
+    type: object
+  r_consume.LogoutMessage:
+    properties:
+      message:
+        type: string
+      type:
+        type: string
+    type: object
+  r_emit.ArticleValidationData:
+    properties:
+      articleId:
+        type: string
+      referenceId:
+        type: string
+    type: object
+  r_emit.PlaceArticlesData:
+    properties:
+      id:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  r_emit.PlacedData:
+    properties:
+      articles:
+        items:
+          $ref: '#/definitions/r_emit.PlaceArticlesData'
+        type: array
+      cartId:
+        type: string
+      userId:
+        type: string
+    type: object
+  r_emit.SendPlacedMessage:
+    properties:
+      exchange:
+        type: string
+      message:
+        $ref: '#/definitions/r_emit.PlacedData'
+      queue:
+        type: string
+      type:
+        type: string
+    type: object
+  r_emit.SendValidationMessage:
+    properties:
+      exchange:
+        type: string
+      message:
+        $ref: '#/definitions/r_emit.ArticleValidationData'
+      queue:
+        type: string
+      type:
+        type: string
+    type: object
+host: localhost:3003
+info:
+  contact:
+    email: nmarsollier@gmail.com
+    name: Nestor Marsollier
+  description: Microservicio de Carrito.
+  title: CartGo
+  version: "1.0"
+paths:
+  /rabbit/article-data:
+    get:
+      consumes:
+      - application/json
+      description: Antes de iniciar las operaciones se validan los artículos contra
+        el catalogo.
+      parameters:
+      - description: Message para Type = article-data
+        in: body
+        name: article-data
+        required: true
+        schema:
+          $ref: '#/definitions/r_consume.ConsumeArticleDataMessage'
+      produces:
+      - application/json
+      responses: {}
+      summary: Mensage Rabbit order/article-data
+      tags:
+      - Rabbit
+  /rabbit/cart/article-exist:
+    put:
+      consumes:
+      - application/json
+      description: Antes de iniciar las operaciones se validan los artículos contra
+        el catalogo.
+      parameters:
+      - description: Mensage de validacion
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/r_emit.SendValidationMessage'
+      produces:
+      - application/json
+      responses: {}
+      summary: Emite Validar Artículos a Cart cart/article-exist
+      tags:
+      - Rabbit
+  /rabbit/cart/place-order:
+    put:
+      consumes:
+      - application/json
+      description: Emite Placed Order desde Cart
+      parameters:
+      - description: Mensage de validacion
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/r_emit.SendPlacedMessage'
+      produces:
+      - application/json
+      responses: {}
+      summary: Emite Placed Order desde Cart
+      tags:
+      - Rabbit
+  /rabbit/logout:
+    get:
+      consumes:
+      - application/json
+      description: Escucha de mensajes logout desde auth.
+      parameters:
+      - description: Estructura general del mensage
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/r_consume.LogoutMessage'
+      produces:
+      - application/json
+      responses: {}
+      summary: Mensage Rabbit
+      tags:
+      - Rabbit
+  /rabbit/order-placed:
+    get:
+      consumes:
+      - application/json
+      description: Antes de iniciar las operaciones se validan los artículos contra
+        el catalogo.
+      parameters:
+      - description: Message para Type = article-data
+        in: body
+        name: article-data
+        required: true
+        schema:
+          $ref: '#/definitions/r_consume.ConsumeOrderPlacedMessage'
+      produces:
+      - application/json
+      responses: {}
+      summary: Mensage Rabbit order/order-placed
+      tags:
+      - Rabbit
+  /v1/cart:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene el carrito actual.
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cart
+          schema:
+            $ref: '#/definitions/cart.Cart'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ErrValidation'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+      summary: Obtener carrito.
+      tags:
+      - Cart
+  /v1/cart/article:
+    post:
+      consumes:
+      - application/json
+      description: Agrega un articulo del carrito actual.
+      parameters:
+      - description: ID de articlo
+        in: path
+        name: articleId
+        required: true
+        type: string
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Articulo a Agregar
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/cart.AddArticleData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cart
+          schema:
+            $ref: '#/definitions/cart.Cart'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ErrValidation'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+      summary: Agregar Articulo
+      tags:
+      - Cart
+  /v1/cart/article/:articleId:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un articulo del carrito actual.
+      parameters:
+      - description: ID de articlo
+        in: path
+        name: articleId
+        required: true
+        type: string
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ErrValidation'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+      summary: Eliminar Articulo
+      tags:
+      - Cart
+  /v1/cart/article/:articleId/decrement:
+    post:
+      consumes:
+      - application/json
+      description: Eliminar 1 al articulo actual.
+      parameters:
+      - description: ID de articlo
+        in: path
+        name: articleId
+        required: true
+        type: string
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cart
+          schema:
+            $ref: '#/definitions/cart.Cart'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ErrValidation'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+      summary: Agregar 1 Articulo
+      tags:
+      - Cart
+  /v1/cart/article/:articleId/increment:
+    post:
+      consumes:
+      - application/json
+      description: Agregar 1 al articulo actual.
+      parameters:
+      - description: ID de articlo
+        in: path
+        name: articleId
+        required: true
+        type: string
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cart
+          schema:
+            $ref: '#/definitions/cart.Cart'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ErrValidation'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+      summary: Agregar 1 Articulo
+      tags:
+      - Cart
+  /v1/cart/checkouts:
+    post:
+      consumes:
+      - application/json
+      description: Hace checkout del carrito actual
+      parameters:
+      - description: ID de articlo
+        in: path
+        name: articleId
+        required: true
+        type: string
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ErrValidation'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+      summary: Checkout Articulo
+      tags:
+      - Cart
+  /v1/cart/validate:
+    get:
+      consumes:
+      - application/json
+      description: Valida el carrito para checkout
+      parameters:
+      - description: bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ErrValidation'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.ErrCustom'
+      summary: Validar Carrito
+      tags:
+      - Cart
+swagger: "2.0"
