@@ -88,6 +88,10 @@ RABBIT_URL=amqp://host.docker.internal
 AUTH_SERVICE_URL=http://host.docker.internal:3000
 CATALOG_SERVICE_URL=http://host.docker.internal:3002
 
+## Docker
+
+Estos comandos son para dockerizar el microservicio desde el codigo descargado localmente.
+
 ### Build
 
 ```bash
