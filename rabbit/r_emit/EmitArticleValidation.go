@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 
+	"github.com/nmarsollier/cartgo/tools"
 	"github.com/streadway/amqp"
 )
 
@@ -64,7 +65,8 @@ func SendArticleValidation(data ArticleValidationData) error {
 		return err
 	}
 
-	log.Output(1, "Rabbit article validation enviado ")
+	log.Output(1, "Rabbit article validation enviado "+tools.ToJson(string(body)))
+
 	return nil
 }
 

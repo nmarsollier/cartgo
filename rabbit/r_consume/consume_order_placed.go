@@ -24,34 +24,34 @@ func consumeOrderPlaced() error {
 	defer chn.Close()
 
 	err = chn.ExchangeDeclare(
-		"sell_flow", // name
-		"topic",     // type
-		false,       // durable
-		false,       // auto-deleted
-		false,       // internal
-		false,       // no-wait
-		nil,         // arguments
+		"order_placed", // name
+		"fanout",       // type
+		false,          // durable
+		false,          // auto-deleted
+		false,          // internal
+		false,          // no-wait
+		nil,            // arguments
 	)
 	if err != nil {
 		return err
 	}
 
 	queue, err := chn.QueueDeclare(
-		"topic_catalog", // name
-		false,           // durable
-		false,           // delete when unused
-		false,           // exclusive
-		false,           // no-wait
-		nil,             // arguments
+		"cart_order_placed", // name
+		false,               // durable
+		false,               // delete when unused
+		false,               // exclusive
+		false,               // no-wait
+		nil,                 // arguments
 	)
 	if err != nil {
 		return err
 	}
 
 	err = chn.QueueBind(
-		queue.Name,      // queue name
-		"topic_catalog", // routing key
-		"sell_flow",     // exchange
+		queue.Name,          // queue name
+		"cart_order_placed", // routing key
+		"order_placed",      // exchange
 		false,
 		nil)
 	if err != nil {

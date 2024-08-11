@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/nmarsollier/cartgo/cart"
+	"github.com/nmarsollier/cartgo/tools"
 	"github.com/streadway/amqp"
 )
 
@@ -78,7 +79,7 @@ func SendPlaceOrder(cart *cart.Cart) error {
 		return err
 	}
 
-	log.Output(1, "Rabbit place order enviado ")
+	log.Output(1, "Rabbit place order enviado "+tools.ToJson(string(body)))
 	return nil
 }
 

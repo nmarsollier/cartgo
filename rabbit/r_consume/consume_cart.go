@@ -77,8 +77,8 @@ func consumeOrders() error {
 		for d := range mgs {
 			newMessage := &ConsumeMessage{}
 			body := d.Body
-
 			fmt.Println(string(body))
+
 			err = json.Unmarshal(body, newMessage)
 			if err == nil {
 				switch newMessage.Type {

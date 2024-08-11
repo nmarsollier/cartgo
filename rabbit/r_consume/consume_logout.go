@@ -89,7 +89,10 @@ func consumeLogout() error {
 	go func() {
 		for d := range mgs {
 			newMessage := &LogoutMessage{}
-			err = json.Unmarshal(d.Body, newMessage)
+			body := d.Body
+			fmt.Println(string(body))
+
+			err = json.Unmarshal(body, newMessage)
 			if err == nil {
 				if newMessage.Type == "logout" {
 					security.Invalidate(newMessage.Message)
