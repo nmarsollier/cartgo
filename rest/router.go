@@ -9,5 +9,16 @@ import (
 
 // Start this server
 func Start() {
+	InitRoutes()
 	engine.Router().Run(fmt.Sprintf(":%d", env.Get().Port))
+}
+
+func InitRoutes() {
+	initDeleteCart()
+	initGetCartValidate()
+	initGetCart()
+	initPostCartArticleDecrement()
+	initPostCartArticleIncrement()
+	initPostCartArticle()
+	initPostCartCheckout()
 }

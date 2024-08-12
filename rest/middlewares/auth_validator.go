@@ -30,13 +30,18 @@ func ValidateAuthentication(c *gin.Context) {
 }
 
 func validateToken(c *gin.Context) error {
+	var options []interface{}
+	if mocks, ok := c.Get("mocks"); ok {
+		options = mocks.([]interface{})
+	}
+
 	tokenString, err := GetHeaderToken(c)
 	if err != nil {
 		glog.Error(err)
 		return apperr.Unauthorized
 	}
 
-	user, err := security.Validate(tokenString)
+	user, err := security.Validate(tokenString, options...)
 	if err != nil {
 		glog.Error(err)
 		return apperr.Unauthorized

@@ -24,7 +24,7 @@ import (
 //	@Failure		500				{object}	errors.ErrCustom		"Internal Server Error"
 //
 //	@Router			/v1/cart [get]
-func init() {
+func initGetCart() {
 	engine.Router().GET(
 		"/v1/cart",
 		middlewares.ValidateAuthentication,
@@ -33,8 +33,13 @@ func init() {
 }
 
 func currentCart(c *gin.Context) {
+	var options []interface{}
+	if mocks, ok := c.Get("mocks"); ok {
+		options = mocks.([]interface{})
+	}
+
 	user := c.MustGet("user").(security.User)
-	cart, err := service.GetCurrentCart(user.ID)
+	cart, err := service.GetCurrentCart(user.ID, options...)
 
 	if err != nil {
 		middlewares.AbortWithError(c, err)

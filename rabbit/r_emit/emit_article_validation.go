@@ -17,7 +17,7 @@ import (
 //	@Param			body	body	SendValidationMessage	true	"Mensage de validacion"
 //
 //	@Router			/rabbit/cart/article-exist [put]
-func SendArticleValidation(data ArticleValidationData) error {
+func sendArticleValidation(data ArticleValidationData) error {
 
 	send := SendValidationMessage{
 		Type:     "article-exist",

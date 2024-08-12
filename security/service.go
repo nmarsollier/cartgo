@@ -19,7 +19,7 @@ type User struct {
 }
 
 // Validate valida si el token es valido
-func Validate(token string) (*User, error) {
+func Validate(token string, options ...interface{}) (*User, error) {
 	// Si esta en cache, retornamos el cache
 	if found, ok := cache.Get(token); ok {
 		if user, ok := found.(*User); ok {
@@ -27,8 +27,9 @@ func Validate(token string) (*User, error) {
 		}
 	}
 
-	user, err := getRemoteToken(token)
+	user, err := Get(options...).GetRemoteToken(token)
 	if err != nil {
+		glog.Error(err)
 		return nil, apperr.Unauthorized
 	}
 

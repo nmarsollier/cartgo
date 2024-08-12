@@ -38,3 +38,16 @@ func Router() *gin.Engine {
 
 	return engine
 }
+
+func TestRouter(props ...interface{}) *gin.Engine {
+	engine = nil
+	Router()
+	if len(props) > 0 {
+		engine.Use(func(c *gin.Context) {
+			c.Set("mocks", props)
+			c.Next()
+		})
+	}
+
+	return engine
+}

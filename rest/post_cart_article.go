@@ -26,7 +26,7 @@ import (
 // @Router			/v1/cart/article [post]
 //
 // Inicializa las rutas
-func init() {
+func initPostCartArticle() {
 	engine.Router().POST(
 		"/v1/cart/article",
 		middlewares.ValidateAuthentication,
@@ -35,6 +35,11 @@ func init() {
 }
 
 func addArticle(c *gin.Context) {
+	var options []interface{}
+	if mocks, ok := c.Get("mocks"); ok {
+		options = mocks.([]interface{})
+	}
+
 	user := c.MustGet("user").(security.User)
 	body := cart.AddArticleData{}
 	if err := c.ShouldBindJSON(&body); err != nil {
@@ -42,7 +47,7 @@ func addArticle(c *gin.Context) {
 		return
 	}
 
-	_, err := service.AddArticle(user.ID, body)
+	_, err := service.AddArticle(user.ID, body, options...)
 	if err != nil {
 		middlewares.AbortWithError(c, err)
 		return

@@ -10,6 +10,27 @@ import (
 	"github.com/nmarsollier/cartgo/tools/env"
 )
 
+type SecurityDao interface {
+	GetRemoteToken(token string) (*User, error)
+}
+
+func Get(options ...interface{}) SecurityDao {
+	for _, o := range options {
+		if ti, ok := o.(SecurityDao); ok {
+			return ti
+		}
+	}
+
+	return &httpDaoImpl{}
+}
+
+type httpDaoImpl struct {
+}
+
+func (t *httpDaoImpl) GetRemoteToken(token string) (*User, error) {
+	return getRemoteToken(token)
+}
+
 func getRemoteToken(token string) (*User, error) {
 	// Buscamos el usuario remoto
 	req, err := http.NewRequest("GET", env.Get().SecurityServerURL+"/v1/users/current", nil)

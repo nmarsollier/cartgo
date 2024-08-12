@@ -24,7 +24,7 @@ import (
 // @Router			/v1/cart/checkouts [post]
 //
 // Inicializa las rutas
-func init() {
+func initPostCartCheckout() {
 	engine.Router().POST(
 		"/v1/cart/checkout",
 		middlewares.ValidateAuthentication,
@@ -33,10 +33,15 @@ func init() {
 }
 
 func checkout(c *gin.Context) {
+	var options []interface{}
+	if mocks, ok := c.Get("mocks"); ok {
+		options = mocks.([]interface{})
+	}
+
 	user := c.MustGet("user").(security.User)
 	token := c.MustGet("tokenString").(string)
 
-	_, err := service.Checkout(user.ID, token)
+	_, err := service.Checkout(user.ID, token, options...)
 	if err != nil {
 		middlewares.AbortWithError(c, err)
 		return

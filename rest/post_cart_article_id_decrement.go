@@ -25,7 +25,7 @@ import (
 // @Router			/v1/cart/article/:articleId/decrement [post]
 //
 // Init inicializa las rutas
-func init() {
+func initPostCartArticleDecrement() {
 	engine.Router().POST(
 		"/v1/cart/article/:articleId/decrement",
 		middlewares.ValidateAuthentication,
@@ -34,6 +34,11 @@ func init() {
 }
 
 func decrementArticle(c *gin.Context) {
+	var options []interface{}
+	if mocks, ok := c.Get("mocks"); ok {
+		options = mocks.([]interface{})
+	}
+
 	user := c.MustGet("user").(security.User)
 	articleId := c.Param("articleId")
 
@@ -42,7 +47,7 @@ func decrementArticle(c *gin.Context) {
 		Quantity:  -1,
 	}
 
-	_, err := service.AddArticle(user.ID, article)
+	_, err := service.AddArticle(user.ID, article, options...)
 	if err != nil {
 		middlewares.AbortWithError(c, err)
 		return

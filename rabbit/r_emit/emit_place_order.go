@@ -18,7 +18,7 @@ import (
 //	@Param			body	body	SendPlacedMessage	true	"Mensage de validacion"
 //
 //	@Router			/rabbit/cart/place-order [put]
-func SendPlaceOrder(cart *cart.Cart) error {
+func sendPlaceOrder(cart *cart.Cart) error {
 	articles := []PlaceArticlesData{}
 	for _, a := range cart.Articles {
 		articles = append(articles, PlaceArticlesData{

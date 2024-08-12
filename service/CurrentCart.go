@@ -5,15 +5,15 @@ import (
 	"github.com/nmarsollier/cartgo/rabbit/r_emit"
 )
 
-func GetCurrentCart(userId string) (*cart.Cart, error) {
-	cart, err := cart.CurrentCart(userId)
+func GetCurrentCart(userId string, options ...interface{}) (*cart.Cart, error) {
+	cart, err := cart.CurrentCart(userId, options...)
 	if err != nil {
 		return nil, err
 	}
 
 	for _, a := range cart.Articles {
 		if !a.Validated {
-			r_emit.SendArticleValidation(r_emit.ArticleValidationData{
+			r_emit.Get(options...).SendArticleValidation(r_emit.ArticleValidationData{
 				ReferenceId: cart.UserId,
 				ArticleId:   a.ArticleId,
 			})

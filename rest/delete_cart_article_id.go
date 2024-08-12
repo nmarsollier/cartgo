@@ -25,7 +25,7 @@ import (
 //	@Failure		500				{object}	errors.ErrCustom		"Internal Server Error"
 //
 //	@Router			/v1/cart/article/:articleId [delete]
-func init() {
+func initDeleteCart() {
 	engine.Router().DELETE(
 		"/v1/cart/article/:articleId",
 		middlewares.ValidateAuthentication,
@@ -34,10 +34,15 @@ func init() {
 }
 
 func deleteArticle(c *gin.Context) {
+	var options []interface{}
+	if mocks, ok := c.Get("mocks"); ok {
+		options = mocks.([]interface{})
+	}
+
 	user := c.MustGet("user").(security.User)
 	articleId := c.Param("articleId")
 
-	_, err := cart.RemoveArticle(user.ID, articleId)
+	_, err := cart.RemoveArticle(user.ID, articleId, options...)
 	if err != nil {
 		middlewares.AbortWithError(c, err)
 		return

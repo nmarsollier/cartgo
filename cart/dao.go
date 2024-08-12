@@ -9,13 +9,28 @@ import (
 	"github.com/nmarsollier/cartgo/tools/db"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // Define mongo Collection
-var collection *mongo.Collection
+var collection db.MongoCollection
 
-func dbCollection() (*mongo.Collection, error) {
+func NewCartOptions(collection db.MongoCollection) CartOption {
+	return CartOption{
+		Collection: collection,
+	}
+}
+
+type CartOption struct {
+	Collection db.MongoCollection
+}
+
+func dbCollection(options ...interface{}) (db.MongoCollection, error) {
+	for _, o := range options {
+		if ti, ok := o.(CartOption); ok {
+			return ti.Collection, nil
+		}
+	}
+
 	if collection != nil {
 		return collection, nil
 	}
@@ -28,7 +43,7 @@ func dbCollection() (*mongo.Collection, error) {
 
 	col := database.Collection("cart")
 
-	collection = col
+	collection = db.NewMongoCollection(col)
 	return collection, nil
 }
 
@@ -43,26 +58,26 @@ func newCart(userId string) *Cart {
 	}
 }
 
-type findByUserIdFilter struct {
+type FindByUserIdFilter struct {
 	UserId  string `bson:"userId"`
 	Enabled bool   `bson:"enabled"`
 }
 
 // findByCartId lee un usuario desde la db
-func findByUserId(userId string) (*Cart, error) {
-	var collection, err = dbCollection()
+func findByUserId(userId string, options ...interface{}) (*Cart, error) {
+	var collection, err = dbCollection(options...)
 	if err != nil {
 		glog.Error(err)
 		return nil, err
 	}
 
 	cart := &Cart{}
-	filter := findByUserIdFilter{
+	filter := FindByUserIdFilter{
 		UserId:  userId,
 		Enabled: true,
 	}
 
-	if err = collection.FindOne(context.Background(), filter).Decode(cart); err != nil {
+	if err = collection.FindOne(context.Background(), filter, cart); err != nil {
 		return nil, err
 	}
 
@@ -70,23 +85,23 @@ func findByUserId(userId string) (*Cart, error) {
 }
 
 // findByCartId lee un usuario desde la db
-func findById(cartId string) (*Cart, error) {
-	var collection, err = dbCollection()
-	if err != nil {
-		glog.Error(err)
-		return nil, err
-	}
-
+func findById(cartId string, options ...interface{}) (*Cart, error) {
 	_id, err := primitive.ObjectIDFromHex(cartId)
 	if err != nil {
 		glog.Error(err)
 		return nil, apperr.ErrID
 	}
 
+	collection, err := dbCollection(options...)
+	if err != nil {
+		glog.Error(err)
+		return nil, err
+	}
+
 	cart := &Cart{}
 	filter := bson.M{"_id": _id}
 
-	if err = collection.FindOne(context.Background(), filter).Decode(cart); err != nil {
+	if err = collection.FindOne(context.Background(), filter, cart); err != nil {
 		glog.Error(err)
 		return nil, err
 	}
@@ -94,13 +109,13 @@ func findById(cartId string) (*Cart, error) {
 	return cart, nil
 }
 
-func insert(cart *Cart) (*Cart, error) {
+func insert(cart *Cart, options ...interface{}) (*Cart, error) {
 	if err := cart.ValidateSchema(); err != nil {
 		glog.Error(err)
 		return nil, err
 	}
 
-	var collection, err = dbCollection()
+	var collection, err = dbCollection(options...)
 	if err != nil {
 		glog.Error(err)
 		return nil, err
@@ -114,13 +129,13 @@ func insert(cart *Cart) (*Cart, error) {
 	return cart, nil
 }
 
-func replace(cart *Cart) (*Cart, error) {
+func replace(cart *Cart, options ...interface{}) (*Cart, error) {
 	if err := cart.ValidateSchema(); err != nil {
 		glog.Error(err)
 		return nil, err
 	}
 
-	var collection, err = dbCollection()
+	var collection, err = dbCollection(options...)
 	if err != nil {
 		glog.Error(err)
 		return nil, err
@@ -135,13 +150,13 @@ func replace(cart *Cart) (*Cart, error) {
 	return cart, nil
 }
 
-func invalidate(cart *Cart) (*Cart, error) {
+func invalidate(cart *Cart, options ...interface{}) (*Cart, error) {
 	if err := cart.ValidateSchema(); err != nil {
 		glog.Error(err)
 		return nil, err
 	}
 
-	var collection, err = dbCollection()
+	var collection, err = dbCollection(options...)
 	if err != nil {
 		glog.Error(err)
 		return nil, err

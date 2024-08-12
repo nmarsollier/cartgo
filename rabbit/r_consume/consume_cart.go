@@ -117,10 +117,10 @@ func consumeOrders() error {
 //	@Param			article-data	body	ConsumeArticleDataMessage	true	"Message para Type = article-data"
 //
 //	@Router			/rabbit/article-data [get]
-func processArticleData(newMessage *ConsumeArticleDataMessage) {
+func processArticleData(newMessage *ConsumeArticleDataMessage, options ...interface{}) {
 	data := newMessage.Message
 
-	err := cart.ProcessArticleData(data)
+	err := cart.ProcessArticleData(data, options...)
 	if err != nil {
 		glog.Error(err)
 		return

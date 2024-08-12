@@ -10,30 +10,30 @@ import (
 	"github.com/nmarsollier/cartgo/tools/env"
 )
 
-func Checkout(userId string, token string) (*cart.Cart, error) {
-	currentCart, err := cart.CurrentCart(userId)
+func Checkout(userId string, token string, options ...interface{}) (*cart.Cart, error) {
+	currentCart, err := cart.CurrentCart(userId, options...)
 	if err != nil {
 		return nil, err
 	}
 
-	err = ValidateCheckout(currentCart, token)
+	err = ValidateCheckout(currentCart, token, options...)
 	if err != nil {
 		return nil, err
 	}
 
-	currentCart, err = cart.InvalidateCurrentCart(userId)
+	currentCart, err = cart.InvalidateCurrentCart(currentCart, options...)
 	if err != nil {
 		return nil, err
 	}
 
-	r_emit.SendPlaceOrder(currentCart)
+	r_emit.Get(options...).SendPlaceOrder(currentCart)
 
 	return currentCart, nil
 }
 
-func ValidateCheckout(cart *cart.Cart, token string) error {
+func ValidateCheckout(cart *cart.Cart, token string, options ...interface{}) error {
 	for _, a := range cart.Articles {
-		err := callValidate(a, token)
+		err := Get(options...).CallValidate(a, token)
 		if err != nil {
 			glog.Error(err)
 			return err
