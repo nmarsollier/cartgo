@@ -2,9 +2,8 @@ package r_emit
 
 import (
 	"encoding/json"
-	"log"
 
-	"github.com/nmarsollier/cartgo/tools"
+	"github.com/golang/glog"
 	"github.com/streadway/amqp"
 )
 
@@ -29,6 +28,7 @@ func SendArticleValidation(data ArticleValidationData) error {
 
 	chn, err := getChannel()
 	if err != nil {
+		glog.Error(err)
 		chn = nil
 		return err
 	}
@@ -43,12 +43,14 @@ func SendArticleValidation(data ArticleValidationData) error {
 		nil,       // arguments
 	)
 	if err != nil {
+		glog.Error(err)
 		chn = nil
 		return err
 	}
 
 	body, err := json.Marshal(send)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 
@@ -61,11 +63,12 @@ func SendArticleValidation(data ArticleValidationData) error {
 			Body: []byte(body),
 		})
 	if err != nil {
+		glog.Error(err)
 		chn = nil
 		return err
 	}
 
-	log.Output(1, "Rabbit article validation enviado "+tools.ToJson(string(body)))
+	glog.Info("Rabbit article validation enviado ", string(body))
 
 	return nil
 }

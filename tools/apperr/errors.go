@@ -1,8 +1,9 @@
-package errors
+package apperr
 
 import (
 	"encoding/json"
-	"fmt"
+
+	"github.com/golang/glog"
 )
 
 // - Algunos errors comunes en el sistema -
@@ -12,6 +13,8 @@ var ErrID = NewValidationField("id", "Invalid")
 
 // Unauthorized el usuario no esta autorizado al recurso
 var Unauthorized = NewCustom(401, "Unauthorized")
+
+var Invalid = NewCustom(400, "Invalid Document")
 
 // AccessLevel es el error de seguridad, el usuario no esta autorizado para acceder al recurso
 var AccessLevel = NewCustom(401, "Accesos Insuficientes")
@@ -69,7 +72,7 @@ type ErrCustom struct {
 }
 
 func (e *ErrCustom) Error() string {
-	return fmt.Sprintf(e.Message)
+	return e.Message
 }
 
 // Status http status code
@@ -99,9 +102,9 @@ type ErrValidation struct {
 func (e *ErrValidation) Error() string {
 	body, err := json.Marshal(e)
 	if err != nil {
-		return fmt.Sprintf("ErrValidation que no se puede pasar a json.")
+		glog.Error(err)
 	}
-	return fmt.Sprintf(string(body))
+	return string(body)
 }
 
 // Add agrega errores a un validation error

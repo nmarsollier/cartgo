@@ -2,8 +2,8 @@ package r_consume
 
 import (
 	"encoding/json"
-	"fmt"
 
+	"github.com/golang/glog"
 	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/tools/env"
 	"github.com/streadway/amqp"
@@ -26,12 +26,14 @@ type LogoutMessage struct {
 func consumeLogout() error {
 	conn, err := amqp.Dial(env.Get().RabbitURL)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 	defer conn.Close()
 
 	chn, err := conn.Channel()
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 	defer chn.Close()
@@ -46,6 +48,7 @@ func consumeLogout() error {
 		nil,      // arguments
 	)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 
@@ -58,6 +61,7 @@ func consumeLogout() error {
 		nil,   // arguments
 	)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 
@@ -68,6 +72,7 @@ func consumeLogout() error {
 		false,
 		nil)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 
@@ -81,27 +86,30 @@ func consumeLogout() error {
 		nil,        // args
 	)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 
-	fmt.Println("RabbitMQ listenLogout conectado")
+	glog.Info("RabbitMQ listenLogout conectado")
 
 	go func() {
 		for d := range mgs {
 			newMessage := &LogoutMessage{}
 			body := d.Body
-			fmt.Println(string(body))
+			glog.Info(string(body))
 
 			err = json.Unmarshal(body, newMessage)
 			if err == nil {
 				if newMessage.Type == "logout" {
 					security.Invalidate(newMessage.Message)
 				}
+			} else {
+				glog.Error(err)
 			}
 		}
 	}()
 
-	fmt.Print("Closed connection: ", <-conn.NotifyClose(make(chan *amqp.Error)))
+	glog.Info("Closed connection: ", <-conn.NotifyClose(make(chan *amqp.Error)))
 
 	return nil
 }

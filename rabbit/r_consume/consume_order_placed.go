@@ -2,9 +2,9 @@ package r_consume
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 
+	"github.com/golang/glog"
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/tools/env"
 	"github.com/streadway/amqp"
@@ -13,12 +13,14 @@ import (
 func consumeOrderPlaced() error {
 	conn, err := amqp.Dial(env.Get().RabbitURL)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 	defer conn.Close()
 
 	chn, err := conn.Channel()
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 	defer chn.Close()
@@ -33,6 +35,7 @@ func consumeOrderPlaced() error {
 		nil,            // arguments
 	)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 
@@ -45,6 +48,7 @@ func consumeOrderPlaced() error {
 		nil,                 // arguments
 	)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 
@@ -55,6 +59,7 @@ func consumeOrderPlaced() error {
 		false,
 		nil)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 
@@ -68,34 +73,37 @@ func consumeOrderPlaced() error {
 		nil,        // args
 	)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 
-	fmt.Println("RabbitMQ consumeOrderPlaced conectado")
+	glog.Info("RabbitMQ consumeOrderPlaced conectado")
 
 	go func() {
 		for d := range mgs {
 			newMessage := &ConsumeMessage{}
 			body := d.Body
 
-			fmt.Println(string(body))
+			glog.Info("Rabbit Consume: ", string(body))
 			err = json.Unmarshal(body, newMessage)
 			if err == nil {
 				switch newMessage.Type {
 				case "order-placed":
 					articleMessage := &ConsumeOrderPlacedMessage{}
 					if err := json.Unmarshal(body, articleMessage); err != nil {
-						log.Print("Error decoding Placed Data")
+						glog.Error(err)
 						return
 					}
 
 					processOrderPlaced(articleMessage)
 				}
+			} else {
+				glog.Error(err)
 			}
 		}
 	}()
 
-	fmt.Println("Closed connection: ", <-conn.NotifyClose(make(chan *amqp.Error)))
+	glog.Info("Closed connection: ", <-conn.NotifyClose(make(chan *amqp.Error)))
 
 	return nil
 }
@@ -115,7 +123,7 @@ func processOrderPlaced(newMessage *ConsumeOrderPlacedMessage) {
 
 	err := cart.ProcessOrderPlaced(data)
 	if err != nil {
-		fmt.Println(err.Error())
+		glog.Error(err)
 		return
 	}
 

@@ -10,21 +10,21 @@ import (
 )
 
 // Agregar 1 al articulo actual.
+// @Summary		Agregar 1 Articulo
+// @Description	Agregar 1 al articulo actual.
+// @Tags			Cart
+// @Accept			json
+// @Produce		json
+// @Param			articleId		path		string					true	"ID de articlo"
+// @Param			Authorization	header		string					true	"bearer {token}"
+// @Success		200				{object}	cart.Cart				"Cart"
+// @Failure		400				{object}	apperr.ErrValidation	"Bad Request"
+// @Failure		401				{object}	apperr.ErrCustom		"Unauthorized"
+// @Failure		404				{object}	apperr.ErrCustom		"Not Found"
+// @Failure		500				{object}	apperr.ErrCustom		"Internal Server Error"
+// @Router			/v1/cart/article/:articleId/increment [post]
 //
-//	@Summary		Agregar 1 Articulo
-//	@Description	Agregar 1 al articulo actual.
-//	@Tags			Cart
-//	@Accept			json
-//	@Produce		json
-//	@Param			articleId		path		string					true	"ID de articlo"
-//	@Param			Authorization	header		string					true	"bearer {token}"
-//	@Success		200				{object}	cart.Cart				"Cart"
-//	@Failure		400				{object}	errors.ErrValidation	"Bad Request"
-//	@Failure		401				{object}	errors.ErrCustom		"Unauthorized"
-//	@Failure		404				{object}	errors.ErrCustom		"Not Found"
-//	@Failure		500				{object}	errors.ErrCustom		"Internal Server Error"
-//
-//	@Router			/v1/cart/article/:articleId/increment [post]
+// Inicializa las rutas
 func init() {
 	engine.Router().POST(
 		"/v1/cart/article/:articleId/increment",

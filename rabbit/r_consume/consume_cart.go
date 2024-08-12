@@ -2,9 +2,8 @@ package r_consume
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
 
+	"github.com/golang/glog"
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/tools/env"
 	"github.com/streadway/amqp"
@@ -13,12 +12,14 @@ import (
 func consumeOrders() error {
 	conn, err := amqp.Dial(env.Get().RabbitURL)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 	defer conn.Close()
 
 	chn, err := conn.Channel()
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 	defer chn.Close()
@@ -33,6 +34,7 @@ func consumeOrders() error {
 		nil,      // arguments
 	)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 
@@ -45,6 +47,7 @@ func consumeOrders() error {
 		nil,    // arguments
 	)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 
@@ -55,6 +58,7 @@ func consumeOrders() error {
 		false,
 		nil)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 
@@ -68,16 +72,17 @@ func consumeOrders() error {
 		nil,        // args
 	)
 	if err != nil {
+		glog.Error(err)
 		return err
 	}
 
-	fmt.Println("RabbitMQ consumeCart conectado")
+	glog.Info("RabbitMQ consumeCart conectado")
 
 	go func() {
 		for d := range mgs {
 			newMessage := &ConsumeMessage{}
 			body := d.Body
-			fmt.Println(string(body))
+			glog.Info(string(body))
 
 			err = json.Unmarshal(body, newMessage)
 			if err == nil {
@@ -85,17 +90,19 @@ func consumeOrders() error {
 				case "article-exist":
 					articleMessage := &ConsumeArticleDataMessage{}
 					if err := json.Unmarshal(body, articleMessage); err != nil {
-						log.Print("Error decoding Article Data")
+						glog.Error(err)
 						return
 					}
 
 					processArticleData(articleMessage)
 				}
+			} else {
+				glog.Error(err)
 			}
 		}
 	}()
 
-	fmt.Println("Closed connection: ", <-conn.NotifyClose(make(chan *amqp.Error)))
+	glog.Info("Closed connection: ", <-conn.NotifyClose(make(chan *amqp.Error)))
 
 	return nil
 }
@@ -115,11 +122,11 @@ func processArticleData(newMessage *ConsumeArticleDataMessage) {
 
 	err := cart.ProcessArticleData(data)
 	if err != nil {
-		fmt.Println(err.Error())
+		glog.Error(err)
 		return
 	}
 
-	log.Print("Article exist completed : " + data.ReferenceId)
+	glog.Info("Article exist completed : ", data)
 }
 
 type ConsumeArticleDataMessage struct {
