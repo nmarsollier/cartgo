@@ -2,8 +2,6 @@ package apperr
 
 import (
 	"encoding/json"
-
-	"github.com/golang/glog"
 )
 
 // - Algunos errors comunes en el sistema -
@@ -102,7 +100,7 @@ type ErrValidation struct {
 func (e *ErrValidation) Error() string {
 	body, err := json.Marshal(e)
 	if err != nil {
-		glog.Error(err)
+		return "ErrValidation que no se puede pasar a json."
 	}
 	return string(body)
 }
