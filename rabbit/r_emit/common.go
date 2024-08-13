@@ -9,7 +9,7 @@ import (
 )
 
 // ErrChannelNotInitialized Rabbit channel could not be initialized
-var ErrChannelNotInitialized = errors.New("Channel not initialized")
+var ErrChannelNotInitialized = errors.New("channel not initialized")
 
 func getChannel(ctx ...interface{}) (RabbitChannel, error) {
 	for _, o := range ctx {
