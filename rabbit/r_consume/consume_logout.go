@@ -14,15 +14,15 @@ type LogoutMessage struct {
 	Message string `json:"message"`
 }
 
-// Escucha de mensajes logout desde auth.
+// @Summary		Mensage Rabbit
+// @Description	Escucha de mensajes logout desde auth.
+// @Tags			Rabbit
+// @Accept			json
+// @Produce		json
+// @Param			body	body	LogoutMessage	true	"Estructura general del mensage"
+// @Router			/rabbit/logout [get]
 //
-//	@Summary		Mensage Rabbit
-//	@Description	Escucha de mensajes logout desde auth.
-//	@Tags			Rabbit
-//	@Accept			json
-//	@Produce		json
-//	@Param			body	body	LogoutMessage	true	"Estructura general del mensage"
-//	@Router			/rabbit/logout [get]
+// Escucha de mensajes logout desde auth.
 func consumeLogout() error {
 	conn, err := amqp.Dial(env.Get().RabbitURL)
 	if err != nil {

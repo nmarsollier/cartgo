@@ -8,7 +8,6 @@ import (
 	"github.com/nmarsollier/cartgo/service"
 )
 
-// Eliminar 1 al articulo actual.
 // @Summary		Agregar 1 Articulo
 // @Description	Eliminar 1 al articulo actual.
 // @Tags			Cart
@@ -17,15 +16,13 @@ import (
 // @Param			articleId		path		string					true	"ID de articlo"
 // @Param			Authorization	header		string					true	"bearer {token}"
 // @Success		200				{object}	cart.Cart				"Cart"
-//
-//	@Failure		400				{object}	apperr.ValidationErr	"Bad Request"
-//	@Failure		401				{object}	engine.ErrorData		"Unauthorized"
-//	@Failure		404				{object}	engine.ErrorData		"Not Found"
-//	@Failure		500				{object}	engine.ErrorData		"Internal Server Error"
-//
+// @Failure		400				{object}	apperr.ValidationErr	"Bad Request"
+// @Failure		401				{object}	engine.ErrorData		"Unauthorized"
+// @Failure		404				{object}	engine.ErrorData		"Not Found"
+// @Failure		500				{object}	engine.ErrorData		"Internal Server Error"
 // @Router			/v1/cart/article/:articleId/decrement [post]
 //
-// Init inicializa las rutas
+// Eliminar 1 al articulo actual.
 func initPostCartArticleDecrement() {
 	engine.Router().POST(
 		"/v1/cart/article/:articleId/decrement",

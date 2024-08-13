@@ -107,16 +107,15 @@ func consumeOrders() error {
 	return nil
 }
 
+// @Summary		Mensage Rabbit order/article-data
+// @Description	Antes de iniciar las operaciones se validan los artículos contra el catalogo.
+// @Tags			Rabbit
+// @Accept			json
+// @Produce		json
+// @Param			article-data	body	ConsumeArticleDataMessage	true	"Message para Type = article-data"
+// @Router			/rabbit/article-data [get]
+//
 // Validar Artículos
-//
-//	@Summary		Mensage Rabbit order/article-data
-//	@Description	Antes de iniciar las operaciones se validan los artículos contra el catalogo.
-//	@Tags			Rabbit
-//	@Accept			json
-//	@Produce		json
-//	@Param			article-data	body	ConsumeArticleDataMessage	true	"Message para Type = article-data"
-//
-//	@Router			/rabbit/article-data [get]
 func processArticleData(newMessage *ConsumeArticleDataMessage, ctx ...interface{}) {
 	data := newMessage.Message
 

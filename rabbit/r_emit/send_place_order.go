@@ -7,16 +7,15 @@ import (
 	"github.com/nmarsollier/cartgo/cart"
 )
 
+// @Summary		Emite Placed Order desde Cart
+// @Description	Emite Placed Order desde Cart
+// @Tags			Rabbit
+// @Accept			json
+// @Produce		json
+// @Param			body	body	SendPlacedMessage	true	"Mensage de validacion"
+// @Router			/rabbit/cart/place-order [put]
+//
 // Emite Placed Order desde Cart
-//
-//	@Summary		Emite Placed Order desde Cart
-//	@Description	Emite Placed Order desde Cart
-//	@Tags			Rabbit
-//	@Accept			json
-//	@Produce		json
-//	@Param			body	body	SendPlacedMessage	true	"Mensage de validacion"
-//
-//	@Router			/rabbit/cart/place-order [put]
 func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 	articles := []PlaceArticlesData{}
 	for _, a := range cart.Articles {
