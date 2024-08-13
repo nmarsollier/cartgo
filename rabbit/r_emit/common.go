@@ -11,20 +11,24 @@ import (
 // ErrChannelNotInitialized Rabbit channel could not be initialized
 var ErrChannelNotInitialized = errors.New("Channel not initialized")
 
-func getChannel() (*amqp.Channel, error) {
+func getChannel(ctx ...interface{}) (RabbitChannel, error) {
+	for _, o := range ctx {
+		if ti, ok := o.(RabbitChannel); ok {
+			return ti, nil
+		}
+	}
+
 	conn, err := amqp.Dial(env.Get().RabbitURL)
 	if err != nil {
 		glog.Error(err)
 		return nil, err
 	}
 
-	ch, err := conn.Channel()
+	channel, err := conn.Channel()
 	if err != nil {
 		glog.Error(err)
 		return nil, err
 	}
-	if ch == nil {
-		return nil, ErrChannelNotInitialized
-	}
-	return ch, nil
+
+	return rabbitChannel{ch: channel}, nil
 }

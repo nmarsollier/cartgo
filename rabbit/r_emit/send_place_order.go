@@ -5,7 +5,6 @@ import (
 
 	"github.com/golang/glog"
 	"github.com/nmarsollier/cartgo/cart"
-	"github.com/streadway/amqp"
 )
 
 // Emite Placed Order desde Cart
@@ -18,7 +17,7 @@ import (
 //	@Param			body	body	SendPlacedMessage	true	"Mensage de validacion"
 //
 //	@Router			/rabbit/cart/place-order [put]
-func sendPlaceOrder(cart *cart.Cart) error {
+func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 	articles := []PlaceArticlesData{}
 	for _, a := range cart.Articles {
 		articles = append(articles, PlaceArticlesData{
@@ -40,7 +39,7 @@ func sendPlaceOrder(cart *cart.Cart) error {
 		Message:  data,
 	}
 
-	chn, err := getChannel()
+	chn, err := getChannel(ctx...)
 	if err != nil {
 		glog.Error(err)
 		chn = nil
@@ -50,11 +49,6 @@ func sendPlaceOrder(cart *cart.Cart) error {
 	err = chn.ExchangeDeclare(
 		"order",  // name
 		"direct", // type
-		false,    // durable
-		false,    // auto-deleted
-		false,    // internal
-		false,    // no-wait
-		nil,      // arguments
 	)
 	if err != nil {
 		glog.Error(err)
@@ -71,11 +65,8 @@ func sendPlaceOrder(cart *cart.Cart) error {
 	err = chn.Publish(
 		"order", // exchange
 		"order", // routing key
-		false,   // mandatory
-		false,   // immediate
-		amqp.Publishing{
-			Body: []byte(body),
-		})
+		body,
+	)
 	if err != nil {
 		glog.Error(err)
 		chn = nil

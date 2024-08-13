@@ -6,7 +6,6 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
-	"github.com/nmarsollier/cartgo/rabbit/r_emit"
 	"github.com/nmarsollier/cartgo/rest/engine"
 	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/service"
@@ -51,8 +50,19 @@ func TestGetCartCheckoutHappyPath(t *testing.T) {
 	serviceMock := service.NewMockServiceDao(ctrl)
 	serviceMock.EXPECT().CallValidate(gomock.Any(), gomock.Any()).Return(nil).Times(2)
 
-	rabbitMock := r_emit.NewMockRabbitEmiter(ctrl)
-	rabbitMock.EXPECT().SendPlaceOrder(gomock.Any()).Return(nil).Times(1)
+	rabbitMock := tests.MockRabbitChannel(ctrl, 1)
+	rabbitMock.EXPECT().Publish(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
+		func(exchange string, routingKey string, body []byte) error {
+			assert.Equal(t, "order", exchange)
+			assert.Equal(t, "order", routingKey)
+			bodyStr := string(body)
+			assert.Contains(t, bodyStr, "place-order")
+			assert.Contains(t, bodyStr, "cartId")
+			assert.Contains(t, bodyStr, "userId")
+
+			return nil
+		},
+	).Times(1)
 
 	// REQUEST
 	r := engine.TestRouter(cart.CartCollection(collection), httpMock, serviceMock, rabbitMock)

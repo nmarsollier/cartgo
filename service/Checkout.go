@@ -26,7 +26,7 @@ func Checkout(userId string, token string, ctx ...interface{}) (*cart.Cart, erro
 		return nil, err
 	}
 
-	r_emit.Get(ctx...).SendPlaceOrder(currentCart)
+	r_emit.SendPlaceOrder(currentCart, ctx...)
 
 	return currentCart, nil
 }

@@ -141,10 +141,10 @@ Obtiene el carrito actual.
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
-| 400 | Bad Request | [errors.ErrValidation](#errorserrvalidation) |
-| 401 | Unauthorized | [errors.ErrCustom](#errorserrcustom) |
-| 404 | Not Found | [errors.ErrCustom](#errorserrcustom) |
-| 500 | Internal Server Error | [errors.ErrCustom](#errorserrcustom) |
+| 400 | Bad Request | [apperr.ValidationErr](#apperrvalidationerr) |
+| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
+| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
+| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
 
 ### /v1/cart/article
 
@@ -170,10 +170,10 @@ Agrega un articulo del carrito actual.
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
-| 400 | Bad Request | [errors.ErrValidation](#errorserrvalidation) |
-| 401 | Unauthorized | [errors.ErrCustom](#errorserrcustom) |
-| 404 | Not Found | [errors.ErrCustom](#errorserrcustom) |
-| 500 | Internal Server Error | [errors.ErrCustom](#errorserrcustom) |
+| 400 | Bad Request | [apperr.ValidationErr](#apperrvalidationerr) |
+| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
+| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
+| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
 
 ### /v1/cart/article/:articleId
 
@@ -198,10 +198,10 @@ Elimina un articulo del carrito actual.
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | No Content |  |
-| 400 | Bad Request | [errors.ErrValidation](#errorserrvalidation) |
-| 401 | Unauthorized | [errors.ErrCustom](#errorserrcustom) |
-| 404 | Not Found | [errors.ErrCustom](#errorserrcustom) |
-| 500 | Internal Server Error | [errors.ErrCustom](#errorserrcustom) |
+| 400 | Bad Request | [apperr.ValidationErr](#apperrvalidationerr) |
+| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
+| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
+| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
 
 ### /v1/cart/article/:articleId/decrement
 
@@ -226,10 +226,10 @@ Eliminar 1 al articulo actual.
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
-| 400 | Bad Request | [errors.ErrValidation](#errorserrvalidation) |
-| 401 | Unauthorized | [errors.ErrCustom](#errorserrcustom) |
-| 404 | Not Found | [errors.ErrCustom](#errorserrcustom) |
-| 500 | Internal Server Error | [errors.ErrCustom](#errorserrcustom) |
+| 400 | Bad Request | [apperr.ValidationErr](#apperrvalidationerr) |
+| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
+| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
+| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
 
 ### /v1/cart/article/:articleId/increment
 
@@ -254,10 +254,10 @@ Agregar 1 al articulo actual.
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
-| 400 | Bad Request | [errors.ErrValidation](#errorserrvalidation) |
-| 401 | Unauthorized | [errors.ErrCustom](#errorserrcustom) |
-| 404 | Not Found | [errors.ErrCustom](#errorserrcustom) |
-| 500 | Internal Server Error | [errors.ErrCustom](#errorserrcustom) |
+| 400 | Bad Request | [apperr.ValidationErr](#apperrvalidationerr) |
+| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
+| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
+| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
 
 ### /v1/cart/checkouts
 
@@ -282,10 +282,10 @@ Hace checkout del carrito actual
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | No Content |  |
-| 400 | Bad Request | [errors.ErrValidation](#errorserrvalidation) |
-| 401 | Unauthorized | [errors.ErrCustom](#errorserrcustom) |
-| 404 | Not Found | [errors.ErrCustom](#errorserrcustom) |
-| 500 | Internal Server Error | [errors.ErrCustom](#errorserrcustom) |
+| 400 | Bad Request | [apperr.ValidationErr](#apperrvalidationerr) |
+| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
+| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
+| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
 
 ### /v1/cart/validate
 
@@ -309,13 +309,26 @@ Valida el carrito para checkout
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | No Content |  |
-| 400 | Bad Request | [errors.ErrValidation](#errorserrvalidation) |
-| 401 | Unauthorized | [errors.ErrCustom](#errorserrcustom) |
-| 404 | Not Found | [errors.ErrCustom](#errorserrcustom) |
-| 500 | Internal Server Error | [errors.ErrCustom](#errorserrcustom) |
+| 400 | Bad Request | [apperr.ValidationErr](#apperrvalidationerr) |
+| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
+| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
+| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
 
 ---
 ### Models
+
+#### apperr.ValidationErr
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| messages | [ [apperr.errField](#apperrerrfield) ] |  | No |
+
+#### apperr.errField
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| message | string |  | No |
+| path | string |  | No |
 
 #### cart.AddArticleData
 
@@ -361,24 +374,11 @@ Valida el carrito para checkout
 | referenceId | string |  | No |
 | valid | boolean |  | No |
 
-#### errors.ErrCustom
+#### engine.ErrorData
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
 | error | string |  | No |
-
-#### errors.ErrField
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| message | string |  | No |
-| path | string |  | No |
-
-#### errors.ErrValidation
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| messages | [ [errors.ErrField](#errorserrfield) ] |  | No |
 
 #### r_consume.ConsumeArticleDataMessage
 

@@ -49,8 +49,8 @@ func handleError(c *gin.Context, err interface{}) {
 		handleValidationError(c, value)
 	case error:
 		// Otros errores
-		c.JSON(500, gin.H{
-			"error": value.Error(),
+		c.JSON(500, ErrorData{
+			Error: value.Error(),
 		})
 	default:
 		// No se sabe que es, devolvemos internal
@@ -95,4 +95,8 @@ func handleValidationError(c *gin.Context, validationErrors validator.Validation
  */
 func handleCustom(c *gin.Context, err apperr.RestError) {
 	c.JSON(err.Status(), err)
+}
+
+type ErrorData struct {
+	Error string `json:"error"`
 }

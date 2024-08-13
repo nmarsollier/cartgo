@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 
 	"github.com/golang/glog"
-	"github.com/streadway/amqp"
 )
 
 // Emite Validar Artículos a Cart
@@ -17,7 +16,7 @@ import (
 //	@Param			body	body	SendValidationMessage	true	"Mensage de validacion"
 //
 //	@Router			/rabbit/cart/article-exist [put]
-func sendArticleValidation(data ArticleValidationData) error {
+func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error {
 
 	send := SendValidationMessage{
 		Type:     "article-exist",
@@ -26,7 +25,7 @@ func sendArticleValidation(data ArticleValidationData) error {
 		Message:  data,
 	}
 
-	chn, err := getChannel()
+	chn, err := getChannel(ctx...)
 	if err != nil {
 		glog.Error(err)
 		chn = nil
@@ -36,11 +35,6 @@ func sendArticleValidation(data ArticleValidationData) error {
 	err = chn.ExchangeDeclare(
 		"catalog", // name
 		"direct",  // type
-		false,     // durable
-		false,     // auto-deleted
-		false,     // internal
-		false,     // no-wait
-		nil,       // arguments
 	)
 	if err != nil {
 		glog.Error(err)
@@ -57,11 +51,8 @@ func sendArticleValidation(data ArticleValidationData) error {
 	err = chn.Publish(
 		"catalog", // exchange
 		"catalog", // routing key
-		false,     // mandatory
-		false,     // immediate
-		amqp.Publishing{
-			Body: []byte(body),
-		})
+		body,
+	)
 	if err != nil {
 		glog.Error(err)
 		chn = nil

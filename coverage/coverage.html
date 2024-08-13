@@ -71,15 +71,15 @@
 				
 				<option value="file7">github.com/nmarsollier/cartgo/rabbit/r_consume/listeners.go (0.0%)</option>
 				
-				<option value="file8">github.com/nmarsollier/cartgo/rabbit/r_emit/common.go (36.4%)</option>
+				<option value="file8">github.com/nmarsollier/cartgo/rabbit/r_emit/common.go (58.3%)</option>
 				
-				<option value="file9">github.com/nmarsollier/cartgo/rabbit/r_emit/emit_article_validation.go (27.3%)</option>
+				<option value="file9">github.com/nmarsollier/cartgo/rabbit/r_emit/rabbit_channel.go (0.0%)</option>
 				
-				<option value="file10">github.com/nmarsollier/cartgo/rabbit/r_emit/emit_place_order.go (0.0%)</option>
+				<option value="file10">github.com/nmarsollier/cartgo/rabbit/r_emit/rabbit_channel_mocks.go (100.0%)</option>
 				
-				<option value="file11">github.com/nmarsollier/cartgo/rabbit/r_emit/emitter.go (83.3%)</option>
+				<option value="file11">github.com/nmarsollier/cartgo/rabbit/r_emit/send_article_validation.go (27.3%)</option>
 				
-				<option value="file12">github.com/nmarsollier/cartgo/rabbit/r_emit/mocks.go (62.5%)</option>
+				<option value="file12">github.com/nmarsollier/cartgo/rabbit/r_emit/send_place_order.go (57.7%)</option>
 				
 				<option value="file13">github.com/nmarsollier/cartgo/rest/delete_cart_article_id.go (100.0%)</option>
 				
@@ -107,7 +107,7 @@
 				
 				<option value="file25">github.com/nmarsollier/cartgo/security/dao.go (12.0%)</option>
 				
-				<option value="file26">github.com/nmarsollier/cartgo/security/mocks.go (100.0%)</option>
+				<option value="file26">github.com/nmarsollier/cartgo/security/dao_mocks.go (100.0%)</option>
 				
 				<option value="file27">github.com/nmarsollier/cartgo/security/service.go (50.0%)</option>
 				
@@ -119,7 +119,7 @@
 				
 				<option value="file31">github.com/nmarsollier/cartgo/service/dao.go (60.0%)</option>
 				
-				<option value="file32">github.com/nmarsollier/cartgo/service/mocks.go (100.0%)</option>
+				<option value="file32">github.com/nmarsollier/cartgo/service/dao_mocks.go (100.0%)</option>
 				
 				<option value="file33">github.com/nmarsollier/cartgo/tools/apperr/rest_error.go (100.0%)</option>
 				
@@ -137,7 +137,9 @@
 				
 				<option value="file40">github.com/nmarsollier/cartgo/tools/tests/database.go (80.0%)</option>
 				
-				<option value="file41">github.com/nmarsollier/cartgo/tools/tests/rest.go (100.0%)</option>
+				<option value="file41">github.com/nmarsollier/cartgo/tools/tests/rabbit.go (100.0%)</option>
+				
+				<option value="file42">github.com/nmarsollier/cartgo/tools/tests/rest.go (100.0%)</option>
 				
 				</select>
 			</div>
@@ -1830,32 +1832,142 @@ import (
 // ErrChannelNotInitialized Rabbit channel could not be initialized
 var ErrChannelNotInitialized = errors.New("Channel not initialized")
 
-func getChannel() (*amqp.Channel, error) <span class="cov8" title="1">{
-        conn, err := amqp.Dial(env.Get().RabbitURL)
+func getChannel(ctx ...interface{}) (RabbitChannel, error) <span class="cov8" title="1">{
+        for _, o := range ctx </span><span class="cov8" title="1">{
+                if ti, ok := o.(RabbitChannel); ok </span><span class="cov8" title="1">{
+                        return ti, nil
+                }</span>
+        }
+
+        <span class="cov8" title="1">conn, err := amqp.Dial(env.Get().RabbitURL)
         if err != nil </span><span class="cov8" title="1">{
                 glog.Error(err)
                 return nil, err
         }</span>
 
-        <span class="cov0" title="0">ch, err := conn.Channel()
+        <span class="cov0" title="0">channel, err := conn.Channel()
         if err != nil </span><span class="cov0" title="0">{
                 glog.Error(err)
                 return nil, err
         }</span>
-        <span class="cov0" title="0">if ch == nil </span><span class="cov0" title="0">{
-                return nil, ErrChannelNotInitialized
-        }</span>
-        <span class="cov0" title="0">return ch, nil</span>
+
+        <span class="cov0" title="0">return rabbitChannel{ch: channel}, nil</span>
 }
 </pre>
 		
 		<pre class="file" id="file9" style="display: none">package r_emit
 
+import "github.com/streadway/amqp"
+
+type RabbitChannel interface {
+        ExchangeDeclare(name string, chType string) error
+        Publish(exchange string, routingKey string, body []byte) error
+}
+
+type rabbitChannel struct {
+        ch *amqp.Channel
+}
+
+func (c rabbitChannel) ExchangeDeclare(
+        name string,
+        chType string,
+) error <span class="cov0" title="0">{
+        return c.ch.ExchangeDeclare(
+                name,   // name
+                chType, // type
+                false,  // durable
+                false,  // auto-deleted
+                false,  // internal
+                false,  // no-wait
+                nil,    // arguments
+        )
+}</span>
+func (c rabbitChannel) Publish(
+        exchange string,
+        routingKey string,
+        body []byte,
+) error <span class="cov0" title="0">{
+        return c.ch.Publish(
+                exchange,   // exchange
+                routingKey, // routing key
+                false,      // mandatory
+                false,      // immediate
+                amqp.Publishing{
+                        Body: body,
+                })
+}</span>
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+// Source: ./rabbit/r_emit/rabbit_channel.go
+
+// Package r_emit is a generated GoMock package.
+package r_emit
+
+import (
+        reflect "reflect"
+
+        gomock "github.com/golang/mock/gomock"
+)
+
+// MockRabbitChannel is a mock of RabbitChannel interface.
+type MockRabbitChannel struct {
+        ctrl     *gomock.Controller
+        recorder *MockRabbitChannelMockRecorder
+}
+
+// MockRabbitChannelMockRecorder is the mock recorder for MockRabbitChannel.
+type MockRabbitChannelMockRecorder struct {
+        mock *MockRabbitChannel
+}
+
+// NewMockRabbitChannel creates a new mock instance.
+func NewMockRabbitChannel(ctrl *gomock.Controller) *MockRabbitChannel <span class="cov8" title="1">{
+        mock := &amp;MockRabbitChannel{ctrl: ctrl}
+        mock.recorder = &amp;MockRabbitChannelMockRecorder{mock}
+        return mock
+}</span>
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockRabbitChannel) EXPECT() *MockRabbitChannelMockRecorder <span class="cov8" title="1">{
+        return m.recorder
+}</span>
+
+// ExchangeDeclare mocks base method.
+func (m *MockRabbitChannel) ExchangeDeclare(name, chType string) error <span class="cov8" title="1">{
+        m.ctrl.T.Helper()
+        ret := m.ctrl.Call(m, "ExchangeDeclare", name, chType)
+        ret0, _ := ret[0].(error)
+        return ret0
+}</span>
+
+// ExchangeDeclare indicates an expected call of ExchangeDeclare.
+func (mr *MockRabbitChannelMockRecorder) ExchangeDeclare(name, chType interface{}) *gomock.Call <span class="cov8" title="1">{
+        mr.mock.ctrl.T.Helper()
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ExchangeDeclare", reflect.TypeOf((*MockRabbitChannel)(nil).ExchangeDeclare), name, chType)
+}</span>
+
+// Publish mocks base method.
+func (m *MockRabbitChannel) Publish(exchange, routingKey string, body []byte) error <span class="cov8" title="1">{
+        m.ctrl.T.Helper()
+        ret := m.ctrl.Call(m, "Publish", exchange, routingKey, body)
+        ret0, _ := ret[0].(error)
+        return ret0
+}</span>
+
+// Publish indicates an expected call of Publish.
+func (mr *MockRabbitChannelMockRecorder) Publish(exchange, routingKey, body interface{}) *gomock.Call <span class="cov8" title="1">{
+        mr.mock.ctrl.T.Helper()
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Publish", reflect.TypeOf((*MockRabbitChannel)(nil).Publish), exchange, routingKey, body)
+}</span>
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">package r_emit
+
 import (
         "encoding/json"
 
         "github.com/golang/glog"
-        "github.com/streadway/amqp"
 )
 
 // Emite Validar Artículos a Cart
@@ -1868,7 +1980,7 @@ import (
 //        @Param                        body        body        SendValidationMessage        true        "Mensage de validacion"
 //
 //        @Router                        /rabbit/cart/article-exist [put]
-func sendArticleValidation(data ArticleValidationData) error <span class="cov8" title="1">{
+func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error <span class="cov8" title="1">{
 
         send := SendValidationMessage{
                 Type:     "article-exist",
@@ -1877,7 +1989,7 @@ func sendArticleValidation(data ArticleValidationData) error <span class="cov8" 
                 Message:  data,
         }
 
-        chn, err := getChannel()
+        chn, err := getChannel(ctx...)
         if err != nil </span><span class="cov8" title="1">{
                 glog.Error(err)
                 chn = nil
@@ -1887,11 +1999,6 @@ func sendArticleValidation(data ArticleValidationData) error <span class="cov8" 
         <span class="cov0" title="0">err = chn.ExchangeDeclare(
                 "catalog", // name
                 "direct",  // type
-                false,     // durable
-                false,     // auto-deleted
-                false,     // internal
-                false,     // no-wait
-                nil,       // arguments
         )
         if err != nil </span><span class="cov0" title="0">{
                 glog.Error(err)
@@ -1908,11 +2015,8 @@ func sendArticleValidation(data ArticleValidationData) error <span class="cov8" 
         <span class="cov0" title="0">err = chn.Publish(
                 "catalog", // exchange
                 "catalog", // routing key
-                false,     // mandatory
-                false,     // immediate
-                amqp.Publishing{
-                        Body: []byte(body),
-                })
+                body,
+        )
         if err != nil </span><span class="cov0" title="0">{
                 glog.Error(err)
                 chn = nil
@@ -1938,14 +2042,13 @@ type SendValidationMessage struct {
 }
 </pre>
 		
-		<pre class="file" id="file10" style="display: none">package r_emit
+		<pre class="file" id="file12" style="display: none">package r_emit
 
 import (
         "encoding/json"
 
         "github.com/golang/glog"
         "github.com/nmarsollier/cartgo/cart"
-        "github.com/streadway/amqp"
 )
 
 // Emite Placed Order desde Cart
@@ -1958,16 +2061,16 @@ import (
 //        @Param                        body        body        SendPlacedMessage        true        "Mensage de validacion"
 //
 //        @Router                        /rabbit/cart/place-order [put]
-func sendPlaceOrder(cart *cart.Cart) error <span class="cov0" title="0">{
+func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error <span class="cov8" title="1">{
         articles := []PlaceArticlesData{}
-        for _, a := range cart.Articles </span><span class="cov0" title="0">{
+        for _, a := range cart.Articles </span><span class="cov8" title="1">{
                 articles = append(articles, PlaceArticlesData{
                         a.ArticleId,
                         a.Quantity,
                 })
         }</span>
 
-        <span class="cov0" title="0">data := PlacedData{
+        <span class="cov8" title="1">data := PlacedData{
                 CartId:   cart.ID.Hex(),
                 UserId:   cart.UserId,
                 Articles: articles,
@@ -1980,21 +2083,16 @@ func sendPlaceOrder(cart *cart.Cart) error <span class="cov0" title="0">{
                 Message:  data,
         }
 
-        chn, err := getChannel()
+        chn, err := getChannel(ctx...)
         if err != nil </span><span class="cov0" title="0">{
                 glog.Error(err)
                 chn = nil
                 return err
         }</span>
 
-        <span class="cov0" title="0">err = chn.ExchangeDeclare(
+        <span class="cov8" title="1">err = chn.ExchangeDeclare(
                 "order",  // name
                 "direct", // type
-                false,    // durable
-                false,    // auto-deleted
-                false,    // internal
-                false,    // no-wait
-                nil,      // arguments
         )
         if err != nil </span><span class="cov0" title="0">{
                 glog.Error(err)
@@ -2002,27 +2100,24 @@ func sendPlaceOrder(cart *cart.Cart) error <span class="cov0" title="0">{
                 return err
         }</span>
 
-        <span class="cov0" title="0">body, err := json.Marshal(send)
+        <span class="cov8" title="1">body, err := json.Marshal(send)
         if err != nil </span><span class="cov0" title="0">{
                 glog.Error(err)
                 return err
         }</span>
 
-        <span class="cov0" title="0">err = chn.Publish(
+        <span class="cov8" title="1">err = chn.Publish(
                 "order", // exchange
                 "order", // routing key
-                false,   // mandatory
-                false,   // immediate
-                amqp.Publishing{
-                        Body: []byte(body),
-                })
+                body,
+        )
         if err != nil </span><span class="cov0" title="0">{
                 glog.Error(err)
                 chn = nil
                 return err
         }</span>
 
-        <span class="cov0" title="0">glog.Info("Rabbit place order enviado ", string(body))
+        <span class="cov8" title="1">glog.Info("Rabbit place order enviado ", string(body))
         return nil</span>
 }
 
@@ -2045,102 +2140,6 @@ type SendPlacedMessage struct {
 }
 </pre>
 		
-		<pre class="file" id="file11" style="display: none">package r_emit
-
-import "github.com/nmarsollier/cartgo/cart"
-
-type RabbitEmiter interface {
-        SendArticleValidation(data ArticleValidationData) error
-        SendPlaceOrder(cart *cart.Cart) error
-}
-
-func Get(ctx ...interface{}) RabbitEmiter <span class="cov8" title="1">{
-        for _, o := range ctx </span><span class="cov8" title="1">{
-                if ti, ok := o.(RabbitEmiter); ok </span><span class="cov8" title="1">{
-                        return ti
-                }</span>
-        }
-
-        <span class="cov8" title="1">return &amp;rabbitEmiter{}</span>
-}
-
-type rabbitEmiter struct {
-}
-
-func (m *rabbitEmiter) SendArticleValidation(data ArticleValidationData) error <span class="cov8" title="1">{
-        return sendArticleValidation(data)
-}</span>
-
-func (m *rabbitEmiter) SendPlaceOrder(cart *cart.Cart) error <span class="cov0" title="0">{
-        return sendPlaceOrder(cart)
-}</span>
-</pre>
-		
-		<pre class="file" id="file12" style="display: none">// Code generated by MockGen. DO NOT EDIT.
-// Source: ./rabbit/r_emit/emitter.go
-
-// Package r_emit is a generated GoMock package.
-package r_emit
-
-import (
-        reflect "reflect"
-
-        gomock "github.com/golang/mock/gomock"
-        cart "github.com/nmarsollier/cartgo/cart"
-)
-
-// MockRabbitEmiter is a mock of RabbitEmiter interface.
-type MockRabbitEmiter struct {
-        ctrl     *gomock.Controller
-        recorder *MockRabbitEmiterMockRecorder
-}
-
-// MockRabbitEmiterMockRecorder is the mock recorder for MockRabbitEmiter.
-type MockRabbitEmiterMockRecorder struct {
-        mock *MockRabbitEmiter
-}
-
-// NewMockRabbitEmiter creates a new mock instance.
-func NewMockRabbitEmiter(ctrl *gomock.Controller) *MockRabbitEmiter <span class="cov8" title="1">{
-        mock := &amp;MockRabbitEmiter{ctrl: ctrl}
-        mock.recorder = &amp;MockRabbitEmiterMockRecorder{mock}
-        return mock
-}</span>
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockRabbitEmiter) EXPECT() *MockRabbitEmiterMockRecorder <span class="cov8" title="1">{
-        return m.recorder
-}</span>
-
-// SendArticleValidation mocks base method.
-func (m *MockRabbitEmiter) SendArticleValidation(data ArticleValidationData) error <span class="cov0" title="0">{
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "SendArticleValidation", data)
-        ret0, _ := ret[0].(error)
-        return ret0
-}</span>
-
-// SendArticleValidation indicates an expected call of SendArticleValidation.
-func (mr *MockRabbitEmiterMockRecorder) SendArticleValidation(data interface{}) *gomock.Call <span class="cov0" title="0">{
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendArticleValidation", reflect.TypeOf((*MockRabbitEmiter)(nil).SendArticleValidation), data)
-}</span>
-
-// SendPlaceOrder mocks base method.
-func (m *MockRabbitEmiter) SendPlaceOrder(cart *cart.Cart) error <span class="cov8" title="1">{
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "SendPlaceOrder", cart)
-        ret0, _ := ret[0].(error)
-        return ret0
-}</span>
-
-// SendPlaceOrder indicates an expected call of SendPlaceOrder.
-func (mr *MockRabbitEmiterMockRecorder) SendPlaceOrder(cart interface{}) *gomock.Call <span class="cov8" title="1">{
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendPlaceOrder", reflect.TypeOf((*MockRabbitEmiter)(nil).SendPlaceOrder), cart)
-}</span>
-</pre>
-		
 		<pre class="file" id="file13" style="display: none">package rest
 
 import (
@@ -2160,12 +2159,10 @@ import (
 //        @Param                        articleId                path        string        true        "ID de articlo"
 //        @Param                        Authorization        header        string        true        "bearer {token}"
 //        @Success                200                                "No Content"
-//
-//        @Failure                400                                {object}        errors.ErrValidation        "Bad Request"
-//        @Failure                401                                {object}        errors.ErrCustom                "Unauthorized"
-//        @Failure                404                                {object}        errors.ErrCustom                "Not Found"
-//        @Failure                500                                {object}        errors.ErrCustom                "Internal Server Error"
-//
+//        @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
+//        @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
+//        @Failure                404                                {object}        engine.ErrorData                "Not Found"
+//        @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
 //        @Router                        /v1/cart/article/:articleId [delete]
 func initDeleteCart() <span class="cov8" title="1">{
         engine.Router().DELETE(
@@ -2343,8 +2340,8 @@ func handleError(c *gin.Context, err interface{}) <span class="cov8" title="1">{
                 handleValidationError(c, value)</span>
         case error:<span class="cov0" title="0">
                 // Otros errores
-                c.JSON(500, gin.H{
-                        "error": value.Error(),
+                c.JSON(500, ErrorData{
+                        Error: value.Error(),
                 })</span>
         default:<span class="cov0" title="0">
                 // No se sabe que es, devolvemos internal
@@ -2390,6 +2387,10 @@ func handleValidationError(c *gin.Context, validationErrors validator.Validation
 func handleCustom(c *gin.Context, err apperr.RestError) <span class="cov8" title="1">{
         c.JSON(err.Status(), err)
 }</span>
+
+type ErrorData struct {
+        Error string `json:"error"`
+}
 </pre>
 		
 		<pre class="file" id="file17" style="display: none">package engine
@@ -2441,12 +2442,10 @@ import (
 //        @Produce                json
 //        @Param                        Authorization        header                string                                        true        "bearer {token}"
 //        @Success                200                                {object}                cart.Cart                        "Cart"
-//
-//        @Failure                400                                {object}        errors.ErrValidation        "Bad Request"
-//        @Failure                401                                {object}        errors.ErrCustom                "Unauthorized"
-//        @Failure                404                                {object}        errors.ErrCustom                "Not Found"
-//        @Failure                500                                {object}        errors.ErrCustom                "Internal Server Error"
-//
+//        @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
+//        @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
+//        @Failure                404                                {object}        engine.ErrorData                "Not Found"
+//        @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
 //        @Router                        /v1/cart [get]
 func initGetCart() <span class="cov8" title="1">{
         engine.Router().GET(
@@ -2490,12 +2489,10 @@ import (
 //        @Produce                json
 //        @Param                        Authorization        header        string        true        "bearer {token}"
 //        @Success                200                                "No Content"
-//
-//        @Failure                400                                {object}        errors.ErrValidation        "Bad Request"
-//        @Failure                401                                {object}        errors.ErrCustom                "Unauthorized"
-//        @Failure                404                                {object}        errors.ErrCustom                "Not Found"
-//        @Failure                500                                {object}        errors.ErrCustom                "Internal Server Error"
-//
+//        @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
+//        @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
+//        @Failure                404                                {object}        engine.ErrorData                "Not Found"
+//        @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
 //        @Router                        /v1/cart/validate [get]
 func initGetCartValidate() <span class="cov8" title="1">{
         engine.Router().GET(
@@ -2546,10 +2543,12 @@ import (
 // @Param                        Authorization        header                string                                        true        "bearer {token}"
 // @Success                200                                {object}        cart.Cart                                "Cart"
 // @Param                        body                        body                cart.AddArticleData                true        "Articulo a Agregar"
-// @Failure                400                                {object}        apperr.ErrValidation        "Bad Request"
-// @Failure                401                                {object}        apperr.ErrCustom                "Unauthorized"
-// @Failure                404                                {object}        apperr.ErrCustom                "Not Found"
-// @Failure                500                                {object}        apperr.ErrCustom                "Internal Server Error"
+//
+//        @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
+//        @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
+//        @Failure                404                                {object}        engine.ErrorData                "Not Found"
+//        @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
+//
 // @Router                        /v1/cart/article [post]
 //
 // Inicializa las rutas
@@ -2599,10 +2598,12 @@ import (
 // @Param                        articleId                path                string                                        true        "ID de articlo"
 // @Param                        Authorization        header                string                                        true        "bearer {token}"
 // @Success                200                                {object}        cart.Cart                                "Cart"
-// @Failure                400                                {object}        apperr.ErrValidation        "Bad Request"
-// @Failure                401                                {object}        apperr.ErrCustom                "Unauthorized"
-// @Failure                404                                {object}        apperr.ErrCustom                "Not Found"
-// @Failure                500                                {object}        apperr.ErrCustom                "Internal Server Error"
+//
+//        @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
+//        @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
+//        @Failure                404                                {object}        engine.ErrorData                "Not Found"
+//        @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
+//
 // @Router                        /v1/cart/article/:articleId/decrement [post]
 //
 // Init inicializa las rutas
@@ -2653,10 +2654,12 @@ import (
 // @Param                        articleId                path                string                                        true        "ID de articlo"
 // @Param                        Authorization        header                string                                        true        "bearer {token}"
 // @Success                200                                {object}        cart.Cart                                "Cart"
-// @Failure                400                                {object}        apperr.ErrValidation        "Bad Request"
-// @Failure                401                                {object}        apperr.ErrCustom                "Unauthorized"
-// @Failure                404                                {object}        apperr.ErrCustom                "Not Found"
-// @Failure                500                                {object}        apperr.ErrCustom                "Internal Server Error"
+//
+//        @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
+//        @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
+//        @Failure                404                                {object}        engine.ErrorData                "Not Found"
+//        @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
+//
 // @Router                        /v1/cart/article/:articleId/increment [post]
 //
 // Inicializa las rutas
@@ -2707,10 +2710,12 @@ import (
 // @Param                        articleId                path        string        true        "ID de articlo"
 // @Param                        Authorization        header        string        true        "bearer {token}"
 // @Success                200                                "No Content"
-// @Failure                400                                {object}        apperr.ErrValidation        "Bad Request"
-// @Failure                401                                {object}        apperr.ErrCustom                "Unauthorized"
-// @Failure                404                                {object}        apperr.ErrCustom                "Not Found"
-// @Failure                500                                {object}        apperr.ErrCustom                "Internal Server Error"
+//
+//        @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
+//        @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
+//        @Failure                404                                {object}        engine.ErrorData                "Not Found"
+//        @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
+//
 // @Router                        /v1/cart/checkouts [post]
 //
 // Inicializa las rutas
@@ -2946,10 +2951,10 @@ func AddArticle(userId string, article cart.AddArticleData, ctx ...interface{}) 
 
         <span class="cov8" title="1">for _, a := range cart.Articles </span><span class="cov8" title="1">{
                 if !a.Validated </span><span class="cov8" title="1">{
-                        r_emit.Get(ctx...).SendArticleValidation(r_emit.ArticleValidationData{
+                        r_emit.SendArticleValidation(r_emit.ArticleValidationData{
                                 ReferenceId: cart.UserId,
                                 ArticleId:   a.ArticleId,
-                        })
+                        }, ctx...)
                 }</span>
         }
 
@@ -2985,7 +2990,7 @@ func Checkout(userId string, token string, ctx ...interface{}) (*cart.Cart, erro
                 return nil, err
         }</span>
 
-        <span class="cov8" title="1">r_emit.Get(ctx...).SendPlaceOrder(currentCart)
+        <span class="cov8" title="1">r_emit.SendPlaceOrder(currentCart, ctx...)
 
         return currentCart, nil</span>
 }
@@ -3036,10 +3041,10 @@ func GetCurrentCart(userId string, ctx ...interface{}) (*cart.Cart, error) <span
 
         <span class="cov8" title="1">for _, a := range cart.Articles </span><span class="cov8" title="1">{
                 if !a.Validated </span><span class="cov8" title="1">{
-                        r_emit.Get(ctx...).SendArticleValidation(r_emit.ArticleValidationData{
+                        r_emit.SendArticleValidation(r_emit.ArticleValidationData{
                                 ReferenceId: cart.UserId,
                                 ArticleId:   a.ArticleId,
-                        })
+                        }, ctx...)
                 }</span>
         }
 
@@ -3190,16 +3195,16 @@ type Validation interface {
 }
 
 func NewValidation() Validation <span class="cov8" title="1">{
-        return &amp;validation{
+        return &amp;ValidationErr{
                 Messages: []errField{},
         }
 }</span>
 
-type validation struct {
+type ValidationErr struct {
         Messages []errField `json:"messages"`
 }
 
-func (e *validation) Error() string <span class="cov8" title="1">{
+func (e *ValidationErr) Error() string <span class="cov8" title="1">{
         body, err := json.Marshal(e)
         if err != nil </span><span class="cov0" title="0">{
                 glog.Error(err)
@@ -3209,7 +3214,7 @@ func (e *validation) Error() string <span class="cov8" title="1">{
 }
 
 // Add agrega errores a un validation error
-func (e *validation) Add(path string, message string) Validation <span class="cov8" title="1">{
+func (e *ValidationErr) Add(path string, message string) Validation <span class="cov8" title="1">{
         err := errField{
                 Path:    path,
                 Message: message,
@@ -3219,7 +3224,7 @@ func (e *validation) Add(path string, message string) Validation <span class="co
 }</span>
 
 // Size devuelve la cantidad de errores
-func (e *validation) Size() int <span class="cov0" title="0">{
+func (e *ValidationErr) Size() int <span class="cov0" title="0">{
         return len(e.Messages)
 }</span>
 
@@ -3687,6 +3692,20 @@ func ExpectUserInsertOne(collection *db.MockMongoCollection, times int) <span cl
 </pre>
 		
 		<pre class="file" id="file41" style="display: none">package tests
+
+import (
+        "github.com/golang/mock/gomock"
+        "github.com/nmarsollier/cartgo/rabbit/r_emit"
+)
+
+func MockRabbitChannel(ctrl *gomock.Controller, times int) *r_emit.MockRabbitChannel <span class="cov8" title="1">{
+        channel := r_emit.NewMockRabbitChannel(ctrl)
+        channel.EXPECT().ExchangeDeclare(gomock.Any(), gomock.Any()).Return(nil).Times(times)
+        return channel
+}</span>
+</pre>
+		
+		<pre class="file" id="file42" style="display: none">package tests
 
 import (
         "bytes"

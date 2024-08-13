@@ -1,5 +1,19 @@
 basePath: /v1
 definitions:
+  apperr.ValidationErr:
+    properties:
+      messages:
+        items:
+          $ref: '#/definitions/apperr.errField'
+        type: array
+    type: object
+  apperr.errField:
+    properties:
+      message:
+        type: string
+      path:
+        type: string
+    type: object
   cart.AddArticleData:
     properties:
       articleId:
@@ -74,24 +88,10 @@ definitions:
       valid:
         type: boolean
     type: object
-  errors.ErrCustom:
+  engine.ErrorData:
     properties:
       error:
         type: string
-    type: object
-  errors.ErrField:
-    properties:
-      message:
-        type: string
-      path:
-        type: string
-    type: object
-  errors.ErrValidation:
-    properties:
-      messages:
-        items:
-          $ref: '#/definitions/errors.ErrField'
-        type: array
     type: object
   r_consume.ConsumeArticleDataMessage:
     properties:
@@ -296,19 +296,19 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/errors.ErrValidation'
+            $ref: '#/definitions/apperr.ValidationErr'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
       summary: Obtener carrito.
       tags:
       - Cart
@@ -344,19 +344,19 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/errors.ErrValidation'
+            $ref: '#/definitions/apperr.ValidationErr'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
       summary: Agregar Articulo
       tags:
       - Cart
@@ -384,19 +384,19 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/errors.ErrValidation'
+            $ref: '#/definitions/apperr.ValidationErr'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
       summary: Eliminar Articulo
       tags:
       - Cart
@@ -426,19 +426,19 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/errors.ErrValidation'
+            $ref: '#/definitions/apperr.ValidationErr'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
       summary: Agregar 1 Articulo
       tags:
       - Cart
@@ -468,19 +468,19 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/errors.ErrValidation'
+            $ref: '#/definitions/apperr.ValidationErr'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
       summary: Agregar 1 Articulo
       tags:
       - Cart
@@ -508,19 +508,19 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/errors.ErrValidation'
+            $ref: '#/definitions/apperr.ValidationErr'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
       summary: Checkout Articulo
       tags:
       - Cart
@@ -543,19 +543,19 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/errors.ErrValidation'
+            $ref: '#/definitions/apperr.ValidationErr'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/errors.ErrCustom'
+            $ref: '#/definitions/engine.ErrorData'
       summary: Validar Carrito
       tags:
       - Cart
