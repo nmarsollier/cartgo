@@ -118,10 +118,10 @@ func consumeOrderPlaced() error {
 //	@Param			article-data	body	ConsumeOrderPlacedMessage	true	"Message para Type = article-data"
 //
 //	@Router			/rabbit/order-placed [get]
-func processOrderPlaced(newMessage *ConsumeOrderPlacedMessage, options ...interface{}) {
+func processOrderPlaced(newMessage *ConsumeOrderPlacedMessage, ctx ...interface{}) {
 	data := newMessage.Message
 
-	err := cart.ProcessOrderPlaced(data, options...)
+	err := cart.ProcessOrderPlaced(data, ctx...)
 	if err != nil {
 		glog.Error(err)
 		return

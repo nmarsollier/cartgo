@@ -6,8 +6,8 @@ type ServiceDao interface {
 	CallValidate(article *cart.Article, token string) error
 }
 
-func Get(options ...interface{}) ServiceDao {
-	for _, o := range options {
+func Get(ctx ...interface{}) ServiceDao {
+	for _, o := range ctx {
 		if ti, ok := o.(ServiceDao); ok {
 			return ti
 		}

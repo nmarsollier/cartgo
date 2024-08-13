@@ -14,8 +14,8 @@ type SecurityDao interface {
 	GetRemoteToken(token string) (*User, error)
 }
 
-func Get(options ...interface{}) SecurityDao {
-	for _, o := range options {
+func Get(ctx ...interface{}) SecurityDao {
+	for _, o := range ctx {
 		if ti, ok := o.(SecurityDao); ok {
 			return ti
 		}

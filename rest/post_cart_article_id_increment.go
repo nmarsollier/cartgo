@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/rest/engine"
-	"github.com/nmarsollier/cartgo/rest/middlewares"
 	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/service"
 )
@@ -28,16 +27,12 @@ import (
 func initPostCartArticleIncrement() {
 	engine.Router().POST(
 		"/v1/cart/article/:articleId/increment",
-		middlewares.ValidateAuthentication,
+		engine.ValidateAuthentication,
 		incrementArticle,
 	)
 }
 
 func incrementArticle(c *gin.Context) {
-	var options []interface{}
-	if mocks, ok := c.Get("mocks"); ok {
-		options = mocks.([]interface{})
-	}
 
 	user := c.MustGet("user").(security.User)
 	articleId := c.Param("articleId")
@@ -47,9 +42,10 @@ func incrementArticle(c *gin.Context) {
 		Quantity:  1,
 	}
 
-	_, err := service.AddArticle(user.ID, article, options...)
+	ctx := engine.TestCtx(c)
+	_, err := service.AddArticle(user.ID, article, ctx...)
 	if err != nil {
-		middlewares.AbortWithError(c, err)
+		engine.AbortWithError(c, err)
 		return
 	}
 

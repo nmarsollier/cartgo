@@ -1,4 +1,4 @@
-package middlewares
+package engine
 
 import (
 	"strings"
@@ -29,19 +29,24 @@ func ValidateAuthentication(c *gin.Context) {
 	}
 }
 
-func validateToken(c *gin.Context) error {
-	var options []interface{}
-	if mocks, ok := c.Get("mocks"); ok {
-		options = mocks.([]interface{})
+// get token from Authorization header
+func HeaderToken(c *gin.Context) (string, error) {
+	tokenString := c.GetHeader("Authorization")
+	if strings.Index(tokenString, "bearer ") != 0 {
+		return "", apperr.Unauthorized
 	}
+	return tokenString[7:], nil
+}
 
-	tokenString, err := GetHeaderToken(c)
+func validateToken(c *gin.Context) error {
+	tokenString, err := HeaderToken(c)
 	if err != nil {
 		glog.Error(err)
 		return apperr.Unauthorized
 	}
 
-	user, err := security.Validate(tokenString, options...)
+	ctx := TestCtx(c)
+	user, err := security.Validate(tokenString, ctx...)
 	if err != nil {
 		glog.Error(err)
 		return apperr.Unauthorized
@@ -51,13 +56,4 @@ func validateToken(c *gin.Context) error {
 	c.Set("user", *user)
 
 	return nil
-}
-
-// get token from Authorization header
-func GetHeaderToken(c *gin.Context) (string, error) {
-	tokenString := c.GetHeader("Authorization")
-	if strings.Index(tokenString, "bearer ") != 0 {
-		return "", apperr.Unauthorized
-	}
-	return tokenString[7:], nil
 }

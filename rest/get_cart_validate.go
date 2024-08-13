@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/rest/engine"
-	"github.com/nmarsollier/cartgo/rest/middlewares"
 	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/service"
 )
@@ -28,28 +27,25 @@ import (
 func initGetCartValidate() {
 	engine.Router().GET(
 		"/v1/cart/validate",
-		middlewares.ValidateAuthentication,
+		engine.ValidateAuthentication,
 		validate,
 	)
 }
 
 func validate(c *gin.Context) {
-	var options []interface{}
-	if mocks, ok := c.Get("mocks"); ok {
-		options = mocks.([]interface{})
-	}
-
 	user := c.MustGet("user").(security.User)
 	token := c.MustGet("tokenString").(string)
-	currentCart, err := cart.CurrentCart(user.ID, options...)
+
+	ctx := engine.TestCtx(c)
+	currentCart, err := cart.CurrentCart(user.ID, ctx...)
 	if err != nil {
-		middlewares.AbortWithError(c, err)
+		engine.AbortWithError(c, err)
 		return
 	}
 
-	err = service.ValidateCheckout(currentCart, token, options...)
+	err = service.ValidateCheckout(currentCart, token, ctx...)
 	if err != nil {
-		middlewares.AbortWithError(c, err)
+		engine.AbortWithError(c, err)
 		return
 	}
 

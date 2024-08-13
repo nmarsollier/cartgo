@@ -12,6 +12,7 @@ import (
 	"github.com/nmarsollier/cartgo/tools/db"
 	"github.com/nmarsollier/cartgo/tools/tests"
 	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func TestGetUsersHappyPath(t *testing.T) {
@@ -38,7 +39,7 @@ func TestGetUsersHappyPath(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.NewCartOptions(collection), httpMock)
+	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart", user.ID)
@@ -58,7 +59,7 @@ func TestGetUsersNewCartHappyPath(t *testing.T) {
 	collection := db.NewMockMongoCollection(ctrl)
 	collection.EXPECT().FindOne(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
 		func(arg1 interface{}, params cart.FindByUserIdFilter, updated *cart.Cart) error {
-			return apperr.NewCustom(0, "mongo: no documents in result")
+			return mongo.ErrNoDocuments
 		},
 	).Times(1)
 
@@ -76,7 +77,7 @@ func TestGetUsersNewCartHappyPath(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.NewCartOptions(collection), httpMock)
+	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart", user.ID)
@@ -96,7 +97,7 @@ func TestGetUsersInsertDbError(t *testing.T) {
 	collection := db.NewMockMongoCollection(ctrl)
 	collection.EXPECT().FindOne(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
 		func(arg1 interface{}, params cart.FindByUserIdFilter, updated *cart.Cart) error {
-			return apperr.NewCustom(0, "mongo: no documents in result")
+			return mongo.ErrNoDocuments
 		},
 	).Times(1)
 
@@ -107,7 +108,7 @@ func TestGetUsersInsertDbError(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.NewCartOptions(collection), httpMock)
+	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart", user.ID)
@@ -129,7 +130,7 @@ func TestGetUsersDbError(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.NewCartOptions(collection), httpMock)
+	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart", user.ID)

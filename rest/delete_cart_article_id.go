@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/rest/engine"
-	"github.com/nmarsollier/cartgo/rest/middlewares"
 	"github.com/nmarsollier/cartgo/security"
 )
 
@@ -28,23 +27,19 @@ import (
 func initDeleteCart() {
 	engine.Router().DELETE(
 		"/v1/cart/article/:articleId",
-		middlewares.ValidateAuthentication,
+		engine.ValidateAuthentication,
 		deleteArticle,
 	)
 }
 
 func deleteArticle(c *gin.Context) {
-	var options []interface{}
-	if mocks, ok := c.Get("mocks"); ok {
-		options = mocks.([]interface{})
-	}
-
 	user := c.MustGet("user").(security.User)
 	articleId := c.Param("articleId")
 
-	_, err := cart.RemoveArticle(user.ID, articleId, options...)
+	ctx := engine.TestCtx(c)
+	_, err := cart.RemoveArticle(user.ID, articleId, ctx...)
 	if err != nil {
-		middlewares.AbortWithError(c, err)
+		engine.AbortWithError(c, err)
 		return
 	}
 

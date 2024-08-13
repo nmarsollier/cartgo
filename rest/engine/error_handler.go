@@ -1,4 +1,4 @@
-package middlewares
+package engine
 
 import (
 	"strings"
@@ -38,7 +38,7 @@ func handleErrorIfNeeded(c *gin.Context) {
 func handleError(c *gin.Context, err interface{}) {
 	// Compruebo tipos de errores conocidos
 	switch value := err.(type) {
-	case apperr.Custom:
+	case apperr.RestError:
 		// Son validaciones hechas con NewCustom
 		handleCustom(c, value)
 	case apperr.Validation:
@@ -93,6 +93,6 @@ func handleValidationError(c *gin.Context, validationErrors validator.Validation
  *     }
  *
  */
-func handleCustom(c *gin.Context, err apperr.Custom) {
+func handleCustom(c *gin.Context, err apperr.RestError) {
 	c.JSON(err.Status(), err)
 }

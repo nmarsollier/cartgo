@@ -1,7 +1,7 @@
 package cart
 
-func CurrentCart(userId string, options ...interface{}) (*Cart, error) {
-	cart, err := findByUserId(userId, options...)
+func CurrentCart(userId string, ctx ...interface{}) (*Cart, error) {
+	cart, err := findByUserId(userId, ctx...)
 	if err != nil {
 		if err.Error() != "mongo: no documents in result" {
 			return nil, err
@@ -9,7 +9,7 @@ func CurrentCart(userId string, options ...interface{}) (*Cart, error) {
 		}
 
 		cart = newCart(userId)
-		cart, err = insert(cart, options...)
+		cart, err = insert(cart, ctx...)
 		if err != nil {
 			return nil, err
 		}
@@ -23,8 +23,8 @@ type AddArticleData struct {
 	Quantity  int    `bson:"quantity" validate:"required,min=1,max=100"`
 }
 
-func AddArticle(userId string, articleData AddArticleData, options ...interface{}) (*Cart, error) {
-	cart, err := CurrentCart(userId, options...)
+func AddArticle(userId string, articleData AddArticleData, ctx ...interface{}) (*Cart, error) {
+	cart, err := CurrentCart(userId, ctx...)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func AddArticle(userId string, articleData AddArticleData, options ...interface{
 	}
 	cart.Articles = newArticles
 
-	cart, err = replace(cart, options...)
+	cart, err = replace(cart, ctx...)
 	if err != nil {
 		return nil, err
 	}
@@ -65,8 +65,8 @@ func AddArticle(userId string, articleData AddArticleData, options ...interface{
 	return cart, nil
 }
 
-func RemoveArticle(userId string, articleId string, options ...interface{}) (*Cart, error) {
-	cart, err := CurrentCart(userId, options...)
+func RemoveArticle(userId string, articleId string, ctx ...interface{}) (*Cart, error) {
+	cart, err := CurrentCart(userId, ctx...)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ func RemoveArticle(userId string, articleId string, options ...interface{}) (*Ca
 	}
 	cart.Articles = newArticles
 
-	cart, err = replace(cart, options...)
+	cart, err = replace(cart, ctx...)
 	if err != nil {
 		return nil, err
 	}
@@ -87,8 +87,8 @@ func RemoveArticle(userId string, articleId string, options ...interface{}) (*Ca
 	return cart, nil
 }
 
-func InvalidateCurrentCart(cart *Cart, options ...interface{}) (*Cart, error) {
-	cart, err := invalidate(cart, options...)
+func InvalidateCurrentCart(cart *Cart, ctx ...interface{}) (*Cart, error) {
+	cart, err := invalidate(cart, ctx...)
 	if err != nil {
 		return nil, err
 	}
@@ -102,8 +102,8 @@ type ValidationEvent struct {
 	Valid       bool   `json:"valid"`
 }
 
-func ProcessArticleData(data *ValidationEvent, options ...interface{}) error {
-	cart, err := findByUserId(data.ReferenceId, options...)
+func ProcessArticleData(data *ValidationEvent, ctx ...interface{}) error {
+	cart, err := findByUserId(data.ReferenceId, ctx...)
 	if err != nil {
 		return err
 	}
@@ -115,7 +115,7 @@ func ProcessArticleData(data *ValidationEvent, options ...interface{}) error {
 		}
 	}
 
-	_, err = replace(cart, options...)
+	_, err = replace(cart, ctx...)
 	if err != nil {
 		return err
 	}
@@ -129,14 +129,14 @@ type OrderPlacedEvent struct {
 	Valid   bool   `json:"valid"`
 }
 
-func ProcessOrderPlaced(data *OrderPlacedEvent, options ...interface{}) error {
-	cart, err := findById(data.CartId, options...)
+func ProcessOrderPlaced(data *OrderPlacedEvent, ctx ...interface{}) error {
+	cart, err := findById(data.CartId, ctx...)
 	if err != nil {
 		return err
 	}
 
 	cart.OrderId = data.OrderId
-	_, err = replace(cart, options...)
+	_, err = replace(cart, ctx...)
 	if err != nil {
 		return err
 	}

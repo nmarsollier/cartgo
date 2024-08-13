@@ -55,7 +55,7 @@ func TestGetCartCheckoutHappyPath(t *testing.T) {
 	rabbitMock.EXPECT().SendPlaceOrder(gomock.Any()).Return(nil).Times(1)
 
 	// REQUEST
-	r := engine.TestRouter(cart.NewCartOptions(collection), httpMock, serviceMock, rabbitMock)
+	r := engine.TestRouter(cart.CartCollection(collection), httpMock, serviceMock, rabbitMock)
 	InitRoutes()
 
 	req, w := tests.TestPostRequest("/v1/cart/checkout", "", user.ID)

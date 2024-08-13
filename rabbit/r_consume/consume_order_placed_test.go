@@ -47,5 +47,5 @@ func TestConsumeOrderPlacedHappyPath(t *testing.T) {
 		},
 	}
 
-	processOrderPlaced(newMessage, cart.NewCartOptions(collection))
+	processOrderPlaced(newMessage, cart.CartCollection(collection))
 }

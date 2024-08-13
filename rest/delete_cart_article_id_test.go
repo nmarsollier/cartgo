@@ -44,7 +44,7 @@ func TestDeleteCartArticleIdHappyPath(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.NewCartOptions(collection), httpMock)
+	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
 	InitRoutes()
 
 	req, w := tests.TestDeleteRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId, user.ID)
@@ -70,7 +70,7 @@ func TestDeleteCartArticleIdDocumentNotFound(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.NewCartOptions(collection), httpMock)
+	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
 	InitRoutes()
 
 	req, w := tests.TestDeleteRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId, user.ID)
@@ -95,14 +95,14 @@ func TestDeleteCartArticleIdUpdateFailed(t *testing.T) {
 		},
 	).Times(1)
 
-	tests.ExpectReplaceOneError(collection, apperr.ErrID, 1)
+	tests.ExpectReplaceOneError(collection, cart.ErrID, 1)
 
 	// Security
 	httpMock := security.NewMockSecurityDao(ctrl)
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.NewCartOptions(collection), httpMock)
+	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
 	InitRoutes()
 
 	req, w := tests.TestDeleteRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId, user.ID)

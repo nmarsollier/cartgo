@@ -7,8 +7,8 @@ type RabbitEmiter interface {
 	SendPlaceOrder(cart *cart.Cart) error
 }
 
-func Get(options ...interface{}) RabbitEmiter {
-	for _, o := range options {
+func Get(ctx ...interface{}) RabbitEmiter {
+	for _, o := range ctx {
 		if ti, ok := o.(RabbitEmiter); ok {
 			return ti
 		}

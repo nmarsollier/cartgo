@@ -3,7 +3,6 @@ package rest
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/nmarsollier/cartgo/rest/engine"
-	"github.com/nmarsollier/cartgo/rest/middlewares"
 	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/service"
 )
@@ -27,22 +26,19 @@ import (
 func initGetCart() {
 	engine.Router().GET(
 		"/v1/cart",
-		middlewares.ValidateAuthentication,
+		engine.ValidateAuthentication,
 		currentCart,
 	)
 }
 
 func currentCart(c *gin.Context) {
-	var options []interface{}
-	if mocks, ok := c.Get("mocks"); ok {
-		options = mocks.([]interface{})
-	}
-
 	user := c.MustGet("user").(security.User)
-	cart, err := service.GetCurrentCart(user.ID, options...)
+
+	ctx := engine.TestCtx(c)
+	cart, err := service.GetCurrentCart(user.ID, ctx...)
 
 	if err != nil {
-		middlewares.AbortWithError(c, err)
+		engine.AbortWithError(c, err)
 		return
 	}
 

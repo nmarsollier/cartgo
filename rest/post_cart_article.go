@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/rest/engine"
-	"github.com/nmarsollier/cartgo/rest/middlewares"
 	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/service"
 )
@@ -29,27 +28,23 @@ import (
 func initPostCartArticle() {
 	engine.Router().POST(
 		"/v1/cart/article",
-		middlewares.ValidateAuthentication,
+		engine.ValidateAuthentication,
 		addArticle,
 	)
 }
 
 func addArticle(c *gin.Context) {
-	var options []interface{}
-	if mocks, ok := c.Get("mocks"); ok {
-		options = mocks.([]interface{})
-	}
-
 	user := c.MustGet("user").(security.User)
 	body := cart.AddArticleData{}
 	if err := c.ShouldBindJSON(&body); err != nil {
-		middlewares.AbortWithError(c, err)
+		engine.AbortWithError(c, err)
 		return
 	}
 
-	_, err := service.AddArticle(user.ID, body, options...)
+	ctx := engine.TestCtx(c)
+	_, err := service.AddArticle(user.ID, body, ctx...)
 	if err != nil {
-		middlewares.AbortWithError(c, err)
+		engine.AbortWithError(c, err)
 		return
 	}
 
