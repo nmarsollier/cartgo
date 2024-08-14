@@ -62,9 +62,9 @@ func consumeOrderPlaced() error {
 	}
 
 	err = chn.QueueBind(
-		queue.Name,          // queue name
-		"cart_order_placed", // routing key
-		"order_placed",      // exchange
+		queue.Name,     // queue name
+		"",             // routing key
+		"order_placed", // exchange
 		false,
 		nil)
 	if err != nil {
