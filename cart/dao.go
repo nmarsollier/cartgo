@@ -13,20 +13,10 @@ import (
 // Define mongo Collection
 var collection db.MongoCollection
 
-func CartCollection(collection db.MongoCollection) CartColl {
-	return CartColl{
-		Collection: collection,
-	}
-}
-
-type CartColl struct {
-	Collection db.MongoCollection
-}
-
 func dbCollection(ctx ...interface{}) (db.MongoCollection, error) {
 	for _, o := range ctx {
-		if ti, ok := o.(CartColl); ok {
-			return ti.Collection, nil
+		if coll, ok := o.(db.MongoCollection); ok {
+			return coll, nil
 		}
 	}
 

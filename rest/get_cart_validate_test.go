@@ -40,7 +40,7 @@ func TestGetCartValidateHappyPath(t *testing.T) {
 	serviceMock.EXPECT().CallValidate(gomock.Any(), gomock.Any()).Return(nil).Times(2)
 
 	// REQUEST
-	r := engine.TestRouter(cart.CartCollection(collection), httpMock, serviceMock)
+	r := engine.TestRouter(collection, httpMock, serviceMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart/validate", user.ID)
@@ -65,7 +65,7 @@ func TestGetCartValidateDocumentNotFound(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
+	r := engine.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart/validate", user.ID)
@@ -117,7 +117,7 @@ func TestGetCartValidateInvalidArticleAth(t *testing.T) {
 	serviceMock.EXPECT().CallValidate(gomock.Any(), gomock.Any()).Return(apperr.Unauthorized).Times(1)
 
 	// REQUEST
-	r := engine.TestRouter(cart.CartCollection(collection), httpMock, serviceMock)
+	r := engine.TestRouter(collection, httpMock, serviceMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart/validate", user.ID)
@@ -151,7 +151,7 @@ func TestGetCartValidateInvalidArticle(t *testing.T) {
 	serviceMock.EXPECT().CallValidate(gomock.Any(), gomock.Any()).Return(apperr.Invalid).Times(1)
 
 	// REQUEST
-	r := engine.TestRouter(cart.CartCollection(collection), httpMock, serviceMock)
+	r := engine.TestRouter(collection, httpMock, serviceMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart/validate", user.ID)

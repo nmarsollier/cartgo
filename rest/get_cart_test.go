@@ -39,7 +39,7 @@ func TestGetUsersHappyPath(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
+	r := engine.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart", user.ID)
@@ -77,7 +77,7 @@ func TestGetUsersNewCartHappyPath(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
+	r := engine.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart", user.ID)
@@ -108,7 +108,7 @@ func TestGetUsersInsertDbError(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
+	r := engine.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart", user.ID)
@@ -130,7 +130,7 @@ func TestGetUsersDbError(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
+	r := engine.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart", user.ID)

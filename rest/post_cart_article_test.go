@@ -47,7 +47,7 @@ func TestPostCartArticleHappyPath(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
+	r := engine.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	body := cart.AddArticleData{
@@ -94,7 +94,7 @@ func TestPostCartArticleHappyPath2(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
+	r := engine.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	body := cart.AddArticleData{
@@ -146,7 +146,7 @@ func TestPostCartArticleDocumentNotFound(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
+	r := engine.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	body := cart.AddArticleData{
@@ -182,7 +182,7 @@ func TestPostCartArticleReplaceError(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
+	r := engine.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	body := cart.AddArticleData{

@@ -45,7 +45,7 @@ func TestPostCartArticleIdIncrementHappyPath2(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
+	r := engine.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestPostRequest("/v1/cart/article/"+cartData.Articles[1].ArticleId+"/increment", "", user.ID)
@@ -90,7 +90,7 @@ func TestPostCartArticleIdIncrementDocumentNotFound(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
+	r := engine.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestPostRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId+"/increment", "", user.ID)
@@ -123,7 +123,7 @@ func TestPostCartArticleIdIncrementReplaceError(t *testing.T) {
 	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
 
 	// REQUEST
-	r := engine.TestRouter(cart.CartCollection(collection), httpMock)
+	r := engine.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestPostRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId+"/increment", "", user.ID)

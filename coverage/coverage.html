@@ -55,7 +55,7 @@
 			<div id="nav">
 				<select id="files">
 				
-				<option value="file0">github.com/nmarsollier/cartgo/cart/dao.go (58.6%)</option>
+				<option value="file0">github.com/nmarsollier/cartgo/cart/dao.go (58.0%)</option>
 				
 				<option value="file1">github.com/nmarsollier/cartgo/cart/schema.go (100.0%)</option>
 				
@@ -168,20 +168,10 @@ import (
 // Define mongo Collection
 var collection db.MongoCollection
 
-func CartCollection(collection db.MongoCollection) CartColl <span class="cov8" title="1">{
-        return CartColl{
-                Collection: collection,
-        }
-}</span>
-
-type CartColl struct {
-        Collection db.MongoCollection
-}
-
 func dbCollection(ctx ...interface{}) (db.MongoCollection, error) <span class="cov8" title="1">{
         for _, o := range ctx </span><span class="cov8" title="1">{
-                if ti, ok := o.(CartColl); ok </span><span class="cov8" title="1">{
-                        return ti.Collection, nil
+                if coll, ok := o.(db.MongoCollection); ok </span><span class="cov8" title="1">{
+                        return coll, nil
                 }</span>
         }
 
@@ -696,25 +686,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrValidation"
+                            "$ref": "#/definitions/apperr.ValidationErr"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     }
                 }
@@ -768,25 +758,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrValidation"
+                            "$ref": "#/definitions/apperr.ValidationErr"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     }
                 }
@@ -828,25 +818,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrValidation"
+                            "$ref": "#/definitions/apperr.ValidationErr"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     }
                 }
@@ -891,25 +881,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrValidation"
+                            "$ref": "#/definitions/apperr.ValidationErr"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     }
                 }
@@ -954,25 +944,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrValidation"
+                            "$ref": "#/definitions/apperr.ValidationErr"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     }
                 }
@@ -1014,25 +1004,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrValidation"
+                            "$ref": "#/definitions/apperr.ValidationErr"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     }
                 }
@@ -1067,25 +1057,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrValidation"
+                            "$ref": "#/definitions/apperr.ValidationErr"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/errors.ErrCustom"
+                            "$ref": "#/definitions/engine.ErrorData"
                         }
                     }
                 }
@@ -1093,6 +1083,28 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "apperr.ValidationErr": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/apperr.errField"
+                    }
+                }
+            }
+        },
+        "apperr.errField": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
         "cart.AddArticleData": {
             "type": "object",
             "required": [
@@ -1200,33 +1212,11 @@ const docTemplate = `{
                 }
             }
         },
-        "errors.ErrCustom": {
+        "engine.ErrorData": {
             "type": "object",
             "properties": {
                 "error": {
                     "type": "string"
-                }
-            }
-        },
-        "errors.ErrField": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "path": {
-                    "type": "string"
-                }
-            }
-        },
-        "errors.ErrValidation": {
-            "type": "object",
-            "properties": {
-                "messages": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/errors.ErrField"
-                    }
                 }
             }
         },
@@ -1485,16 +1475,15 @@ func consumeOrders() error <span class="cov0" title="0">{
         return nil</span>
 }
 
+// @Summary                Mensage Rabbit order/article-data
+// @Description        Antes de iniciar las operaciones se validan los artículos contra el catalogo.
+// @Tags                        Rabbit
+// @Accept                        json
+// @Produce                json
+// @Param                        article-data        body        ConsumeArticleDataMessage        true        "Message para Type = article-data"
+// @Router                        /rabbit/article-data [get]
+//
 // Validar Artículos
-//
-//        @Summary                Mensage Rabbit order/article-data
-//        @Description        Antes de iniciar las operaciones se validan los artículos contra el catalogo.
-//        @Tags                        Rabbit
-//        @Accept                        json
-//        @Produce                json
-//        @Param                        article-data        body        ConsumeArticleDataMessage        true        "Message para Type = article-data"
-//
-//        @Router                        /rabbit/article-data [get]
 func processArticleData(newMessage *ConsumeArticleDataMessage, ctx ...interface{}) <span class="cov8" title="1">{
         data := newMessage.Message
 
@@ -1532,15 +1521,15 @@ type LogoutMessage struct {
         Message string `json:"message"`
 }
 
-// Escucha de mensajes logout desde auth.
+// @Summary                Mensage Rabbit
+// @Description        Escucha de mensajes logout desde auth.
+// @Tags                        Rabbit
+// @Accept                        json
+// @Produce                json
+// @Param                        body        body        LogoutMessage        true        "Estructura general del mensage"
+// @Router                        /rabbit/logout [get]
 //
-//        @Summary                Mensage Rabbit
-//        @Description        Escucha de mensajes logout desde auth.
-//        @Tags                        Rabbit
-//        @Accept                        json
-//        @Produce                json
-//        @Param                        body        body        LogoutMessage        true        "Estructura general del mensage"
-//        @Router                        /rabbit/logout [get]
+// Escucha de mensajes logout desde auth.
 func consumeLogout() error <span class="cov0" title="0">{
         conn, err := amqp.Dial(env.Get().RabbitURL)
         if err != nil </span><span class="cov0" title="0">{
@@ -1743,16 +1732,15 @@ func consumeOrderPlaced() error <span class="cov0" title="0">{
         return nil</span>
 }
 
+// @Summary                Mensage Rabbit order/order-placed
+// @Description        Antes de iniciar las operaciones se validan los artículos contra el catalogo.
+// @Tags                        Rabbit
+// @Accept                        json
+// @Produce                json
+// @Param                        article-data        body        ConsumeOrderPlacedMessage        true        "Message para Type = article-data"
+// @Router                        /rabbit/order-placed [get]
+//
 // Consume Order Placed
-//
-//        @Summary                Mensage Rabbit order/order-placed
-//        @Description        Antes de iniciar las operaciones se validan los artículos contra el catalogo.
-//        @Tags                        Rabbit
-//        @Accept                        json
-//        @Produce                json
-//        @Param                        article-data        body        ConsumeOrderPlacedMessage        true        "Message para Type = article-data"
-//
-//        @Router                        /rabbit/order-placed [get]
 func processOrderPlaced(newMessage *ConsumeOrderPlacedMessage, ctx ...interface{}) <span class="cov8" title="1">{
         data := newMessage.Message
 
@@ -1830,7 +1818,7 @@ import (
 )
 
 // ErrChannelNotInitialized Rabbit channel could not be initialized
-var ErrChannelNotInitialized = errors.New("Channel not initialized")
+var ErrChannelNotInitialized = errors.New("channel not initialized")
 
 func getChannel(ctx ...interface{}) (RabbitChannel, error) <span class="cov8" title="1">{
         for _, o := range ctx </span><span class="cov8" title="1">{
@@ -1970,16 +1958,15 @@ import (
         "github.com/golang/glog"
 )
 
+// @Summary                Emite Validar Artículos a Cart cart/article-exist
+// @Description        Antes de iniciar las operaciones se validan los artículos contra el catalogo.
+// @Tags                        Rabbit
+// @Accept                        json
+// @Produce                json
+// @Param                        body        body        SendValidationMessage        true        "Mensage de validacion"
+// @Router                        /rabbit/cart/article-exist [put]
+//
 // Emite Validar Artículos a Cart
-//
-//        @Summary                Emite Validar Artículos a Cart cart/article-exist
-//        @Description        Antes de iniciar las operaciones se validan los artículos contra el catalogo.
-//        @Tags                        Rabbit
-//        @Accept                        json
-//        @Produce                json
-//        @Param                        body        body        SendValidationMessage        true        "Mensage de validacion"
-//
-//        @Router                        /rabbit/cart/article-exist [put]
 func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error <span class="cov8" title="1">{
 
         send := SendValidationMessage{
@@ -2051,16 +2038,15 @@ import (
         "github.com/nmarsollier/cartgo/cart"
 )
 
+// @Summary                Emite Placed Order desde Cart
+// @Description        Emite Placed Order desde Cart
+// @Tags                        Rabbit
+// @Accept                        json
+// @Produce                json
+// @Param                        body        body        SendPlacedMessage        true        "Mensage de validacion"
+// @Router                        /rabbit/cart/place-order [put]
+//
 // Emite Placed Order desde Cart
-//
-//        @Summary                Emite Placed Order desde Cart
-//        @Description        Emite Placed Order desde Cart
-//        @Tags                        Rabbit
-//        @Accept                        json
-//        @Produce                json
-//        @Param                        body        body        SendPlacedMessage        true        "Mensage de validacion"
-//
-//        @Router                        /rabbit/cart/place-order [put]
 func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error <span class="cov8" title="1">{
         articles := []PlaceArticlesData{}
         for _, a := range cart.Articles </span><span class="cov8" title="1">{
@@ -2149,21 +2135,21 @@ import (
         "github.com/nmarsollier/cartgo/security"
 )
 
-// Elimina un articulo del carrito actual.
+// @Summary                Eliminar Articulo
+// @Description        Elimina un articulo del carrito actual.
+// @Tags                        Cart
+// @Accept                        json
+// @Produce                json
+// @Param                        articleId                path        string        true        "ID de articlo"
+// @Param                        Authorization        header        string        true        "bearer {token}"
+// @Success                200                                "No Content"
+// @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
+// @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
+// @Failure                404                                {object}        engine.ErrorData                "Not Found"
+// @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
+// @Router                        /v1/cart/article/:articleId [delete]
 //
-//        @Summary                Eliminar Articulo
-//        @Description        Elimina un articulo del carrito actual.
-//        @Tags                        Cart
-//        @Accept                        json
-//        @Produce                json
-//        @Param                        articleId                path        string        true        "ID de articlo"
-//        @Param                        Authorization        header        string        true        "bearer {token}"
-//        @Success                200                                "No Content"
-//        @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
-//        @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
-//        @Failure                404                                {object}        engine.ErrorData                "Not Found"
-//        @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
-//        @Router                        /v1/cart/article/:articleId [delete]
+// Elimina un articulo del carrito actual.
 func initDeleteCart() <span class="cov8" title="1">{
         engine.Router().DELETE(
                 "/v1/cart/article/:articleId",
@@ -2433,20 +2419,20 @@ import (
         "github.com/nmarsollier/cartgo/service"
 )
 
-// Obtiene el carrito actual del usuario.
+// @Summary                Obtener carrito.
+// @Description        Obtiene el carrito actual.
+// @Tags                        Cart
+// @Accept                        json
+// @Produce                json
+// @Param                        Authorization        header                string                                        true        "bearer {token}"
+// @Success                200                                {object}                cart.Cart                        "Cart"
+// @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
+// @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
+// @Failure                404                                {object}        engine.ErrorData                "Not Found"
+// @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
+// @Router                        /v1/cart [get]
 //
-//        @Summary                Obtener carrito.
-//        @Description        Obtiene el carrito actual.
-//        @Tags                        Cart
-//        @Accept                        json
-//        @Produce                json
-//        @Param                        Authorization        header                string                                        true        "bearer {token}"
-//        @Success                200                                {object}                cart.Cart                        "Cart"
-//        @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
-//        @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
-//        @Failure                404                                {object}        engine.ErrorData                "Not Found"
-//        @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
-//        @Router                        /v1/cart [get]
+// Obtiene el carrito actual del usuario.
 func initGetCart() <span class="cov8" title="1">{
         engine.Router().GET(
                 "/v1/cart",
@@ -2480,20 +2466,20 @@ import (
         "github.com/nmarsollier/cartgo/service"
 )
 
-// Valida el carrito para checkout.
+// @Summary                Validar Carrito
+// @Description        Valida el carrito para checkout
+// @Tags                        Cart
+// @Accept                        json
+// @Produce                json
+// @Param                        Authorization        header        string        true        "bearer {token}"
+// @Success                200                                "No Content"
+// @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
+// @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
+// @Failure                404                                {object}        engine.ErrorData                "Not Found"
+// @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
+// @Router                        /v1/cart/validate [get]
 //
-//        @Summary                Validar Carrito
-//        @Description        Valida el carrito para checkout
-//        @Tags                        Cart
-//        @Accept                        json
-//        @Produce                json
-//        @Param                        Authorization        header        string        true        "bearer {token}"
-//        @Success                200                                "No Content"
-//        @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
-//        @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
-//        @Failure                404                                {object}        engine.ErrorData                "Not Found"
-//        @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
-//        @Router                        /v1/cart/validate [get]
+// Valida el carrito para checkout.
 func initGetCartValidate() <span class="cov8" title="1">{
         engine.Router().GET(
                 "/v1/cart/validate",
@@ -2533,7 +2519,6 @@ import (
         "github.com/nmarsollier/cartgo/service"
 )
 
-// Agrega un articulo del carrito actual.
 // @Summary                Agregar Articulo
 // @Description        Agrega un articulo del carrito actual.
 // @Tags                        Cart
@@ -2543,15 +2528,13 @@ import (
 // @Param                        Authorization        header                string                                        true        "bearer {token}"
 // @Success                200                                {object}        cart.Cart                                "Cart"
 // @Param                        body                        body                cart.AddArticleData                true        "Articulo a Agregar"
-//
-//        @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
-//        @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
-//        @Failure                404                                {object}        engine.ErrorData                "Not Found"
-//        @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
-//
+// @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
+// @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
+// @Failure                404                                {object}        engine.ErrorData                "Not Found"
+// @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
 // @Router                        /v1/cart/article [post]
 //
-// Inicializa las rutas
+// Agrega un articulo del carrito actual.
 func initPostCartArticle() <span class="cov8" title="1">{
         engine.Router().POST(
                 "/v1/cart/article",
@@ -2589,7 +2572,6 @@ import (
         "github.com/nmarsollier/cartgo/service"
 )
 
-// Eliminar 1 al articulo actual.
 // @Summary                Agregar 1 Articulo
 // @Description        Eliminar 1 al articulo actual.
 // @Tags                        Cart
@@ -2598,15 +2580,13 @@ import (
 // @Param                        articleId                path                string                                        true        "ID de articlo"
 // @Param                        Authorization        header                string                                        true        "bearer {token}"
 // @Success                200                                {object}        cart.Cart                                "Cart"
-//
-//        @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
-//        @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
-//        @Failure                404                                {object}        engine.ErrorData                "Not Found"
-//        @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
-//
+// @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
+// @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
+// @Failure                404                                {object}        engine.ErrorData                "Not Found"
+// @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
 // @Router                        /v1/cart/article/:articleId/decrement [post]
 //
-// Init inicializa las rutas
+// Eliminar 1 al articulo actual.
 func initPostCartArticleDecrement() <span class="cov8" title="1">{
         engine.Router().POST(
                 "/v1/cart/article/:articleId/decrement",
@@ -2645,7 +2625,6 @@ import (
         "github.com/nmarsollier/cartgo/service"
 )
 
-// Agregar 1 al articulo actual.
 // @Summary                Agregar 1 Articulo
 // @Description        Agregar 1 al articulo actual.
 // @Tags                        Cart
@@ -2654,15 +2633,13 @@ import (
 // @Param                        articleId                path                string                                        true        "ID de articlo"
 // @Param                        Authorization        header                string                                        true        "bearer {token}"
 // @Success                200                                {object}        cart.Cart                                "Cart"
-//
-//        @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
-//        @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
-//        @Failure                404                                {object}        engine.ErrorData                "Not Found"
-//        @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
-//
+// @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
+// @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
+// @Failure                404                                {object}        engine.ErrorData                "Not Found"
+// @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
 // @Router                        /v1/cart/article/:articleId/increment [post]
 //
-// Inicializa las rutas
+// Agregar 1 al articulo actual.
 func initPostCartArticleIncrement() <span class="cov8" title="1">{
         engine.Router().POST(
                 "/v1/cart/article/:articleId/increment",
@@ -2701,7 +2678,6 @@ import (
         "github.com/nmarsollier/cartgo/service"
 )
 
-// Hace checkout del carrito actual.
 // @Summary                Checkout Articulo
 // @Description        Hace checkout del carrito actual
 // @Tags                        Cart
@@ -2710,15 +2686,13 @@ import (
 // @Param                        articleId                path        string        true        "ID de articlo"
 // @Param                        Authorization        header        string        true        "bearer {token}"
 // @Success                200                                "No Content"
-//
-//        @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
-//        @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
-//        @Failure                404                                {object}        engine.ErrorData                "Not Found"
-//        @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
-//
+// @Failure                400                                {object}        apperr.ValidationErr        "Bad Request"
+// @Failure                401                                {object}        engine.ErrorData                "Unauthorized"
+// @Failure                404                                {object}        engine.ErrorData                "Not Found"
+// @Failure                500                                {object}        engine.ErrorData                "Internal Server Error"
 // @Router                        /v1/cart/checkouts [post]
 //
-// Inicializa las rutas
+// Hace checkout del carrito actual.
 func initPostCartCheckout() <span class="cov8" title="1">{
         engine.Router().POST(
                 "/v1/cart/checkout",

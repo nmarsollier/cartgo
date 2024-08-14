@@ -47,6 +47,6 @@ func TestProccessArticleDataHappyPath(t *testing.T) {
 		},
 	}
 
-	processArticleData(newMessage, cart.CartCollection(collection))
+	processArticleData(newMessage, collection)
 
 }
