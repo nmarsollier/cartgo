@@ -1,5 +1,5 @@
 package cart
 
-import "github.com/nmarsollier/cartgo/tools/apperr"
+import "github.com/nmarsollier/cartgo/tools/errs"
 
-var ErrID = apperr.NewValidation().Add("id", "Invalid")
+var ErrID = errs.NewValidation().Add("id", "Invalid")

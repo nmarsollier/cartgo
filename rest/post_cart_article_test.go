@@ -7,8 +7,8 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/rest/engine"
-	"github.com/nmarsollier/cartgo/tools/apperr"
 	"github.com/nmarsollier/cartgo/tools/db"
+	"github.com/nmarsollier/cartgo/tools/errs"
 	"github.com/nmarsollier/cartgo/tools/http_client"
 	"github.com/nmarsollier/cartgo/tools/tests"
 	"github.com/stretchr/testify/assert"
@@ -139,7 +139,7 @@ func TestPostCartArticleDocumentNotFound(t *testing.T) {
 	// DB Mock
 	ctrl := gomock.NewController(t)
 	collection := db.NewMockMongoCollection(ctrl)
-	tests.ExpectFindOneError(collection, apperr.NotFound, 1)
+	tests.ExpectFindOneError(collection, errs.NotFound, 1)
 
 	// Security
 	httpMock := http_client.NewMockHTTPClient(ctrl)
@@ -175,7 +175,7 @@ func TestPostCartArticleReplaceError(t *testing.T) {
 		},
 	).Times(1)
 
-	tests.ExpectReplaceOneError(collection, apperr.NotFound, 1)
+	tests.ExpectReplaceOneError(collection, errs.NotFound, 1)
 
 	// Security
 	httpMock := http_client.NewMockHTTPClient(ctrl)

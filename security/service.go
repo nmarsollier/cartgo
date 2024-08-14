@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/golang/glog"
-	"github.com/nmarsollier/cartgo/tools/apperr"
+	"github.com/nmarsollier/cartgo/tools/errs"
 	gocache "github.com/patrickmn/go-cache"
 )
 
@@ -30,7 +30,7 @@ func Validate(token string, ctx ...interface{}) (*User, error) {
 	user, err := getRemoteToken(token, ctx...)
 	if err != nil {
 		glog.Error(err)
-		return nil, apperr.Unauthorized
+		return nil, errs.Unauthorized
 	}
 
 	// Todo bien, se agrega al cache y se retorna

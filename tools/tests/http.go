@@ -7,14 +7,14 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/security"
-	"github.com/nmarsollier/cartgo/tools"
 	"github.com/nmarsollier/cartgo/tools/http_client"
+	"github.com/nmarsollier/cartgo/tools/str_tools"
 )
 
 func ExpectHttpToken(mock *http_client.MockHTTPClient, user *security.User) {
 	response := &http.Response{
 		StatusCode: http.StatusOK,
-		Body:       io.NopCloser(bytes.NewBufferString(tools.ToJson(user))),
+		Body:       io.NopCloser(bytes.NewBufferString(str_tools.ToJson(user))),
 	}
 	mock.EXPECT().Do(gomock.Any()).Return(response, nil).Times(1)
 }

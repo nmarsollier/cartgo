@@ -7,19 +7,19 @@ import (
 	"github.com/nmarsollier/cartgo/service"
 )
 
-// @Summary		Checkout Articulo
-// @Description	Hace checkout del carrito actual
-// @Tags			Cart
-// @Accept			json
-// @Produce		json
-// @Param			articleId		path	string	true	"ID de articlo"
-// @Param			Authorization	header	string	true	"bearer {token}"
-// @Success		200				"No Content"
-// @Failure		400				{object}	apperr.ValidationErr	"Bad Request"
-// @Failure		401				{object}	engine.ErrorData		"Unauthorized"
-// @Failure		404				{object}	engine.ErrorData		"Not Found"
-// @Failure		500				{object}	engine.ErrorData		"Internal Server Error"
-// @Router			/v1/cart/checkouts [post]
+//	@Summary		Checkout Articulo
+//	@Description	Hace checkout del carrito actual
+//	@Tags			Cart
+//	@Accept			json
+//	@Produce		json
+//	@Param			articleId		path	string	true	"ID de articlo"
+//	@Param			Authorization	header	string	true	"bearer {token}"
+//	@Success		200				"No Content"
+//	@Failure		400				{object}	errs.ValidationErr	"Bad Request"
+//	@Failure		401				{object}	engine.ErrorData	"Unauthorized"
+//	@Failure		404				{object}	engine.ErrorData	"Not Found"
+//	@Failure		500				{object}	engine.ErrorData	"Internal Server Error"
+//	@Router			/v1/cart/checkouts [post]
 //
 // Hace checkout del carrito actual.
 func initPostCartCheckout() {

@@ -1,4 +1,4 @@
-package tools
+package str_tools
 
 import "encoding/json"
 

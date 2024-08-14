@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	"github.com/nmarsollier/cartgo/rabbit/r_consume"
+	"github.com/nmarsollier/cartgo/rabbit/consume"
 	routes "github.com/nmarsollier/cartgo/rest"
 )
 
@@ -23,6 +23,6 @@ func main() {
 	flag.Set("logtostderr", "true")
 	flag.Set("v", "2")
 
-	r_consume.Init()
+	consume.Init()
 	routes.Start()
 }

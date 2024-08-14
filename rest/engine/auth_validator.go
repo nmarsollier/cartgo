@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang/glog"
 	"github.com/nmarsollier/cartgo/security"
-	"github.com/nmarsollier/cartgo/tools/apperr"
+	"github.com/nmarsollier/cartgo/tools/errs"
 )
 
 /**
@@ -33,7 +33,7 @@ func ValidateAuthentication(c *gin.Context) {
 func HeaderToken(c *gin.Context) (string, error) {
 	tokenString := c.GetHeader("Authorization")
 	if strings.Index(tokenString, "bearer ") != 0 {
-		return "", apperr.Unauthorized
+		return "", errs.Unauthorized
 	}
 	return tokenString[7:], nil
 }
@@ -42,14 +42,14 @@ func validateToken(c *gin.Context) error {
 	tokenString, err := HeaderToken(c)
 	if err != nil {
 		glog.Error(err)
-		return apperr.Unauthorized
+		return errs.Unauthorized
 	}
 
 	ctx := TestCtx(c)
 	user, err := security.Validate(tokenString, ctx...)
 	if err != nil {
 		glog.Error(err)
-		return apperr.Unauthorized
+		return errs.Unauthorized
 	}
 
 	c.Set("tokenString", tokenString)

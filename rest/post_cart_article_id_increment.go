@@ -8,19 +8,19 @@ import (
 	"github.com/nmarsollier/cartgo/service"
 )
 
-// @Summary		Agregar 1 Articulo
-// @Description	Agregar 1 al articulo actual.
-// @Tags			Cart
-// @Accept			json
-// @Produce		json
-// @Param			articleId		path		string					true	"ID de articlo"
-// @Param			Authorization	header		string					true	"bearer {token}"
-// @Success		200				{object}	cart.Cart				"Cart"
-// @Failure		400				{object}	apperr.ValidationErr	"Bad Request"
-// @Failure		401				{object}	engine.ErrorData		"Unauthorized"
-// @Failure		404				{object}	engine.ErrorData		"Not Found"
-// @Failure		500				{object}	engine.ErrorData		"Internal Server Error"
-// @Router			/v1/cart/article/:articleId/increment [post]
+//	@Summary		Agregar 1 Articulo
+//	@Description	Agregar 1 al articulo actual.
+//	@Tags			Cart
+//	@Accept			json
+//	@Produce		json
+//	@Param			articleId		path		string				true	"ID de articlo"
+//	@Param			Authorization	header		string				true	"bearer {token}"
+//	@Success		200				{object}	cart.Cart			"Cart"
+//	@Failure		400				{object}	errs.ValidationErr	"Bad Request"
+//	@Failure		401				{object}	engine.ErrorData	"Unauthorized"
+//	@Failure		404				{object}	engine.ErrorData	"Not Found"
+//	@Failure		500				{object}	engine.ErrorData	"Internal Server Error"
+//	@Router			/v1/cart/article/:articleId/increment [post]
 //
 // Agregar 1 al articulo actual.
 func initPostCartArticleIncrement() {

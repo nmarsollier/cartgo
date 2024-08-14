@@ -3,7 +3,7 @@ package service
 import (
 	"github.com/golang/glog"
 	"github.com/nmarsollier/cartgo/cart"
-	"github.com/nmarsollier/cartgo/rabbit/r_emit"
+	"github.com/nmarsollier/cartgo/rabbit/emit"
 )
 
 func Checkout(userId string, token string, ctx ...interface{}) (*cart.Cart, error) {
@@ -22,7 +22,7 @@ func Checkout(userId string, token string, ctx ...interface{}) (*cart.Cart, erro
 		return nil, err
 	}
 
-	r_emit.SendPlaceOrder(currentCart, ctx...)
+	emit.SendPlaceOrder(currentCart, ctx...)
 
 	return currentCart, nil
 }

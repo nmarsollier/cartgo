@@ -32,7 +32,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/r_consume.consumeArticleDataMessage"
+                            "$ref": "#/definitions/consume.consumeArticleDataMessage"
                         }
                     }
                 ],
@@ -59,7 +59,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/r_emit.SendValidationMessage"
+                            "$ref": "#/definitions/emit.SendValidationMessage"
                         }
                     }
                 ],
@@ -86,7 +86,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/r_emit.SendPlacedMessage"
+                            "$ref": "#/definitions/emit.SendPlacedMessage"
                         }
                     }
                 ],
@@ -113,7 +113,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/r_consume.logoutMessage"
+                            "$ref": "#/definitions/consume.logoutMessage"
                         }
                     }
                 ],
@@ -140,7 +140,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/r_consume.consumeOrderPlacedMessage"
+                            "$ref": "#/definitions/consume.consumeOrderPlacedMessage"
                         }
                     }
                 ],
@@ -179,7 +179,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apperr.ValidationErr"
+                            "$ref": "#/definitions/errs.ValidationErr"
                         }
                     },
                     "401": {
@@ -251,7 +251,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apperr.ValidationErr"
+                            "$ref": "#/definitions/errs.ValidationErr"
                         }
                     },
                     "401": {
@@ -311,7 +311,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apperr.ValidationErr"
+                            "$ref": "#/definitions/errs.ValidationErr"
                         }
                     },
                     "401": {
@@ -374,7 +374,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apperr.ValidationErr"
+                            "$ref": "#/definitions/errs.ValidationErr"
                         }
                     },
                     "401": {
@@ -437,7 +437,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apperr.ValidationErr"
+                            "$ref": "#/definitions/errs.ValidationErr"
                         }
                     },
                     "401": {
@@ -497,7 +497,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apperr.ValidationErr"
+                            "$ref": "#/definitions/errs.ValidationErr"
                         }
                     },
                     "401": {
@@ -550,7 +550,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apperr.ValidationErr"
+                            "$ref": "#/definitions/errs.ValidationErr"
                         }
                     },
                     "401": {
@@ -576,28 +576,6 @@
         }
     },
     "definitions": {
-        "apperr.ValidationErr": {
-            "type": "object",
-            "properties": {
-                "messages": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/apperr.errField"
-                    }
-                }
-            }
-        },
-        "apperr.errField": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "path": {
-                    "type": "string"
-                }
-            }
-        },
         "cart.AddArticleData": {
             "type": "object",
             "required": [
@@ -711,15 +689,7 @@
                 }
             }
         },
-        "engine.ErrorData": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
-        "r_consume.consumeArticleDataMessage": {
+        "consume.consumeArticleDataMessage": {
             "type": "object",
             "properties": {
                 "exchange": {
@@ -739,7 +709,7 @@
                 }
             }
         },
-        "r_consume.consumeOrderPlacedMessage": {
+        "consume.consumeOrderPlacedMessage": {
             "type": "object",
             "properties": {
                 "exchange": {
@@ -759,7 +729,7 @@
                 }
             }
         },
-        "r_consume.logoutMessage": {
+        "consume.logoutMessage": {
             "type": "object",
             "properties": {
                 "message": {
@@ -772,7 +742,7 @@
                 }
             }
         },
-        "r_emit.ArticleValidationData": {
+        "emit.ArticleValidationData": {
             "type": "object",
             "properties": {
                 "articleId": {
@@ -785,7 +755,7 @@
                 }
             }
         },
-        "r_emit.PlaceArticlesData": {
+        "emit.PlaceArticlesData": {
             "type": "object",
             "properties": {
                 "id": {
@@ -798,13 +768,13 @@
                 }
             }
         },
-        "r_emit.PlacedData": {
+        "emit.PlacedData": {
             "type": "object",
             "properties": {
                 "articles": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/r_emit.PlaceArticlesData"
+                        "$ref": "#/definitions/emit.PlaceArticlesData"
                     }
                 },
                 "cartId": {
@@ -817,10 +787,10 @@
                 }
             }
         },
-        "r_emit.SendPlacedMessage": {
+        "emit.SendPlacedMessage": {
             "type": "object"
         },
-        "r_emit.SendValidationMessage": {
+        "emit.SendValidationMessage": {
             "type": "object",
             "properties": {
                 "exchange": {
@@ -828,7 +798,7 @@
                     "example": "cart"
                 },
                 "message": {
-                    "$ref": "#/definitions/r_emit.ArticleValidationData"
+                    "$ref": "#/definitions/emit.ArticleValidationData"
                 },
                 "queue": {
                     "type": "string",
@@ -837,6 +807,36 @@
                 "type": {
                     "type": "string",
                     "example": "article-exist"
+                }
+            }
+        },
+        "engine.ErrorData": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "errs.ValidationErr": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/errs.errField"
+                    }
+                }
+            }
+        },
+        "errs.errField": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
                 }
             }
         }

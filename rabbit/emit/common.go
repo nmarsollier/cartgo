@@ -1,4 +1,4 @@
-package r_emit
+package emit
 
 import (
 	"errors"

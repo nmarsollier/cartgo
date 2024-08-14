@@ -1,4 +1,4 @@
-package r_consume
+package consume
 
 import (
 	"time"

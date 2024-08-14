@@ -23,7 +23,7 @@ Luego de solicitar validaciones de catalogo, las validaciones las recibimos en e
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| type | body | Message para Type = article-exist | Yes | [r_consume.consumeArticleDataMessage](#r_consumeconsumearticledatamessage) |
+| type | body | Message para Type = article-exist | Yes | [consume.consumeArticleDataMessage](#consumeconsumearticledatamessage) |
 
 ##### Responses
 
@@ -45,7 +45,7 @@ Solicitamos las validaciones ar articulos a catalogo. Queue y Exchange es donde 
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| body | body | Mensage de validacion | Yes | [r_emit.SendValidationMessage](#r_emitsendvalidationmessage) |
+| body | body | Mensage de validacion | Yes | [emit.SendValidationMessage](#emitsendvalidationmessage) |
 
 ##### Responses
 
@@ -67,7 +67,7 @@ Cuando se hace checkout enviamos un comando a orders para que inicie el proceso 
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| body | body | Place order | Yes | [r_emit.SendPlacedMessage](#r_emitsendplacedmessage) |
+| body | body | Place order | Yes | [emit.SendPlacedMessage](#emitsendplacedmessage) |
 
 ##### Responses
 
@@ -89,7 +89,7 @@ Escucha de mensajes logout desde auth.
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| body | body | Estructura general del mensage | Yes | [r_consume.logoutMessage](#r_consumelogoutmessage) |
+| body | body | Estructura general del mensage | Yes | [consume.logoutMessage](#consumelogoutmessage) |
 
 ##### Responses
 
@@ -111,7 +111,7 @@ Cuando se recibe order-placed se actualiza el order id del carrito. No se respod
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| type | body | Message para Type = order-placed | Yes | [r_consume.consumeOrderPlacedMessage](#r_consumeconsumeorderplacedmessage) |
+| type | body | Message para Type = order-placed | Yes | [consume.consumeOrderPlacedMessage](#consumeconsumeorderplacedmessage) |
 
 ##### Responses
 
@@ -141,7 +141,7 @@ Obtiene el carrito actual.
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
-| 400 | Bad Request | [apperr.ValidationErr](#apperrvalidationerr) |
+| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
 | 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
 | 404 | Not Found | [engine.ErrorData](#engineerrordata) |
 | 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
@@ -170,7 +170,7 @@ Agrega un articulo del carrito actual.
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
-| 400 | Bad Request | [apperr.ValidationErr](#apperrvalidationerr) |
+| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
 | 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
 | 404 | Not Found | [engine.ErrorData](#engineerrordata) |
 | 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
@@ -198,7 +198,7 @@ Elimina un articulo del carrito actual.
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | No Content |  |
-| 400 | Bad Request | [apperr.ValidationErr](#apperrvalidationerr) |
+| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
 | 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
 | 404 | Not Found | [engine.ErrorData](#engineerrordata) |
 | 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
@@ -226,7 +226,7 @@ Eliminar 1 al articulo actual.
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
-| 400 | Bad Request | [apperr.ValidationErr](#apperrvalidationerr) |
+| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
 | 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
 | 404 | Not Found | [engine.ErrorData](#engineerrordata) |
 | 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
@@ -254,7 +254,7 @@ Agregar 1 al articulo actual.
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
-| 400 | Bad Request | [apperr.ValidationErr](#apperrvalidationerr) |
+| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
 | 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
 | 404 | Not Found | [engine.ErrorData](#engineerrordata) |
 | 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
@@ -282,7 +282,7 @@ Hace checkout del carrito actual
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | No Content |  |
-| 400 | Bad Request | [apperr.ValidationErr](#apperrvalidationerr) |
+| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
 | 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
 | 404 | Not Found | [engine.ErrorData](#engineerrordata) |
 | 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
@@ -309,26 +309,13 @@ Valida el carrito para checkout
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | No Content |  |
-| 400 | Bad Request | [apperr.ValidationErr](#apperrvalidationerr) |
+| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
 | 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
 | 404 | Not Found | [engine.ErrorData](#engineerrordata) |
 | 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
 
 ---
 ### Models
-
-#### apperr.ValidationErr
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| messages | [ [apperr.errField](#apperrerrfield) ] |  | No |
-
-#### apperr.errField
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| message | string |  | No |
-| path | string |  | No |
 
 #### cart.AddArticleData
 
@@ -374,13 +361,7 @@ Valida el carrito para checkout
 | referenceId | string | *Example:* `"UserId"` | No |
 | valid | boolean | *Example:* `true` | No |
 
-#### engine.ErrorData
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| error | string |  | No |
-
-#### r_consume.consumeArticleDataMessage
+#### consume.consumeArticleDataMessage
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
@@ -389,7 +370,7 @@ Valida el carrito para checkout
 | queue | string | *Example:* `""` | No |
 | type | string | *Example:* `"article-exist"` | No |
 
-#### r_consume.consumeOrderPlacedMessage
+#### consume.consumeOrderPlacedMessage
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
@@ -398,46 +379,65 @@ Valida el carrito para checkout
 | queue | string | *Example:* `""` | No |
 | type | string | *Example:* `"order-placed"` | No |
 
-#### r_consume.logoutMessage
+#### consume.logoutMessage
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
 | message | string | *Example:* `"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg"` | No |
 | type | string | *Example:* `"logout"` | No |
 
-#### r_emit.ArticleValidationData
+#### emit.ArticleValidationData
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
 | articleId | string | *Example:* `"ArticleId"` | No |
 | referenceId | string | *Example:* `"UserId"` | No |
 
-#### r_emit.PlaceArticlesData
+#### emit.PlaceArticlesData
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
 | id | string | *Example:* `"ArticleId"` | No |
 | quantity | integer | *Example:* `10` | No |
 
-#### r_emit.PlacedData
+#### emit.PlacedData
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| articles | [ [r_emit.PlaceArticlesData](#r_emitplacearticlesdata) ] |  | No |
+| articles | [ [emit.PlaceArticlesData](#emitplacearticlesdata) ] |  | No |
 | cartId | string | *Example:* `"CartId"` | No |
 | userId | string | *Example:* `"UserId"` | No |
 
-#### r_emit.SendPlacedMessage
+#### emit.SendPlacedMessage
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| r_emit.SendPlacedMessage | object |  |  |
+| emit.SendPlacedMessage | object |  |  |
 
-#### r_emit.SendValidationMessage
+#### emit.SendValidationMessage
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
 | exchange | string | *Example:* `"cart"` | No |
-| message | [r_emit.ArticleValidationData](#r_emitarticlevalidationdata) |  | No |
+| message | [emit.ArticleValidationData](#emitarticlevalidationdata) |  | No |
 | queue | string | *Example:* `"cart"` | No |
 | type | string | *Example:* `"article-exist"` | No |
+
+#### engine.ErrorData
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| error | string |  | No |
+
+#### errs.ValidationErr
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| messages | [ [errs.errField](#errserrfield) ] |  | No |
+
+#### errs.errField
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| message | string |  | No |
+| path | string |  | No |

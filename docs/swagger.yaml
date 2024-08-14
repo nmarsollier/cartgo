@@ -1,19 +1,5 @@
 basePath: /v1
 definitions:
-  apperr.ValidationErr:
-    properties:
-      messages:
-        items:
-          $ref: '#/definitions/apperr.errField'
-        type: array
-    type: object
-  apperr.errField:
-    properties:
-      message:
-        type: string
-      path:
-        type: string
-    type: object
   cart.AddArticleData:
     properties:
       articleId:
@@ -94,12 +80,7 @@ definitions:
         example: true
         type: boolean
     type: object
-  engine.ErrorData:
-    properties:
-      error:
-        type: string
-    type: object
-  r_consume.consumeArticleDataMessage:
+  consume.consumeArticleDataMessage:
     properties:
       exchange:
         example: ""
@@ -113,7 +94,7 @@ definitions:
         example: article-exist
         type: string
     type: object
-  r_consume.consumeOrderPlacedMessage:
+  consume.consumeOrderPlacedMessage:
     properties:
       exchange:
         example: ""
@@ -127,7 +108,7 @@ definitions:
         example: order-placed
         type: string
     type: object
-  r_consume.logoutMessage:
+  consume.logoutMessage:
     properties:
       message:
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg
@@ -136,7 +117,7 @@ definitions:
         example: logout
         type: string
     type: object
-  r_emit.ArticleValidationData:
+  emit.ArticleValidationData:
     properties:
       articleId:
         example: ArticleId
@@ -145,7 +126,7 @@ definitions:
         example: UserId
         type: string
     type: object
-  r_emit.PlaceArticlesData:
+  emit.PlaceArticlesData:
     properties:
       id:
         example: ArticleId
@@ -154,11 +135,11 @@ definitions:
         example: 10
         type: integer
     type: object
-  r_emit.PlacedData:
+  emit.PlacedData:
     properties:
       articles:
         items:
-          $ref: '#/definitions/r_emit.PlaceArticlesData'
+          $ref: '#/definitions/emit.PlaceArticlesData'
         type: array
       cartId:
         example: CartId
@@ -167,20 +148,39 @@ definitions:
         example: UserId
         type: string
     type: object
-  r_emit.SendPlacedMessage:
+  emit.SendPlacedMessage:
     type: object
-  r_emit.SendValidationMessage:
+  emit.SendValidationMessage:
     properties:
       exchange:
         example: cart
         type: string
       message:
-        $ref: '#/definitions/r_emit.ArticleValidationData'
+        $ref: '#/definitions/emit.ArticleValidationData'
       queue:
         example: cart
         type: string
       type:
         example: article-exist
+        type: string
+    type: object
+  engine.ErrorData:
+    properties:
+      error:
+        type: string
+    type: object
+  errs.ValidationErr:
+    properties:
+      messages:
+        items:
+          $ref: '#/definitions/errs.errField'
+        type: array
+    type: object
+  errs.errField:
+    properties:
+      message:
+        type: string
+      path:
         type: string
     type: object
 host: localhost:3003
@@ -204,7 +204,7 @@ paths:
         name: type
         required: true
         schema:
-          $ref: '#/definitions/r_consume.consumeArticleDataMessage'
+          $ref: '#/definitions/consume.consumeArticleDataMessage'
       produces:
       - application/json
       responses: {}
@@ -223,7 +223,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/r_emit.SendValidationMessage'
+          $ref: '#/definitions/emit.SendValidationMessage'
       produces:
       - application/json
       responses: {}
@@ -242,7 +242,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/r_emit.SendPlacedMessage'
+          $ref: '#/definitions/emit.SendPlacedMessage'
       produces:
       - application/json
       responses: {}
@@ -260,7 +260,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/r_consume.logoutMessage'
+          $ref: '#/definitions/consume.logoutMessage'
       produces:
       - application/json
       responses: {}
@@ -279,7 +279,7 @@ paths:
         name: type
         required: true
         schema:
-          $ref: '#/definitions/r_consume.consumeOrderPlacedMessage'
+          $ref: '#/definitions/consume.consumeOrderPlacedMessage'
       produces:
       - application/json
       responses: {}
@@ -307,7 +307,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperr.ValidationErr'
+            $ref: '#/definitions/errs.ValidationErr'
         "401":
           description: Unauthorized
           schema:
@@ -355,7 +355,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperr.ValidationErr'
+            $ref: '#/definitions/errs.ValidationErr'
         "401":
           description: Unauthorized
           schema:
@@ -395,7 +395,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperr.ValidationErr'
+            $ref: '#/definitions/errs.ValidationErr'
         "401":
           description: Unauthorized
           schema:
@@ -437,7 +437,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperr.ValidationErr'
+            $ref: '#/definitions/errs.ValidationErr'
         "401":
           description: Unauthorized
           schema:
@@ -479,7 +479,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperr.ValidationErr'
+            $ref: '#/definitions/errs.ValidationErr'
         "401":
           description: Unauthorized
           schema:
@@ -519,7 +519,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperr.ValidationErr'
+            $ref: '#/definitions/errs.ValidationErr'
         "401":
           description: Unauthorized
           schema:
@@ -554,7 +554,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperr.ValidationErr'
+            $ref: '#/definitions/errs.ValidationErr'
         "401":
           description: Unauthorized
           schema:

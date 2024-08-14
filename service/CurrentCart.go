@@ -2,7 +2,7 @@ package service
 
 import (
 	"github.com/nmarsollier/cartgo/cart"
-	"github.com/nmarsollier/cartgo/rabbit/r_emit"
+	"github.com/nmarsollier/cartgo/rabbit/emit"
 )
 
 func GetCurrentCart(userId string, ctx ...interface{}) (*cart.Cart, error) {
@@ -13,7 +13,7 @@ func GetCurrentCart(userId string, ctx ...interface{}) (*cart.Cart, error) {
 
 	for _, a := range cart.Articles {
 		if !a.Validated {
-			r_emit.SendArticleValidation(r_emit.ArticleValidationData{
+			emit.SendArticleValidation(emit.ArticleValidationData{
 				ReferenceId: cart.UserId,
 				ArticleId:   a.ArticleId,
 			}, ctx...)
