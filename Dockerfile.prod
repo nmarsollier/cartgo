@@ -9,7 +9,7 @@ ENV RABBIT_URL=amqp://host.docker.internal
 ENV AUTH_SERVICE_URL=http://host.docker.internal:3000
 ENV CATALOG_SERVICE_URL=http://host.docker.internal:3002
 
-RUN curl -L https://github.com/nmarsollier/cartgo/tarball/master | tar xz --strip=1
+RUN curl -L https://github.com/nmarsollier/cartgo/archive/refs/heads/master.tar.gz | tar xz --strip=1
 RUN go install /go/src/github.com/nmarsollier/cartgo
 
 # Puerto de Auth Service
