@@ -97,9 +97,9 @@ func InvalidateCurrentCart(cart *Cart, ctx ...interface{}) (*Cart, error) {
 }
 
 type ValidationEvent struct {
-	ReferenceId string `json:"referenceId"`
-	ArticleId   string `json:"articleId"`
-	Valid       bool   `json:"valid"`
+	ReferenceId string `json:"referenceId" example:"UserId"`
+	ArticleId   string `json:"articleId" example:"ArticleId"`
+	Valid       bool   `json:"valid" example:"true"`
 }
 
 func ProcessArticleData(data *ValidationEvent, ctx ...interface{}) error {
@@ -124,9 +124,9 @@ func ProcessArticleData(data *ValidationEvent, ctx ...interface{}) error {
 }
 
 type OrderPlacedEvent struct {
-	CartId  string `json:"cartId"`
-	OrderId string `json:"orderId"`
-	Valid   bool   `json:"valid"`
+	CartId  string `json:"cartId" example:"CartId"`
+	OrderId string `json:"orderId" example:"OrderId"`
+	Valid   bool   `json:"valid" example:"true"`
 }
 
 func ProcessOrderPlaced(data *OrderPlacedEvent, ctx ...interface{}) error {

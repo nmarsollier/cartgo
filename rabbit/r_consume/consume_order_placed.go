@@ -10,6 +10,15 @@ import (
 	"github.com/streadway/amqp"
 )
 
+//	@Summary		Mensage Rabbit order/order-placed
+//	@Description	Cuando se recibe order-placed se actualiza el order id del carrito. No se respode a este evento.
+//	@Tags			Rabbit
+//	@Accept			json
+//	@Produce		json
+//	@Param			type	body	consumeOrderPlacedMessage	true	"Message para Type = order-placed"
+//	@Router			/rabbit/order-placed [get]
+//
+// Consume Order Placed
 func consumeOrderPlaced() error {
 	conn, err := amqp.Dial(env.Get().RabbitURL)
 	if err != nil {
@@ -81,7 +90,7 @@ func consumeOrderPlaced() error {
 
 	go func() {
 		for d := range mgs {
-			newMessage := &ConsumeMessage{}
+			newMessage := &consumeOrderPlacedMessage{}
 			body := d.Body
 
 			glog.Info("Rabbit Consume: ", string(body))
@@ -89,13 +98,7 @@ func consumeOrderPlaced() error {
 			if err == nil {
 				switch newMessage.Type {
 				case "order-placed":
-					articleMessage := &ConsumeOrderPlacedMessage{}
-					if err := json.Unmarshal(body, articleMessage); err != nil {
-						glog.Error(err)
-						return
-					}
-
-					processOrderPlaced(articleMessage)
+					processOrderPlaced(newMessage)
 				}
 			} else {
 				glog.Error(err)
@@ -108,16 +111,7 @@ func consumeOrderPlaced() error {
 	return nil
 }
 
-// @Summary		Mensage Rabbit order/order-placed
-// @Description	Antes de iniciar las operaciones se validan los artículos contra el catalogo.
-// @Tags			Rabbit
-// @Accept			json
-// @Produce		json
-// @Param			article-data	body	ConsumeOrderPlacedMessage	true	"Message para Type = article-data"
-// @Router			/rabbit/order-placed [get]
-//
-// Consume Order Placed
-func processOrderPlaced(newMessage *ConsumeOrderPlacedMessage, ctx ...interface{}) {
+func processOrderPlaced(newMessage *consumeOrderPlacedMessage, ctx ...interface{}) {
 	data := newMessage.Message
 
 	err := cart.ProcessOrderPlaced(data, ctx...)
@@ -129,10 +123,9 @@ func processOrderPlaced(newMessage *ConsumeOrderPlacedMessage, ctx ...interface{
 	log.Print("Order Placed processed : " + data.CartId)
 }
 
-type ConsumeOrderPlacedMessage struct {
-	Type     string `json:"type"`
-	Version  int    `json:"version"`
-	Queue    string `json:"queue"`
-	Exchange string `json:"exchange"`
+type consumeOrderPlacedMessage struct {
+	Type     string `json:"type" example:"order-placed" `
+	Queue    string `json:"queue" example:"" `
+	Exchange string `json:"exchange" example:"" `
 	Message  *cart.OrderPlacedEvent
 }

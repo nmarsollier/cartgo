@@ -9,6 +9,15 @@ import (
 	"github.com/streadway/amqp"
 )
 
+//	@Summary		Mensage Rabbit order/article-exist
+//	@Description	Luego de solicitar validaciones de catalogo, las validaciones las recibimos en esta Queue, con el mensaje type article-data.
+//	@Tags			Rabbit
+//	@Accept			json
+//	@Produce		json
+//	@Param			type	body	consumeArticleDataMessage	true	"Message para Type = article-exist"
+//	@Router			/rabbit/article-exist [get]
+//
+// Validar Artículos
 func consumeOrders() error {
 	conn, err := amqp.Dial(env.Get().RabbitURL)
 	if err != nil {
@@ -80,7 +89,7 @@ func consumeOrders() error {
 
 	go func() {
 		for d := range mgs {
-			newMessage := &ConsumeMessage{}
+			newMessage := &consumeArticleDataMessage{}
 			body := d.Body
 			glog.Info(string(body))
 
@@ -88,13 +97,7 @@ func consumeOrders() error {
 			if err == nil {
 				switch newMessage.Type {
 				case "article-exist":
-					articleMessage := &ConsumeArticleDataMessage{}
-					if err := json.Unmarshal(body, articleMessage); err != nil {
-						glog.Error(err)
-						return
-					}
-
-					processArticleData(articleMessage)
+					processArticleData(newMessage)
 				}
 			} else {
 				glog.Error(err)
@@ -107,16 +110,7 @@ func consumeOrders() error {
 	return nil
 }
 
-// @Summary		Mensage Rabbit order/article-data
-// @Description	Antes de iniciar las operaciones se validan los artículos contra el catalogo.
-// @Tags			Rabbit
-// @Accept			json
-// @Produce		json
-// @Param			article-data	body	ConsumeArticleDataMessage	true	"Message para Type = article-data"
-// @Router			/rabbit/article-data [get]
-//
-// Validar Artículos
-func processArticleData(newMessage *ConsumeArticleDataMessage, ctx ...interface{}) {
+func processArticleData(newMessage *consumeArticleDataMessage, ctx ...interface{}) {
 	data := newMessage.Message
 
 	err := cart.ProcessArticleData(data, ctx...)
@@ -128,10 +122,9 @@ func processArticleData(newMessage *ConsumeArticleDataMessage, ctx ...interface{
 	glog.Info("Article exist completed : ", data)
 }
 
-type ConsumeArticleDataMessage struct {
-	Type     string `json:"type"`
-	Version  int    `json:"version"`
-	Queue    string `json:"queue"`
-	Exchange string `json:"exchange"`
+type consumeArticleDataMessage struct {
+	Type     string `json:"type" example:"article-exist"`
+	Queue    string `json:"queue" example:""`
+	Exchange string `json:"exchange" example:""`
 	Message  *cart.ValidationEvent
 }

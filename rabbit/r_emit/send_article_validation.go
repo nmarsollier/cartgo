@@ -6,13 +6,13 @@ import (
 	"github.com/golang/glog"
 )
 
-// @Summary		Emite Validar Artículos a Cart cart/article-exist
-// @Description	Antes de iniciar las operaciones se validan los artículos contra el catalogo.
-// @Tags			Rabbit
-// @Accept			json
-// @Produce		json
-// @Param			body	body	SendValidationMessage	true	"Mensage de validacion"
-// @Router			/rabbit/cart/article-exist [put]
+//	@Summary		Emite Validar Artículos a Cart cart/article-exist
+//	@Description	Solicitamos las validaciones ar articulos a catalogo. Queue y Exchange es donde nos reponde.
+//	@Tags			Rabbit
+//	@Accept			json
+//	@Produce		json
+//	@Param			body	body	SendValidationMessage	true	"Mensage de validacion"
+//	@Router			/rabbit/cart/article-exist [put]
 //
 // Emite Validar Artículos a Cart
 func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error {
@@ -64,14 +64,14 @@ func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error
 }
 
 type ArticleValidationData struct {
-	ReferenceId string `json:"referenceId"`
+	ReferenceId string `json:"referenceId" example:"UserId"`
 
-	ArticleId string `json:"articleId"`
+	ArticleId string `json:"articleId" example:"ArticleId"`
 }
 
 type SendValidationMessage struct {
-	Type     string                `json:"type"`
-	Exchange string                `json:"exchange"`
-	Queue    string                `json:"queue"`
+	Type     string                `json:"type" example:"article-exist"`
+	Exchange string                `json:"exchange" example:"cart"`
+	Queue    string                `json:"queue" example:"cart"`
 	Message  ArticleValidationData `json:"message"`
 }

@@ -18,9 +18,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/rabbit/article-data": {
+        "/rabbit/article-exist": {
             "get": {
-                "description": "Antes de iniciar las operaciones se validan los artículos contra el catalogo.",
+                "description": "Luego de solicitar validaciones de catalogo, las validaciones las recibimos en esta Queue, con el mensaje type article-data.",
                 "consumes": [
                     "application/json"
                 ],
@@ -30,15 +30,15 @@ const docTemplate = `{
                 "tags": [
                     "Rabbit"
                 ],
-                "summary": "Mensage Rabbit order/article-data",
+                "summary": "Mensage Rabbit order/article-exist",
                 "parameters": [
                     {
-                        "description": "Message para Type = article-data",
-                        "name": "article-data",
+                        "description": "Message para Type = article-exist",
+                        "name": "type",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/r_consume.ConsumeArticleDataMessage"
+                            "$ref": "#/definitions/r_consume.consumeArticleDataMessage"
                         }
                     }
                 ],
@@ -47,7 +47,7 @@ const docTemplate = `{
         },
         "/rabbit/cart/article-exist": {
             "put": {
-                "description": "Antes de iniciar las operaciones se validan los artículos contra el catalogo.",
+                "description": "Solicitamos las validaciones ar articulos a catalogo. Queue y Exchange es donde nos reponde.",
                 "consumes": [
                     "application/json"
                 ],
@@ -74,7 +74,7 @@ const docTemplate = `{
         },
         "/rabbit/cart/place-order": {
             "put": {
-                "description": "Emite Placed Order desde Cart",
+                "description": "Cuando se hace checkout enviamos un comando a orders para que inicie el proceso de la orden.",
                 "consumes": [
                     "application/json"
                 ],
@@ -87,7 +87,7 @@ const docTemplate = `{
                 "summary": "Emite Placed Order desde Cart",
                 "parameters": [
                     {
-                        "description": "Mensage de validacion",
+                        "description": "Place order",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -119,7 +119,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/r_consume.LogoutMessage"
+                            "$ref": "#/definitions/r_consume.logoutMessage"
                         }
                     }
                 ],
@@ -128,7 +128,7 @@ const docTemplate = `{
         },
         "/rabbit/order-placed": {
             "get": {
-                "description": "Antes de iniciar las operaciones se validan los artículos contra el catalogo.",
+                "description": "Cuando se recibe order-placed se actualiza el order id del carrito. No se respode a este evento.",
                 "consumes": [
                     "application/json"
                 ],
@@ -141,12 +141,12 @@ const docTemplate = `{
                 "summary": "Mensage Rabbit order/order-placed",
                 "parameters": [
                     {
-                        "description": "Message para Type = article-data",
-                        "name": "article-data",
+                        "description": "Message para Type = order-placed",
+                        "name": "type",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/r_consume.ConsumeOrderPlacedMessage"
+                            "$ref": "#/definitions/r_consume.consumeOrderPlacedMessage"
                         }
                     }
                 ],
@@ -687,13 +687,16 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "cartId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "CartId"
                 },
                 "orderId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "OrderId"
                 },
                 "valid": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },
@@ -701,13 +704,16 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "articleId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "ArticleId"
                 },
                 "referenceId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "UserId"
                 },
                 "valid": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },
@@ -719,54 +725,56 @@ const docTemplate = `{
                 }
             }
         },
-        "r_consume.ConsumeArticleDataMessage": {
+        "r_consume.consumeArticleDataMessage": {
             "type": "object",
             "properties": {
                 "exchange": {
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "message": {
                     "$ref": "#/definitions/cart.ValidationEvent"
                 },
                 "queue": {
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "type": {
-                    "type": "string"
-                },
-                "version": {
-                    "type": "integer"
+                    "type": "string",
+                    "example": "article-exist"
                 }
             }
         },
-        "r_consume.ConsumeOrderPlacedMessage": {
+        "r_consume.consumeOrderPlacedMessage": {
             "type": "object",
             "properties": {
                 "exchange": {
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "message": {
                     "$ref": "#/definitions/cart.OrderPlacedEvent"
                 },
                 "queue": {
-                    "type": "string"
+                    "type": "string",
+                    "example": ""
                 },
                 "type": {
-                    "type": "string"
-                },
-                "version": {
-                    "type": "integer"
+                    "type": "string",
+                    "example": "order-placed"
                 }
             }
         },
-        "r_consume.LogoutMessage": {
+        "r_consume.logoutMessage": {
             "type": "object",
             "properties": {
                 "message": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg"
                 },
                 "type": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "logout"
                 }
             }
         },
@@ -774,10 +782,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "articleId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "ArticleId"
                 },
                 "referenceId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "UserId"
                 }
             }
         },
@@ -785,10 +795,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "ArticleId"
                 },
                 "quantity": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 10
                 }
             }
         },
@@ -802,44 +814,35 @@ const docTemplate = `{
                     }
                 },
                 "cartId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "CartId"
                 },
                 "userId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "UserId"
                 }
             }
         },
         "r_emit.SendPlacedMessage": {
-            "type": "object",
-            "properties": {
-                "exchange": {
-                    "type": "string"
-                },
-                "message": {
-                    "$ref": "#/definitions/r_emit.PlacedData"
-                },
-                "queue": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
+            "type": "object"
         },
         "r_emit.SendValidationMessage": {
             "type": "object",
             "properties": {
                 "exchange": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "cart"
                 },
                 "message": {
                     "$ref": "#/definitions/r_emit.ArticleValidationData"
                 },
                 "queue": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "cart"
                 },
                 "type": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "article-exist"
                 }
             }
         }

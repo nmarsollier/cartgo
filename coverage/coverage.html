@@ -63,11 +63,11 @@
 				
 				<option value="file3">github.com/nmarsollier/cartgo/docs/docs.go (100.0%)</option>
 				
-				<option value="file4">github.com/nmarsollier/cartgo/rabbit/r_consume/consume_cart.go (8.2%)</option>
+				<option value="file4">github.com/nmarsollier/cartgo/rabbit/r_consume/consume_cart.go (8.9%)</option>
 				
 				<option value="file5">github.com/nmarsollier/cartgo/rabbit/r_consume/consume_logout.go (0.0%)</option>
 				
-				<option value="file6">github.com/nmarsollier/cartgo/rabbit/r_consume/consume_order_placed.go (8.2%)</option>
+				<option value="file6">github.com/nmarsollier/cartgo/rabbit/r_consume/consume_order_placed.go (8.9%)</option>
 				
 				<option value="file7">github.com/nmarsollier/cartgo/rabbit/r_consume/listeners.go (0.0%)</option>
 				
@@ -1452,7 +1452,7 @@ func consumeOrders() error <span class="cov0" title="0">{
 
         go func() </span><span class="cov0" title="0">{
                 for d := range mgs </span><span class="cov0" title="0">{
-                        newMessage := &amp;ConsumeMessage{}
+                        newMessage := &amp;ConsumeArticleDataMessage{}
                         body := d.Body
                         glog.Info(string(body))
 
@@ -1460,13 +1460,7 @@ func consumeOrders() error <span class="cov0" title="0">{
                         if err == nil </span><span class="cov0" title="0">{
                                 switch newMessage.Type </span>{
                                 case "article-exist":<span class="cov0" title="0">
-                                        articleMessage := &amp;ConsumeArticleDataMessage{}
-                                        if err := json.Unmarshal(body, articleMessage); err != nil </span><span class="cov0" title="0">{
-                                                glog.Error(err)
-                                                return
-                                        }</span>
-
-                                        <span class="cov0" title="0">processArticleData(articleMessage)</span>
+                                        processArticleData(newMessage)</span>
                                 }
                         } else<span class="cov0" title="0"> {
                                 glog.Error(err)
@@ -1638,6 +1632,15 @@ import (
         "github.com/streadway/amqp"
 )
 
+// @Summary                Mensage Rabbit order/order-placed
+// @Description        Antes de iniciar las operaciones se validan los artículos contra el catalogo.
+// @Tags                        Rabbit
+// @Accept                        json
+// @Produce                json
+// @Param                        article-data        body        ConsumeOrderPlacedMessage        true        "Message para Type = article-data"
+// @Router                        /rabbit/order-placed [get]
+//
+// Consume Order Placed
 func consumeOrderPlaced() error <span class="cov0" title="0">{
         conn, err := amqp.Dial(env.Get().RabbitURL)
         if err != nil </span><span class="cov0" title="0">{
@@ -1709,7 +1712,7 @@ func consumeOrderPlaced() error <span class="cov0" title="0">{
 
         go func() </span><span class="cov0" title="0">{
                 for d := range mgs </span><span class="cov0" title="0">{
-                        newMessage := &amp;ConsumeMessage{}
+                        newMessage := &amp;consumeOrderPlacedMessage{}
                         body := d.Body
 
                         glog.Info("Rabbit Consume: ", string(body))
@@ -1717,13 +1720,7 @@ func consumeOrderPlaced() error <span class="cov0" title="0">{
                         if err == nil </span><span class="cov0" title="0">{
                                 switch newMessage.Type </span>{
                                 case "order-placed":<span class="cov0" title="0">
-                                        articleMessage := &amp;ConsumeOrderPlacedMessage{}
-                                        if err := json.Unmarshal(body, articleMessage); err != nil </span><span class="cov0" title="0">{
-                                                glog.Error(err)
-                                                return
-                                        }</span>
-
-                                        <span class="cov0" title="0">processOrderPlaced(articleMessage)</span>
+                                        processOrderPlaced(newMessage)</span>
                                 }
                         } else<span class="cov0" title="0"> {
                                 glog.Error(err)
@@ -1736,16 +1733,7 @@ func consumeOrderPlaced() error <span class="cov0" title="0">{
         return nil</span>
 }
 
-// @Summary                Mensage Rabbit order/order-placed
-// @Description        Antes de iniciar las operaciones se validan los artículos contra el catalogo.
-// @Tags                        Rabbit
-// @Accept                        json
-// @Produce                json
-// @Param                        article-data        body        ConsumeOrderPlacedMessage        true        "Message para Type = article-data"
-// @Router                        /rabbit/order-placed [get]
-//
-// Consume Order Placed
-func processOrderPlaced(newMessage *ConsumeOrderPlacedMessage, ctx ...interface{}) <span class="cov8" title="1">{
+func processOrderPlaced(newMessage *consumeOrderPlacedMessage, ctx ...interface{}) <span class="cov8" title="1">{
         data := newMessage.Message
 
         err := cart.ProcessOrderPlaced(data, ctx...)
@@ -1757,7 +1745,7 @@ func processOrderPlaced(newMessage *ConsumeOrderPlacedMessage, ctx ...interface{
         <span class="cov8" title="1">log.Print("Order Placed processed : " + data.CartId)</span>
 }
 
-type ConsumeOrderPlacedMessage struct {
+type consumeOrderPlacedMessage struct {
         Type     string `json:"type"`
         Version  int    `json:"version"`
         Queue    string `json:"queue"`

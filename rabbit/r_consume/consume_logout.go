@@ -9,18 +9,13 @@ import (
 	"github.com/streadway/amqp"
 )
 
-type LogoutMessage struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
-}
-
-// @Summary		Mensage Rabbit
-// @Description	Escucha de mensajes logout desde auth.
-// @Tags			Rabbit
-// @Accept			json
-// @Produce		json
-// @Param			body	body	LogoutMessage	true	"Estructura general del mensage"
-// @Router			/rabbit/logout [get]
+//	@Summary		Mensage Rabbit
+//	@Description	Escucha de mensajes logout desde auth.
+//	@Tags			Rabbit
+//	@Accept			json
+//	@Produce		json
+//	@Param			body	body	logoutMessage	true	"Estructura general del mensage"
+//	@Router			/rabbit/logout [get]
 //
 // Escucha de mensajes logout desde auth.
 func consumeLogout() error {
@@ -94,7 +89,7 @@ func consumeLogout() error {
 
 	go func() {
 		for d := range mgs {
-			newMessage := &LogoutMessage{}
+			newMessage := &logoutMessage{}
 			body := d.Body
 			glog.Info(string(body))
 
@@ -112,4 +107,9 @@ func consumeLogout() error {
 	glog.Info("Closed connection: ", <-conn.NotifyClose(make(chan *amqp.Error)))
 
 	return nil
+}
+
+type logoutMessage struct {
+	Type    string `json:"type" example:"logout"`
+	Message string `json:"message" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg"`
 }

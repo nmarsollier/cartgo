@@ -73,19 +73,25 @@ definitions:
   cart.OrderPlacedEvent:
     properties:
       cartId:
+        example: CartId
         type: string
       orderId:
+        example: OrderId
         type: string
       valid:
+        example: true
         type: boolean
     type: object
   cart.ValidationEvent:
     properties:
       articleId:
+        example: ArticleId
         type: string
       referenceId:
+        example: UserId
         type: string
       valid:
+        example: true
         type: boolean
     type: object
   engine.ErrorData:
@@ -93,51 +99,59 @@ definitions:
       error:
         type: string
     type: object
-  r_consume.ConsumeArticleDataMessage:
+  r_consume.consumeArticleDataMessage:
     properties:
       exchange:
+        example: ""
         type: string
       message:
         $ref: '#/definitions/cart.ValidationEvent'
       queue:
+        example: ""
         type: string
       type:
+        example: article-exist
         type: string
-      version:
-        type: integer
     type: object
-  r_consume.ConsumeOrderPlacedMessage:
+  r_consume.consumeOrderPlacedMessage:
     properties:
       exchange:
+        example: ""
         type: string
       message:
         $ref: '#/definitions/cart.OrderPlacedEvent'
       queue:
+        example: ""
         type: string
       type:
+        example: order-placed
         type: string
-      version:
-        type: integer
     type: object
-  r_consume.LogoutMessage:
+  r_consume.logoutMessage:
     properties:
       message:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg
         type: string
       type:
+        example: logout
         type: string
     type: object
   r_emit.ArticleValidationData:
     properties:
       articleId:
+        example: ArticleId
         type: string
       referenceId:
+        example: UserId
         type: string
     type: object
   r_emit.PlaceArticlesData:
     properties:
       id:
+        example: ArticleId
         type: string
       quantity:
+        example: 10
         type: integer
     type: object
   r_emit.PlacedData:
@@ -147,30 +161,26 @@ definitions:
           $ref: '#/definitions/r_emit.PlaceArticlesData'
         type: array
       cartId:
+        example: CartId
         type: string
       userId:
+        example: UserId
         type: string
     type: object
   r_emit.SendPlacedMessage:
-    properties:
-      exchange:
-        type: string
-      message:
-        $ref: '#/definitions/r_emit.PlacedData'
-      queue:
-        type: string
-      type:
-        type: string
     type: object
   r_emit.SendValidationMessage:
     properties:
       exchange:
+        example: cart
         type: string
       message:
         $ref: '#/definitions/r_emit.ArticleValidationData'
       queue:
+        example: cart
         type: string
       type:
+        example: article-exist
         type: string
     type: object
 host: localhost:3003
@@ -182,31 +192,31 @@ info:
   title: CartGo
   version: "1.0"
 paths:
-  /rabbit/article-data:
+  /rabbit/article-exist:
     get:
       consumes:
       - application/json
-      description: Antes de iniciar las operaciones se validan los artículos contra
-        el catalogo.
+      description: Luego de solicitar validaciones de catalogo, las validaciones las
+        recibimos en esta Queue, con el mensaje type article-data.
       parameters:
-      - description: Message para Type = article-data
+      - description: Message para Type = article-exist
         in: body
-        name: article-data
+        name: type
         required: true
         schema:
-          $ref: '#/definitions/r_consume.ConsumeArticleDataMessage'
+          $ref: '#/definitions/r_consume.consumeArticleDataMessage'
       produces:
       - application/json
       responses: {}
-      summary: Mensage Rabbit order/article-data
+      summary: Mensage Rabbit order/article-exist
       tags:
       - Rabbit
   /rabbit/cart/article-exist:
     put:
       consumes:
       - application/json
-      description: Antes de iniciar las operaciones se validan los artículos contra
-        el catalogo.
+      description: Solicitamos las validaciones ar articulos a catalogo. Queue y Exchange
+        es donde nos reponde.
       parameters:
       - description: Mensage de validacion
         in: body
@@ -224,9 +234,10 @@ paths:
     put:
       consumes:
       - application/json
-      description: Emite Placed Order desde Cart
+      description: Cuando se hace checkout enviamos un comando a orders para que inicie
+        el proceso de la orden.
       parameters:
-      - description: Mensage de validacion
+      - description: Place order
         in: body
         name: body
         required: true
@@ -249,7 +260,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/r_consume.LogoutMessage'
+          $ref: '#/definitions/r_consume.logoutMessage'
       produces:
       - application/json
       responses: {}
@@ -260,15 +271,15 @@ paths:
     get:
       consumes:
       - application/json
-      description: Antes de iniciar las operaciones se validan los artículos contra
-        el catalogo.
+      description: Cuando se recibe order-placed se actualiza el order id del carrito.
+        No se respode a este evento.
       parameters:
-      - description: Message para Type = article-data
+      - description: Message para Type = order-placed
         in: body
-        name: article-data
+        name: type
         required: true
         schema:
-          $ref: '#/definitions/r_consume.ConsumeOrderPlacedMessage'
+          $ref: '#/definitions/r_consume.consumeOrderPlacedMessage'
       produces:
       - application/json
       responses: {}

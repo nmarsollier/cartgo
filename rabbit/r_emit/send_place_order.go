@@ -7,13 +7,13 @@ import (
 	"github.com/nmarsollier/cartgo/cart"
 )
 
-// @Summary		Emite Placed Order desde Cart
-// @Description	Emite Placed Order desde Cart
-// @Tags			Rabbit
-// @Accept			json
-// @Produce		json
-// @Param			body	body	SendPlacedMessage	true	"Mensage de validacion"
-// @Router			/rabbit/cart/place-order [put]
+//	@Summary		Emite Placed Order desde Cart
+//	@Description	Cuando se hace checkout enviamos un comando a orders para que inicie el proceso de la orden.
+//	@Tags			Rabbit
+//	@Accept			json
+//	@Produce		json
+//	@Param			body	body	SendPlacedMessage	true	"Place order"
+//	@Router			/rabbit/cart/place-order [put]
 //
 // Emite Placed Order desde Cart
 func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
@@ -77,19 +77,19 @@ func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 }
 
 type PlacedData struct {
-	CartId   string              `json:"cartId"`
-	UserId   string              `json:"userId"`
+	CartId   string              `json:"cartId" example:"CartId"`
+	UserId   string              `json:"userId" example:"UserId"`
 	Articles []PlaceArticlesData `json:"articles"`
 }
 
 type PlaceArticlesData struct {
-	Id       string `json:"id"`
-	Quantity int    `json:"quantity"`
+	Id       string `json:"id" example:"ArticleId"`
+	Quantity int    `json:"quantity" example:"10"`
 }
 
 type SendPlacedMessage struct {
-	Type     string     `json:"type"`
-	Exchange string     `json:"exchange"`
-	Queue    string     `json:"queue"`
-	Message  PlacedData `json:"message"`
+	Type     string     `json:"type" example:"place-order"`
+	Exchange string     `json:"exchange" example:"order"`
+	Queue    string     `json:"queue" example:"order"`
+	Message  PlacedData `json:"message" example:"order"`
 }

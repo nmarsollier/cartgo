@@ -8,22 +8,22 @@ Nestor Marsollier
 nmarsollier@gmail.com  
 
 ---
-### /rabbit/article-data
+### /rabbit/article-exist
 
 #### GET
 ##### Summary
 
-Mensage Rabbit order/article-data
+Mensage Rabbit order/article-exist
 
 ##### Description
 
-Antes de iniciar las operaciones se validan los artículos contra el catalogo.
+Luego de solicitar validaciones de catalogo, las validaciones las recibimos en esta Queue, con el mensaje type article-data.
 
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| article-data | body | Message para Type = article-data | Yes | [r_consume.ConsumeArticleDataMessage](#r_consumeconsumearticledatamessage) |
+| type | body | Message para Type = article-exist | Yes | [r_consume.consumeArticleDataMessage](#r_consumeconsumearticledatamessage) |
 
 ##### Responses
 
@@ -39,7 +39,7 @@ Emite Validar Artículos a Cart cart/article-exist
 
 ##### Description
 
-Antes de iniciar las operaciones se validan los artículos contra el catalogo.
+Solicitamos las validaciones ar articulos a catalogo. Queue y Exchange es donde nos reponde.
 
 ##### Parameters
 
@@ -61,13 +61,13 @@ Emite Placed Order desde Cart
 
 ##### Description
 
-Emite Placed Order desde Cart
+Cuando se hace checkout enviamos un comando a orders para que inicie el proceso de la orden.
 
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| body | body | Mensage de validacion | Yes | [r_emit.SendPlacedMessage](#r_emitsendplacedmessage) |
+| body | body | Place order | Yes | [r_emit.SendPlacedMessage](#r_emitsendplacedmessage) |
 
 ##### Responses
 
@@ -89,7 +89,7 @@ Escucha de mensajes logout desde auth.
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| body | body | Estructura general del mensage | Yes | [r_consume.LogoutMessage](#r_consumelogoutmessage) |
+| body | body | Estructura general del mensage | Yes | [r_consume.logoutMessage](#r_consumelogoutmessage) |
 
 ##### Responses
 
@@ -105,13 +105,13 @@ Mensage Rabbit order/order-placed
 
 ##### Description
 
-Antes de iniciar las operaciones se validan los artículos contra el catalogo.
+Cuando se recibe order-placed se actualiza el order id del carrito. No se respode a este evento.
 
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| article-data | body | Message para Type = article-data | Yes | [r_consume.ConsumeOrderPlacedMessage](#r_consumeconsumeorderplacedmessage) |
+| type | body | Message para Type = order-placed | Yes | [r_consume.consumeOrderPlacedMessage](#r_consumeconsumeorderplacedmessage) |
 
 ##### Responses
 
@@ -362,17 +362,17 @@ Valida el carrito para checkout
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| cartId | string |  | No |
-| orderId | string |  | No |
-| valid | boolean |  | No |
+| cartId | string | *Example:* `"CartId"` | No |
+| orderId | string | *Example:* `"OrderId"` | No |
+| valid | boolean | *Example:* `true` | No |
 
 #### cart.ValidationEvent
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| articleId | string |  | No |
-| referenceId | string |  | No |
-| valid | boolean |  | No |
+| articleId | string | *Example:* `"ArticleId"` | No |
+| referenceId | string | *Example:* `"UserId"` | No |
+| valid | boolean | *Example:* `true` | No |
 
 #### engine.ErrorData
 
@@ -380,69 +380,64 @@ Valida el carrito para checkout
 | ---- | ---- | ----------- | -------- |
 | error | string |  | No |
 
-#### r_consume.ConsumeArticleDataMessage
+#### r_consume.consumeArticleDataMessage
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| exchange | string |  | No |
+| exchange | string | *Example:* `""` | No |
 | message | [cart.ValidationEvent](#cartvalidationevent) |  | No |
-| queue | string |  | No |
-| type | string |  | No |
-| version | integer |  | No |
+| queue | string | *Example:* `""` | No |
+| type | string | *Example:* `"article-exist"` | No |
 
-#### r_consume.ConsumeOrderPlacedMessage
+#### r_consume.consumeOrderPlacedMessage
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| exchange | string |  | No |
+| exchange | string | *Example:* `""` | No |
 | message | [cart.OrderPlacedEvent](#cartorderplacedevent) |  | No |
-| queue | string |  | No |
-| type | string |  | No |
-| version | integer |  | No |
+| queue | string | *Example:* `""` | No |
+| type | string | *Example:* `"order-placed"` | No |
 
-#### r_consume.LogoutMessage
+#### r_consume.logoutMessage
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| message | string |  | No |
-| type | string |  | No |
+| message | string | *Example:* `"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg"` | No |
+| type | string | *Example:* `"logout"` | No |
 
 #### r_emit.ArticleValidationData
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| articleId | string |  | No |
-| referenceId | string |  | No |
+| articleId | string | *Example:* `"ArticleId"` | No |
+| referenceId | string | *Example:* `"UserId"` | No |
 
 #### r_emit.PlaceArticlesData
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| id | string |  | No |
-| quantity | integer |  | No |
+| id | string | *Example:* `"ArticleId"` | No |
+| quantity | integer | *Example:* `10` | No |
 
 #### r_emit.PlacedData
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
 | articles | [ [r_emit.PlaceArticlesData](#r_emitplacearticlesdata) ] |  | No |
-| cartId | string |  | No |
-| userId | string |  | No |
+| cartId | string | *Example:* `"CartId"` | No |
+| userId | string | *Example:* `"UserId"` | No |
 
 #### r_emit.SendPlacedMessage
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| exchange | string |  | No |
-| message | [r_emit.PlacedData](#r_emitplaceddata) |  | No |
-| queue | string |  | No |
-| type | string |  | No |
+| r_emit.SendPlacedMessage | object |  |  |
 
 #### r_emit.SendValidationMessage
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| exchange | string |  | No |
+| exchange | string | *Example:* `"cart"` | No |
 | message | [r_emit.ArticleValidationData](#r_emitarticlevalidationdata) |  | No |
-| queue | string |  | No |
-| type | string |  | No |
+| queue | string | *Example:* `"cart"` | No |
+| type | string | *Example:* `"article-exist"` | No |

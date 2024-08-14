@@ -35,9 +35,8 @@ func TestProccessArticleDataHappyPath(t *testing.T) {
 	).Times(1)
 
 	// REQUEST
-	newMessage := &ConsumeArticleDataMessage{
+	newMessage := &consumeArticleDataMessage{
 		Type:     "article-data",
-		Version:  1,
 		Queue:    "orders",
 		Exchange: "orders",
 		Message: &cart.ValidationEvent{
