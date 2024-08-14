@@ -7,9 +7,9 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/rest/engine"
-	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/tools/apperr"
 	"github.com/nmarsollier/cartgo/tools/db"
+	"github.com/nmarsollier/cartgo/tools/http_client"
 	"github.com/nmarsollier/cartgo/tools/tests"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -43,8 +43,8 @@ func TestPostCartArticleHappyPath(t *testing.T) {
 	).Times(1)
 
 	// Security
-	httpMock := security.NewMockSecurityDao(ctrl)
-	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
+	httpMock := http_client.NewMockHTTPClient(ctrl)
+	tests.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
 	r := engine.TestRouter(collection, httpMock)
@@ -90,8 +90,8 @@ func TestPostCartArticleHappyPath2(t *testing.T) {
 	).Times(1)
 
 	// Security
-	httpMock := security.NewMockSecurityDao(ctrl)
-	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
+	httpMock := http_client.NewMockHTTPClient(ctrl)
+	tests.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
 	r := engine.TestRouter(collection, httpMock)
@@ -116,8 +116,8 @@ func TestPostCartArticleInvalidToken(t *testing.T) {
 
 	// DB Mock
 	ctrl := gomock.NewController(t)
-	httpMock := security.NewMockSecurityDao(ctrl)
-	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(nil, apperr.Unauthorized)
+	httpMock := http_client.NewMockHTTPClient(ctrl)
+	tests.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
 	r := engine.TestRouter(httpMock)
@@ -142,8 +142,8 @@ func TestPostCartArticleDocumentNotFound(t *testing.T) {
 	tests.ExpectFindOneError(collection, apperr.NotFound, 1)
 
 	// Security
-	httpMock := security.NewMockSecurityDao(ctrl)
-	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
+	httpMock := http_client.NewMockHTTPClient(ctrl)
+	tests.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
 	r := engine.TestRouter(collection, httpMock)
@@ -178,8 +178,8 @@ func TestPostCartArticleReplaceError(t *testing.T) {
 	tests.ExpectReplaceOneError(collection, apperr.NotFound, 1)
 
 	// Security
-	httpMock := security.NewMockSecurityDao(ctrl)
-	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
+	httpMock := http_client.NewMockHTTPClient(ctrl)
+	tests.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
 	r := engine.TestRouter(collection, httpMock)

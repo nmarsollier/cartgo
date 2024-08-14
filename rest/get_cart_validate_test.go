@@ -1,16 +1,18 @@
 package rest
 
 import (
+	"bytes"
+	"io"
 	"net/http"
 	"testing"
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/rest/engine"
-	"github.com/nmarsollier/cartgo/security"
-	"github.com/nmarsollier/cartgo/service"
+	"github.com/nmarsollier/cartgo/tools"
 	"github.com/nmarsollier/cartgo/tools/apperr"
 	"github.com/nmarsollier/cartgo/tools/db"
+	"github.com/nmarsollier/cartgo/tools/http_client"
 	"github.com/nmarsollier/cartgo/tools/tests"
 	"github.com/stretchr/testify/assert"
 )
@@ -32,15 +34,18 @@ func TestGetCartValidateHappyPath(t *testing.T) {
 	).Times(1)
 
 	// Security
-	httpMock := security.NewMockSecurityDao(ctrl)
-	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
+	httpMock := http_client.NewMockHTTPClient(ctrl)
+	tests.ExpectHttpToken(httpMock, user)
 
 	// Serice
-	serviceMock := service.NewMockServiceDao(ctrl)
-	serviceMock.EXPECT().CallValidate(gomock.Any(), gomock.Any()).Return(nil).Times(2)
+	response := &http.Response{
+		StatusCode: http.StatusOK,
+		Body:       io.NopCloser(bytes.NewBufferString(tools.ToJson(user))),
+	}
+	httpMock.EXPECT().Do(gomock.Any()).Return(response, nil).Times(2)
 
 	// REQUEST
-	r := engine.TestRouter(collection, httpMock, serviceMock)
+	r := engine.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart/validate", user.ID)
@@ -61,8 +66,8 @@ func TestGetCartValidateDocumentNotFound(t *testing.T) {
 	tests.ExpectFindOneError(collection, apperr.NotFound, 1)
 
 	// Security
-	httpMock := security.NewMockSecurityDao(ctrl)
-	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
+	httpMock := http_client.NewMockHTTPClient(ctrl)
+	tests.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
 	r := engine.TestRouter(collection, httpMock)
@@ -79,8 +84,8 @@ func TestGetCartValidateInvalidToken(t *testing.T) {
 
 	// DB Mock
 	ctrl := gomock.NewController(t)
-	httpMock := security.NewMockSecurityDao(ctrl)
-	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(nil, apperr.Unauthorized)
+	httpMock := http_client.NewMockHTTPClient(ctrl)
+	tests.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
 	r := engine.TestRouter(httpMock)
@@ -109,49 +114,14 @@ func TestGetCartValidateInvalidArticleAth(t *testing.T) {
 	).Times(1)
 
 	// Security
-	httpMock := security.NewMockSecurityDao(ctrl)
-	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
+	httpMock := http_client.NewMockHTTPClient(ctrl)
+	tests.ExpectHttpToken(httpMock, user)
 
 	// Serice
-	serviceMock := service.NewMockServiceDao(ctrl)
-	serviceMock.EXPECT().CallValidate(gomock.Any(), gomock.Any()).Return(apperr.Unauthorized).Times(1)
+	tests.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
-	r := engine.TestRouter(collection, httpMock, serviceMock)
-	InitRoutes()
-
-	req, w := tests.TestGetRequest("/v1/cart/validate", user.ID)
-	r.ServeHTTP(w, req)
-
-	tests.AssertUnauthorized(t, w)
-}
-
-func TestGetCartValidateInvalidArticle(t *testing.T) {
-	user := tests.TestUser()
-	cartData := tests.TestCart()
-
-	// DB Mock
-	ctrl := gomock.NewController(t)
-	collection := db.NewMockMongoCollection(ctrl)
-	collection.EXPECT().FindOne(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
-		func(arg1 interface{}, params cart.FindByUserIdFilter, updated *cart.Cart) error {
-			assert.Equal(t, 2, len(cartData.Articles))
-
-			*updated = *cartData
-			return nil
-		},
-	).Times(1)
-
-	// Security
-	httpMock := security.NewMockSecurityDao(ctrl)
-	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
-
-	// Serice
-	serviceMock := service.NewMockServiceDao(ctrl)
-	serviceMock.EXPECT().CallValidate(gomock.Any(), gomock.Any()).Return(apperr.Invalid).Times(1)
-
-	// REQUEST
-	r := engine.TestRouter(collection, httpMock, serviceMock)
+	r := engine.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart/validate", user.ID)

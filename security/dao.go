@@ -8,30 +8,10 @@ import (
 	"github.com/golang/glog"
 	"github.com/nmarsollier/cartgo/tools/apperr"
 	"github.com/nmarsollier/cartgo/tools/env"
+	"github.com/nmarsollier/cartgo/tools/http_client"
 )
 
-type SecurityDao interface {
-	GetRemoteToken(token string) (*User, error)
-}
-
-func Get(ctx ...interface{}) SecurityDao {
-	for _, o := range ctx {
-		if ti, ok := o.(SecurityDao); ok {
-			return ti
-		}
-	}
-
-	return &httpDaoImpl{}
-}
-
-type httpDaoImpl struct {
-}
-
-func (t *httpDaoImpl) GetRemoteToken(token string) (*User, error) {
-	return getRemoteToken(token)
-}
-
-func getRemoteToken(token string) (*User, error) {
+func getRemoteToken(token string, ctx ...interface{}) (*User, error) {
 	// Buscamos el usuario remoto
 	req, err := http.NewRequest("GET", env.Get().SecurityServerURL+"/v1/users/current", nil)
 	if err != nil {
@@ -39,7 +19,7 @@ func getRemoteToken(token string) (*User, error) {
 		return nil, apperr.Unauthorized
 	}
 	req.Header.Add("Authorization", "bearer "+token)
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := http_client.Get(ctx...).Do(req)
 	if err != nil || resp.StatusCode != 200 {
 		glog.Error(err)
 		return nil, apperr.Unauthorized

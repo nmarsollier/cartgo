@@ -27,7 +27,7 @@ func Validate(token string, ctx ...interface{}) (*User, error) {
 		}
 	}
 
-	user, err := Get(ctx...).GetRemoteToken(token)
+	user, err := getRemoteToken(token, ctx...)
 	if err != nil {
 		glog.Error(err)
 		return nil, apperr.Unauthorized

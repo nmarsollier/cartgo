@@ -105,41 +105,45 @@
 				
 				<option value="file24">github.com/nmarsollier/cartgo/rest/router.go (77.8%)</option>
 				
-				<option value="file25">github.com/nmarsollier/cartgo/security/dao.go (12.0%)</option>
+				<option value="file25">github.com/nmarsollier/cartgo/security/dao.go (70.0%)</option>
 				
-				<option value="file26">github.com/nmarsollier/cartgo/security/dao_mocks.go (100.0%)</option>
+				<option value="file26">github.com/nmarsollier/cartgo/security/service.go (50.0%)</option>
 				
-				<option value="file27">github.com/nmarsollier/cartgo/security/service.go (50.0%)</option>
+				<option value="file27">github.com/nmarsollier/cartgo/service/AddArticle.go (100.0%)</option>
 				
-				<option value="file28">github.com/nmarsollier/cartgo/service/AddArticle.go (100.0%)</option>
+				<option value="file28">github.com/nmarsollier/cartgo/service/Checkout.go (82.4%)</option>
 				
-				<option value="file29">github.com/nmarsollier/cartgo/service/Checkout.go (50.0%)</option>
+				<option value="file29">github.com/nmarsollier/cartgo/service/CurrentCart.go (100.0%)</option>
 				
-				<option value="file30">github.com/nmarsollier/cartgo/service/CurrentCart.go (100.0%)</option>
+				<option value="file30">github.com/nmarsollier/cartgo/service/dao.go (81.8%)</option>
 				
-				<option value="file31">github.com/nmarsollier/cartgo/service/dao.go (60.0%)</option>
+				<option value="file31">github.com/nmarsollier/cartgo/tools/apperr/rest_error.go (100.0%)</option>
 				
-				<option value="file32">github.com/nmarsollier/cartgo/service/dao_mocks.go (100.0%)</option>
+				<option value="file32">github.com/nmarsollier/cartgo/tools/apperr/validation.go (70.0%)</option>
 				
-				<option value="file33">github.com/nmarsollier/cartgo/tools/apperr/rest_error.go (100.0%)</option>
+				<option value="file33">github.com/nmarsollier/cartgo/tools/db/connection.go (0.0%)</option>
 				
-				<option value="file34">github.com/nmarsollier/cartgo/tools/apperr/validation.go (70.0%)</option>
+				<option value="file34">github.com/nmarsollier/cartgo/tools/db/mongo_collection.go (0.0%)</option>
 				
-				<option value="file35">github.com/nmarsollier/cartgo/tools/db/connection.go (0.0%)</option>
+				<option value="file35">github.com/nmarsollier/cartgo/tools/db/mongo_collection_mocks.go (58.5%)</option>
 				
-				<option value="file36">github.com/nmarsollier/cartgo/tools/db/mongo_collection.go (0.0%)</option>
+				<option value="file36">github.com/nmarsollier/cartgo/tools/env/env.go (64.7%)</option>
 				
-				<option value="file37">github.com/nmarsollier/cartgo/tools/db/mongo_collection_mocks.go (58.5%)</option>
+				<option value="file37">github.com/nmarsollier/cartgo/tools/http_client/client.go (75.0%)</option>
 				
-				<option value="file38">github.com/nmarsollier/cartgo/tools/env/env.go (64.7%)</option>
+				<option value="file38">github.com/nmarsollier/cartgo/tools/http_client/client_mocks.go (100.0%)</option>
 				
-				<option value="file39">github.com/nmarsollier/cartgo/tools/tests/data.go (100.0%)</option>
+				<option value="file39">github.com/nmarsollier/cartgo/tools/json_tools.go (100.0%)</option>
 				
-				<option value="file40">github.com/nmarsollier/cartgo/tools/tests/database.go (80.0%)</option>
+				<option value="file40">github.com/nmarsollier/cartgo/tools/tests/data.go (100.0%)</option>
 				
-				<option value="file41">github.com/nmarsollier/cartgo/tools/tests/rabbit.go (100.0%)</option>
+				<option value="file41">github.com/nmarsollier/cartgo/tools/tests/database.go (80.0%)</option>
 				
-				<option value="file42">github.com/nmarsollier/cartgo/tools/tests/rest.go (100.0%)</option>
+				<option value="file42">github.com/nmarsollier/cartgo/tools/tests/http.go (100.0%)</option>
+				
+				<option value="file43">github.com/nmarsollier/cartgo/tools/tests/rabbit.go (100.0%)</option>
+				
+				<option value="file44">github.com/nmarsollier/cartgo/tools/tests/rest.go (100.0%)</option>
 				
 				</select>
 			</div>
@@ -2752,43 +2756,23 @@ import (
         "github.com/golang/glog"
         "github.com/nmarsollier/cartgo/tools/apperr"
         "github.com/nmarsollier/cartgo/tools/env"
+        "github.com/nmarsollier/cartgo/tools/http_client"
 )
 
-type SecurityDao interface {
-        GetRemoteToken(token string) (*User, error)
-}
-
-func Get(ctx ...interface{}) SecurityDao <span class="cov8" title="1">{
-        for _, o := range ctx </span><span class="cov8" title="1">{
-                if ti, ok := o.(SecurityDao); ok </span><span class="cov8" title="1">{
-                        return ti
-                }</span>
-        }
-
-        <span class="cov0" title="0">return &amp;httpDaoImpl{}</span>
-}
-
-type httpDaoImpl struct {
-}
-
-func (t *httpDaoImpl) GetRemoteToken(token string) (*User, error) <span class="cov0" title="0">{
-        return getRemoteToken(token)
-}</span>
-
-func getRemoteToken(token string) (*User, error) <span class="cov0" title="0">{
+func getRemoteToken(token string, ctx ...interface{}) (*User, error) <span class="cov8" title="1">{
         // Buscamos el usuario remoto
         req, err := http.NewRequest("GET", env.Get().SecurityServerURL+"/v1/users/current", nil)
         if err != nil </span><span class="cov0" title="0">{
                 glog.Error(err)
                 return nil, apperr.Unauthorized
         }</span>
-        <span class="cov0" title="0">req.Header.Add("Authorization", "bearer "+token)
-        resp, err := http.DefaultClient.Do(req)
-        if err != nil || resp.StatusCode != 200 </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">req.Header.Add("Authorization", "bearer "+token)
+        resp, err := http_client.Get(ctx...).Do(req)
+        if err != nil || resp.StatusCode != 200 </span><span class="cov8" title="1">{
                 glog.Error(err)
                 return nil, apperr.Unauthorized
         }</span>
-        <span class="cov0" title="0">defer resp.Body.Close()
+        <span class="cov8" title="1">defer resp.Body.Close()
 
         user := &amp;User{}
         err = json.NewDecoder(resp.Body).Decode(user)
@@ -2797,67 +2781,16 @@ func getRemoteToken(token string) (*User, error) <span class="cov0" title="0">{
                 return nil, err
         }</span>
 
-        <span class="cov0" title="0">validate := validator.New()
+        <span class="cov8" title="1">validate := validator.New()
         if err := validate.Struct(user); err != nil </span><span class="cov0" title="0">{
                 glog.Error(err)
                 return nil, err
         }</span>
-        <span class="cov0" title="0">return user, nil</span>
+        <span class="cov8" title="1">return user, nil</span>
 }
 </pre>
 		
-		<pre class="file" id="file26" style="display: none">// Code generated by MockGen. DO NOT EDIT.
-// Source: ./security/dao.go
-
-// Package security is a generated GoMock package.
-package security
-
-import (
-        reflect "reflect"
-
-        gomock "github.com/golang/mock/gomock"
-)
-
-// MockSecurityDao is a mock of SecurityDao interface.
-type MockSecurityDao struct {
-        ctrl     *gomock.Controller
-        recorder *MockSecurityDaoMockRecorder
-}
-
-// MockSecurityDaoMockRecorder is the mock recorder for MockSecurityDao.
-type MockSecurityDaoMockRecorder struct {
-        mock *MockSecurityDao
-}
-
-// NewMockSecurityDao creates a new mock instance.
-func NewMockSecurityDao(ctrl *gomock.Controller) *MockSecurityDao <span class="cov8" title="1">{
-        mock := &amp;MockSecurityDao{ctrl: ctrl}
-        mock.recorder = &amp;MockSecurityDaoMockRecorder{mock}
-        return mock
-}</span>
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockSecurityDao) EXPECT() *MockSecurityDaoMockRecorder <span class="cov8" title="1">{
-        return m.recorder
-}</span>
-
-// GetRemoteToken mocks base method.
-func (m *MockSecurityDao) GetRemoteToken(token string) (*User, error) <span class="cov8" title="1">{
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetRemoteToken", token)
-        ret0, _ := ret[0].(*User)
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
-}</span>
-
-// GetRemoteToken indicates an expected call of GetRemoteToken.
-func (mr *MockSecurityDaoMockRecorder) GetRemoteToken(token interface{}) *gomock.Call <span class="cov8" title="1">{
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRemoteToken", reflect.TypeOf((*MockSecurityDao)(nil).GetRemoteToken), token)
-}</span>
-</pre>
-		
-		<pre class="file" id="file27" style="display: none">package security
+		<pre class="file" id="file26" style="display: none">package security
 
 import (
         "time"
@@ -2886,7 +2819,7 @@ func Validate(token string, ctx ...interface{}) (*User, error) <span class="cov8
                 }</span>
         }
 
-        <span class="cov8" title="1">user, err := Get(ctx...).GetRemoteToken(token)
+        <span class="cov8" title="1">user, err := getRemoteToken(token, ctx...)
         if err != nil </span><span class="cov8" title="1">{
                 glog.Error(err)
                 return nil, apperr.Unauthorized
@@ -2910,7 +2843,7 @@ func Invalidate(token string) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file28" style="display: none">package service
+		<pre class="file" id="file27" style="display: none">package service
 
 import (
         "github.com/nmarsollier/cartgo/cart"
@@ -2936,16 +2869,12 @@ func AddArticle(userId string, article cart.AddArticleData, ctx ...interface{}) 
 }
 </pre>
 		
-		<pre class="file" id="file29" style="display: none">package service
+		<pre class="file" id="file28" style="display: none">package service
 
 import (
-        "net/http"
-
         "github.com/golang/glog"
         "github.com/nmarsollier/cartgo/cart"
         "github.com/nmarsollier/cartgo/rabbit/r_emit"
-        "github.com/nmarsollier/cartgo/tools/apperr"
-        "github.com/nmarsollier/cartgo/tools/env"
 )
 
 func Checkout(userId string, token string, ctx ...interface{}) (*cart.Cart, error) <span class="cov8" title="1">{
@@ -2971,7 +2900,7 @@ func Checkout(userId string, token string, ctx ...interface{}) (*cart.Cart, erro
 
 func ValidateCheckout(cart *cart.Cart, token string, ctx ...interface{}) error <span class="cov8" title="1">{
         for _, a := range cart.Articles </span><span class="cov8" title="1">{
-                err := Get(ctx...).CallValidate(a, token)
+                err := callValidate(a, token, ctx...)
                 if err != nil </span><span class="cov8" title="1">{
                         glog.Error(err)
                         return err
@@ -2980,27 +2909,9 @@ func ValidateCheckout(cart *cart.Cart, token string, ctx ...interface{}) error <
 
         <span class="cov8" title="1">return nil</span>
 }
-
-func callValidate(article *cart.Article, token string) error <span class="cov0" title="0">{
-        // Buscamos el usuario remoto
-        req, err := http.NewRequest("GET", env.Get().CatalogServerURL+"/v1/articles/"+article.ArticleId, nil)
-        if err != nil </span><span class="cov0" title="0">{
-                glog.Error(err)
-                return apperr.Invalid
-        }</span>
-        <span class="cov0" title="0">req.Header.Add("Authorization", "bearer "+token)
-        resp, err := http.DefaultClient.Do(req)
-        if err != nil || resp.StatusCode != 200 </span><span class="cov0" title="0">{
-                glog.Error(err)
-                return apperr.Invalid
-        }</span>
-        <span class="cov0" title="0">defer resp.Body.Close()
-
-        return nil</span>
-}
 </pre>
 		
-		<pre class="file" id="file30" style="display: none">package service
+		<pre class="file" id="file29" style="display: none">package service
 
 import (
         "github.com/nmarsollier/cartgo/cart"
@@ -3026,84 +2937,38 @@ func GetCurrentCart(userId string, ctx ...interface{}) (*cart.Cart, error) <span
 }
 </pre>
 		
-		<pre class="file" id="file31" style="display: none">package service
-
-import "github.com/nmarsollier/cartgo/cart"
-
-type ServiceDao interface {
-        CallValidate(article *cart.Article, token string) error
-}
-
-func Get(ctx ...interface{}) ServiceDao <span class="cov8" title="1">{
-        for _, o := range ctx </span><span class="cov8" title="1">{
-                if ti, ok := o.(ServiceDao); ok </span><span class="cov8" title="1">{
-                        return ti
-                }</span>
-        }
-
-        <span class="cov0" title="0">return &amp;httpDaoImpl{}</span>
-}
-
-type httpDaoImpl struct {
-}
-
-func (t *httpDaoImpl) CallValidate(article *cart.Article, token string) error <span class="cov0" title="0">{
-        return callValidate(article, token)
-}</span>
-</pre>
-		
-		<pre class="file" id="file32" style="display: none">// Code generated by MockGen. DO NOT EDIT.
-// Source: ./service/dao.go
-
-// Package service is a generated GoMock package.
-package service
+		<pre class="file" id="file30" style="display: none">package service
 
 import (
-        reflect "reflect"
+        "net/http"
 
-        gomock "github.com/golang/mock/gomock"
-        cart "github.com/nmarsollier/cartgo/cart"
+        "github.com/golang/glog"
+        "github.com/nmarsollier/cartgo/cart"
+        "github.com/nmarsollier/cartgo/tools/apperr"
+        "github.com/nmarsollier/cartgo/tools/env"
+        "github.com/nmarsollier/cartgo/tools/http_client"
 )
 
-// MockServiceDao is a mock of ServiceDao interface.
-type MockServiceDao struct {
-        ctrl     *gomock.Controller
-        recorder *MockServiceDaoMockRecorder
+func callValidate(article *cart.Article, token string, ctx ...interface{}) error <span class="cov8" title="1">{
+        // Buscamos el usuario remoto
+        req, err := http.NewRequest("GET", env.Get().CatalogServerURL+"/v1/articles/"+article.ArticleId, nil)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return apperr.Invalid
+        }</span>
+        <span class="cov8" title="1">req.Header.Add("Authorization", "bearer "+token)
+        resp, err := http_client.Get(ctx...).Do(req)
+        if err != nil || resp.StatusCode != 200 </span><span class="cov8" title="1">{
+                glog.Error(err)
+                return apperr.Invalid
+        }</span>
+        <span class="cov8" title="1">defer resp.Body.Close()
+
+        return nil</span>
 }
-
-// MockServiceDaoMockRecorder is the mock recorder for MockServiceDao.
-type MockServiceDaoMockRecorder struct {
-        mock *MockServiceDao
-}
-
-// NewMockServiceDao creates a new mock instance.
-func NewMockServiceDao(ctrl *gomock.Controller) *MockServiceDao <span class="cov8" title="1">{
-        mock := &amp;MockServiceDao{ctrl: ctrl}
-        mock.recorder = &amp;MockServiceDaoMockRecorder{mock}
-        return mock
-}</span>
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockServiceDao) EXPECT() *MockServiceDaoMockRecorder <span class="cov8" title="1">{
-        return m.recorder
-}</span>
-
-// CallValidate mocks base method.
-func (m *MockServiceDao) CallValidate(article *cart.Article, token string) error <span class="cov8" title="1">{
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "CallValidate", article, token)
-        ret0, _ := ret[0].(error)
-        return ret0
-}</span>
-
-// CallValidate indicates an expected call of CallValidate.
-func (mr *MockServiceDaoMockRecorder) CallValidate(article, token interface{}) *gomock.Call <span class="cov8" title="1">{
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CallValidate", reflect.TypeOf((*MockServiceDao)(nil).CallValidate), article, token)
-}</span>
 </pre>
 		
-		<pre class="file" id="file33" style="display: none">package apperr
+		<pre class="file" id="file31" style="display: none">package apperr
 
 // Unauthorized el usuario no esta autorizado al recurso
 var Unauthorized = NewRestError(401, "Unauthorized")
@@ -3152,7 +3017,7 @@ func (e *restError) Status() int <span class="cov8" title="1">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file34" style="display: none">package apperr
+		<pre class="file" id="file32" style="display: none">package apperr
 
 import (
         "encoding/json"
@@ -3209,7 +3074,7 @@ type errField struct {
 }
 </pre>
 		
-		<pre class="file" id="file35" style="display: none">package db
+		<pre class="file" id="file33" style="display: none">package db
 
 import (
         "context"
@@ -3259,7 +3124,7 @@ func IsUniqueKeyError(err error) bool <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file36" style="display: none">package db
+		<pre class="file" id="file34" style="display: none">package db
 
 import (
         "context"
@@ -3354,7 +3219,7 @@ func (c *mongoCursor) Decode(val interface{}) error <span class="cov0" title="0"
 }</span>
 </pre>
 		
-		<pre class="file" id="file37" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+		<pre class="file" id="file35" style="display: none">// Code generated by MockGen. DO NOT EDIT.
 // Source: ./tools/db/mongo_collection.go
 
 // Package db is a generated GoMock package.
@@ -3515,7 +3380,7 @@ func (mr *MockCursorMockRecorder) Next(ctx interface{}) *gomock.Call <span class
 }</span>
 </pre>
 		
-		<pre class="file" id="file38" style="display: none">package env
+		<pre class="file" id="file36" style="display: none">package env
 
 import (
         "os"
@@ -3582,7 +3447,88 @@ func load() *Configuration <span class="cov8" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file39" style="display: none">package tests
+		<pre class="file" id="file37" style="display: none">package http_client
+
+import "net/http"
+
+type HTTPClient interface {
+        Do(req *http.Request) (*http.Response, error)
+}
+
+func Get(ctx ...interface{}) HTTPClient <span class="cov8" title="1">{
+        for _, o := range ctx </span><span class="cov8" title="1">{
+                if client, ok := o.(HTTPClient); ok </span><span class="cov8" title="1">{
+                        return client
+                }</span>
+        }
+
+        <span class="cov0" title="0">return http.DefaultClient</span>
+}
+</pre>
+		
+		<pre class="file" id="file38" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+// Source: ./tools/http_client/client.go
+
+// Package http_client is a generated GoMock package.
+package http_client
+
+import (
+        http "net/http"
+        reflect "reflect"
+
+        gomock "github.com/golang/mock/gomock"
+)
+
+// MockHTTPClient is a mock of HTTPClient interface.
+type MockHTTPClient struct {
+        ctrl     *gomock.Controller
+        recorder *MockHTTPClientMockRecorder
+}
+
+// MockHTTPClientMockRecorder is the mock recorder for MockHTTPClient.
+type MockHTTPClientMockRecorder struct {
+        mock *MockHTTPClient
+}
+
+// NewMockHTTPClient creates a new mock instance.
+func NewMockHTTPClient(ctrl *gomock.Controller) *MockHTTPClient <span class="cov8" title="1">{
+        mock := &amp;MockHTTPClient{ctrl: ctrl}
+        mock.recorder = &amp;MockHTTPClientMockRecorder{mock}
+        return mock
+}</span>
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockHTTPClient) EXPECT() *MockHTTPClientMockRecorder <span class="cov8" title="1">{
+        return m.recorder
+}</span>
+
+// Do mocks base method.
+func (m *MockHTTPClient) Do(req *http.Request) (*http.Response, error) <span class="cov8" title="1">{
+        m.ctrl.T.Helper()
+        ret := m.ctrl.Call(m, "Do", req)
+        ret0, _ := ret[0].(*http.Response)
+        ret1, _ := ret[1].(error)
+        return ret0, ret1
+}</span>
+
+// Do indicates an expected call of Do.
+func (mr *MockHTTPClientMockRecorder) Do(req interface{}) *gomock.Call <span class="cov8" title="1">{
+        mr.mock.ctrl.T.Helper()
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Do", reflect.TypeOf((*MockHTTPClient)(nil).Do), req)
+}</span>
+</pre>
+		
+		<pre class="file" id="file39" style="display: none">package tools
+
+import "encoding/json"
+
+func ToJson(obj interface{}) string <span class="cov8" title="1">{
+        jsonData, _ := json.Marshal(obj)
+        return string(jsonData)
+}</span>
+</pre>
+		
+		<pre class="file" id="file40" style="display: none">package tests
 
 import (
         "time"
@@ -3627,7 +3573,7 @@ func TestUser() *security.User <span class="cov8" title="1">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file40" style="display: none">package tests
+		<pre class="file" id="file41" style="display: none">package tests
 
 import (
         "github.com/golang/mock/gomock"
@@ -3665,7 +3611,37 @@ func ExpectUserInsertOne(collection *db.MockMongoCollection, times int) <span cl
 }</span>
 </pre>
 		
-		<pre class="file" id="file41" style="display: none">package tests
+		<pre class="file" id="file42" style="display: none">package tests
+
+import (
+        "bytes"
+        "io"
+        "net/http"
+
+        "github.com/golang/mock/gomock"
+        "github.com/nmarsollier/cartgo/security"
+        "github.com/nmarsollier/cartgo/tools"
+        "github.com/nmarsollier/cartgo/tools/http_client"
+)
+
+func ExpectHttpToken(mock *http_client.MockHTTPClient, user *security.User) <span class="cov8" title="1">{
+        response := &amp;http.Response{
+                StatusCode: http.StatusOK,
+                Body:       io.NopCloser(bytes.NewBufferString(tools.ToJson(user))),
+        }
+        mock.EXPECT().Do(gomock.Any()).Return(response, nil).Times(1)
+}</span>
+
+func ExpectHttpUnauthorized(mock *http_client.MockHTTPClient) <span class="cov8" title="1">{
+        response := &amp;http.Response{
+                StatusCode: http.StatusUnauthorized,
+                Body:       io.NopCloser(bytes.NewBufferString("")),
+        }
+        mock.EXPECT().Do(gomock.Any()).Return(response, nil).Times(1)
+}</span>
+</pre>
+		
+		<pre class="file" id="file43" style="display: none">package tests
 
 import (
         "github.com/golang/mock/gomock"
@@ -3679,7 +3655,7 @@ func MockRabbitChannel(ctrl *gomock.Controller, times int) *r_emit.MockRabbitCha
 }</span>
 </pre>
 		
-		<pre class="file" id="file42" style="display: none">package tests
+		<pre class="file" id="file44" style="display: none">package tests
 
 import (
         "bytes"

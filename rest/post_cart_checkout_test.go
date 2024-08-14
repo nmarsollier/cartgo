@@ -1,16 +1,16 @@
 package rest
 
 import (
+	"bytes"
+	"io"
 	"net/http"
 	"testing"
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/rest/engine"
-	"github.com/nmarsollier/cartgo/security"
-	"github.com/nmarsollier/cartgo/service"
-	"github.com/nmarsollier/cartgo/tools/apperr"
 	"github.com/nmarsollier/cartgo/tools/db"
+	"github.com/nmarsollier/cartgo/tools/http_client"
 	"github.com/nmarsollier/cartgo/tools/tests"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -43,12 +43,15 @@ func TestGetCartCheckoutHappyPath(t *testing.T) {
 	).Times(1)
 
 	// Security
-	httpMock := security.NewMockSecurityDao(ctrl)
-	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(user, nil)
+	httpMock := http_client.NewMockHTTPClient(ctrl)
+	tests.ExpectHttpToken(httpMock, user)
 
 	// Serice
-	serviceMock := service.NewMockServiceDao(ctrl)
-	serviceMock.EXPECT().CallValidate(gomock.Any(), gomock.Any()).Return(nil).Times(2)
+	response := &http.Response{
+		StatusCode: http.StatusOK,
+		Body:       io.NopCloser(bytes.NewBufferString("")), // or use an io.NopCloser with a buffer for more control
+	}
+	httpMock.EXPECT().Do(gomock.Any()).Return(response, nil).Times(2)
 
 	rabbitMock := tests.MockRabbitChannel(ctrl, 1)
 	rabbitMock.EXPECT().Publish(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
@@ -65,7 +68,7 @@ func TestGetCartCheckoutHappyPath(t *testing.T) {
 	).Times(1)
 
 	// REQUEST
-	r := engine.TestRouter(collection, httpMock, serviceMock, rabbitMock)
+	r := engine.TestRouter(collection, httpMock, rabbitMock)
 	InitRoutes()
 
 	req, w := tests.TestPostRequest("/v1/cart/checkout", "", user.ID)
@@ -80,10 +83,10 @@ func TestGetCartCheckoutHappyPath(t *testing.T) {
 func TestGetCartCheckoutInvalidToken(t *testing.T) {
 	user := tests.TestUser()
 
-	// DB Mock
+	// Security
 	ctrl := gomock.NewController(t)
-	httpMock := security.NewMockSecurityDao(ctrl)
-	httpMock.EXPECT().GetRemoteToken(gomock.Any()).Return(nil, apperr.Unauthorized)
+	httpMock := http_client.NewMockHTTPClient(ctrl)
+	tests.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
 	r := engine.TestRouter(httpMock)
