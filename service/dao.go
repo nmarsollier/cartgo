@@ -7,7 +7,7 @@ import (
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/tools/env"
 	"github.com/nmarsollier/cartgo/tools/errs"
-	"github.com/nmarsollier/cartgo/tools/http_client"
+	"github.com/nmarsollier/cartgo/tools/httpx"
 )
 
 func callValidate(article *cart.Article, token string, ctx ...interface{}) error {
@@ -18,7 +18,7 @@ func callValidate(article *cart.Article, token string, ctx ...interface{}) error
 		return errs.Invalid
 	}
 	req.Header.Add("Authorization", "bearer "+token)
-	resp, err := http_client.Get(ctx...).Do(req)
+	resp, err := httpx.Get(ctx...).Do(req)
 	if err != nil || resp.StatusCode != 200 {
 		glog.Error(err)
 		return errs.Invalid

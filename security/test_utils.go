@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/golang/mock/gomock"
-	"github.com/nmarsollier/cartgo/tools/http_client"
+	"github.com/nmarsollier/cartgo/tools/httpx"
 	"github.com/nmarsollier/cartgo/tools/str_tools"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -22,7 +22,7 @@ func TestUser() *User {
 }
 
 // Http Mocks
-func ExpectHttpToken(mock *http_client.MockHTTPClient, user *User) {
+func ExpectHttpToken(mock *httpx.MockHTTPClient, user *User) {
 	response := &http.Response{
 		StatusCode: http.StatusOK,
 		Body:       io.NopCloser(bytes.NewBufferString(str_tools.ToJson(user))),
@@ -30,7 +30,7 @@ func ExpectHttpToken(mock *http_client.MockHTTPClient, user *User) {
 	mock.EXPECT().Do(gomock.Any()).Return(response, nil).Times(1)
 }
 
-func ExpectHttpUnauthorized(mock *http_client.MockHTTPClient) {
+func ExpectHttpUnauthorized(mock *httpx.MockHTTPClient) {
 	response := &http.Response{
 		StatusCode: http.StatusUnauthorized,
 		Body:       io.NopCloser(bytes.NewBufferString("")),

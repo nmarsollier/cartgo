@@ -10,7 +10,7 @@ import (
 	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/tools/db"
 	"github.com/nmarsollier/cartgo/tools/errs"
-	"github.com/nmarsollier/cartgo/tools/http_client"
+	"github.com/nmarsollier/cartgo/tools/httpx"
 	"github.com/nmarsollier/cartgo/tools/tests"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -36,7 +36,7 @@ func TestGetUsersHappyPath(t *testing.T) {
 	).Times(1)
 
 	// Security
-	httpMock := http_client.NewMockHTTPClient(ctrl)
+	httpMock := httpx.NewMockHTTPClient(ctrl)
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
@@ -74,7 +74,7 @@ func TestGetUsersNewCartHappyPath(t *testing.T) {
 	).Times(1)
 
 	// Security
-	httpMock := http_client.NewMockHTTPClient(ctrl)
+	httpMock := httpx.NewMockHTTPClient(ctrl)
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
@@ -105,7 +105,7 @@ func TestGetUsersInsertDbError(t *testing.T) {
 	tests.ExpectInsertOneError(collection, errs.Internal, 1)
 
 	// Security
-	httpMock := http_client.NewMockHTTPClient(ctrl)
+	httpMock := httpx.NewMockHTTPClient(ctrl)
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
@@ -127,7 +127,7 @@ func TestGetUsersDbError(t *testing.T) {
 	tests.ExpectFindOneError(collection, errs.NotFound, 1)
 
 	// Security
-	httpMock := http_client.NewMockHTTPClient(ctrl)
+	httpMock := httpx.NewMockHTTPClient(ctrl)
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
@@ -145,7 +145,7 @@ func TestGetUsersTokenInvalid(t *testing.T) {
 
 	// DB Mock
 	ctrl := gomock.NewController(t)
-	httpMock := http_client.NewMockHTTPClient(ctrl)
+	httpMock := httpx.NewMockHTTPClient(ctrl)
 	security.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST

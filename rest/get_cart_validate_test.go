@@ -12,7 +12,7 @@ import (
 	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/tools/db"
 	"github.com/nmarsollier/cartgo/tools/errs"
-	"github.com/nmarsollier/cartgo/tools/http_client"
+	"github.com/nmarsollier/cartgo/tools/httpx"
 	"github.com/nmarsollier/cartgo/tools/str_tools"
 	"github.com/nmarsollier/cartgo/tools/tests"
 	"github.com/stretchr/testify/assert"
@@ -35,7 +35,7 @@ func TestGetCartValidateHappyPath(t *testing.T) {
 	).Times(1)
 
 	// Security
-	httpMock := http_client.NewMockHTTPClient(ctrl)
+	httpMock := httpx.NewMockHTTPClient(ctrl)
 	security.ExpectHttpToken(httpMock, user)
 
 	// Service
@@ -67,7 +67,7 @@ func TestGetCartValidateDocumentNotFound(t *testing.T) {
 	tests.ExpectFindOneError(collection, errs.NotFound, 1)
 
 	// Security
-	httpMock := http_client.NewMockHTTPClient(ctrl)
+	httpMock := httpx.NewMockHTTPClient(ctrl)
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
@@ -85,7 +85,7 @@ func TestGetCartValidateInvalidToken(t *testing.T) {
 
 	// DB Mock
 	ctrl := gomock.NewController(t)
-	httpMock := http_client.NewMockHTTPClient(ctrl)
+	httpMock := httpx.NewMockHTTPClient(ctrl)
 	security.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
@@ -115,7 +115,7 @@ func TestGetCartValidateInvalidArticleAth(t *testing.T) {
 	).Times(1)
 
 	// Security
-	httpMock := http_client.NewMockHTTPClient(ctrl)
+	httpMock := httpx.NewMockHTTPClient(ctrl)
 	security.ExpectHttpToken(httpMock, user)
 
 	// Service
