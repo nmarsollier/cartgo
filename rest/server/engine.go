@@ -1,4 +1,4 @@
-package engine
+package server
 
 import (
 	"time"
@@ -11,16 +11,16 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-var engine *gin.Engine = nil
+var server *gin.Engine = nil
 
 func Router() *gin.Engine {
-	if engine == nil {
+	if server == nil {
 
-		engine = gin.Default()
+		server = gin.Default()
 
-		engine.Use(gzip.Gzip(gzip.DefaultCompression))
+		server.Use(gzip.Gzip(gzip.DefaultCompression))
 
-		engine.Use(cors.Middleware(cors.Config{
+		server.Use(cors.Middleware(cors.Config{
 			Origins:         "*",
 			Methods:         "GET, PUT, POST, DELETE",
 			RequestHeaders:  "Origin, Authorization, Content-Type",
@@ -30,10 +30,10 @@ func Router() *gin.Engine {
 			ValidateHeaders: false,
 		}))
 
-		engine.Use(ErrorHandler)
+		server.Use(ErrorHandler)
 
-		engine.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+		server.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 
-	return engine
+	return server
 }

@@ -6,7 +6,8 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
-	"github.com/nmarsollier/cartgo/rest/engine"
+	"github.com/nmarsollier/cartgo/rest/server"
+	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/tools/db"
 	"github.com/nmarsollier/cartgo/tools/errs"
 	"github.com/nmarsollier/cartgo/tools/http_client"
@@ -16,7 +17,7 @@ import (
 )
 
 func TestPostCartArticleIdIncrementHappyPath2(t *testing.T) {
-	user := tests.TestUser()
+	user := security.TestUser()
 	cartData := tests.TestCart()
 
 	// DB Mock
@@ -42,10 +43,10 @@ func TestPostCartArticleIdIncrementHappyPath2(t *testing.T) {
 
 	// Security
 	httpMock := http_client.NewMockHTTPClient(ctrl)
-	tests.ExpectHttpToken(httpMock, user)
+	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := engine.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestPostRequest("/v1/cart/article/"+cartData.Articles[1].ArticleId+"/increment", "", user.ID)
@@ -58,16 +59,16 @@ func TestPostCartArticleIdIncrementHappyPath2(t *testing.T) {
 }
 
 func TestPostCartArticleIdIncrementInvalidToken(t *testing.T) {
-	user := tests.TestUser()
+	user := security.TestUser()
 	cartData := tests.TestCart()
 
 	// DB Mock
 	ctrl := gomock.NewController(t)
 	httpMock := http_client.NewMockHTTPClient(ctrl)
-	tests.ExpectHttpUnauthorized(httpMock)
+	security.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
-	r := engine.TestRouter(httpMock)
+	r := server.TestRouter(httpMock)
 	InitRoutes()
 
 	req, w := tests.TestPostRequest("/v1/cart/article/"+cartData.Articles[1].ArticleId+"/increment", "", user.ID)
@@ -77,7 +78,7 @@ func TestPostCartArticleIdIncrementInvalidToken(t *testing.T) {
 }
 
 func TestPostCartArticleIdIncrementDocumentNotFound(t *testing.T) {
-	user := tests.TestUser()
+	user := security.TestUser()
 	cartData := tests.TestCart()
 
 	// DB Mock
@@ -87,10 +88,10 @@ func TestPostCartArticleIdIncrementDocumentNotFound(t *testing.T) {
 
 	// Security
 	httpMock := http_client.NewMockHTTPClient(ctrl)
-	tests.ExpectHttpToken(httpMock, user)
+	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := engine.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestPostRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId+"/increment", "", user.ID)
@@ -101,7 +102,7 @@ func TestPostCartArticleIdIncrementDocumentNotFound(t *testing.T) {
 
 // Test que elimia articulo con stock 0
 func TestPostCartArticleIdIncrementReplaceError(t *testing.T) {
-	user := tests.TestUser()
+	user := security.TestUser()
 	cartData := tests.TestCart()
 
 	// DB Mock
@@ -120,10 +121,10 @@ func TestPostCartArticleIdIncrementReplaceError(t *testing.T) {
 
 	// Security
 	httpMock := http_client.NewMockHTTPClient(ctrl)
-	tests.ExpectHttpToken(httpMock, user)
+	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := engine.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestPostRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId+"/increment", "", user.ID)

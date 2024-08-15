@@ -164,11 +164,6 @@ definitions:
         example: article-exist
         type: string
     type: object
-  engine.ErrorData:
-    properties:
-      error:
-        type: string
-    type: object
   errs.ValidationErr:
     properties:
       messages:
@@ -181,6 +176,11 @@ definitions:
       message:
         type: string
       path:
+        type: string
+    type: object
+  server.ErrorData:
+    properties:
+      error:
         type: string
     type: object
 host: localhost:3003
@@ -311,15 +311,15 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
       summary: Obtener carrito.
       tags:
       - Cart
@@ -359,15 +359,15 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
       summary: Agregar Articulo
       tags:
       - Cart
@@ -399,15 +399,15 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
       summary: Eliminar Articulo
       tags:
       - Cart
@@ -441,15 +441,15 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
       summary: Agregar 1 Articulo
       tags:
       - Cart
@@ -483,15 +483,15 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
       summary: Agregar 1 Articulo
       tags:
       - Cart
@@ -523,15 +523,15 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
       summary: Checkout Articulo
       tags:
       - Cart
@@ -558,15 +558,15 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/engine.ErrorData'
+            $ref: '#/definitions/server.ErrorData'
       summary: Validar Carrito
       tags:
       - Cart

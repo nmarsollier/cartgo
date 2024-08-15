@@ -1,21 +1,21 @@
-package engine
+package server
 
 import (
 	"github.com/gin-gonic/gin"
 )
 
-// Obtiene Router engine con el contexto de testing adecuado
+// Obtiene Router server con el contexto de testing adecuado
 // mockeando interfaces a serivcios externos
 func TestRouter(ctx ...interface{}) *gin.Engine {
-	engine = nil
+	server = nil
 	Router()
 	if len(ctx) > 0 {
-		engine.Use(func(c *gin.Context) {
+		server.Use(func(c *gin.Context) {
 			c.Set("mock_ctx", ctx)
 			c.Next()
 		})
 	}
-	return engine
+	return server
 }
 
 // Obtiene el contexto de interfaces mockeadas a serivcios externos

@@ -10,14 +10,6 @@ import (
 
 var cache = gocache.New(60*time.Minute, 10*time.Minute)
 
-// User es el usuario logueado
-type User struct {
-	ID          string   `json:"id"  validate:"required"`
-	Name        string   `json:"name"  validate:"required"`
-	Permissions []string `json:"permissions"`
-	Login       string   `json:"login"  validate:"required"`
-}
-
 // Validate valida si el token es valido
 func Validate(token string, ctx ...interface{}) (*User, error) {
 	// Si esta en cache, retornamos el cache
@@ -46,6 +38,6 @@ func Invalidate(token string) {
 		return
 	}
 
-	cache.Delete(token[7:])
+	cache.Delete(token)
 	glog.Info("Token invalidado: ", token)
 }

@@ -1,4 +1,4 @@
-package tests
+package security
 
 import (
 	"bytes"
@@ -6,12 +6,23 @@ import (
 	"net/http"
 
 	"github.com/golang/mock/gomock"
-	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/tools/http_client"
 	"github.com/nmarsollier/cartgo/tools/str_tools"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func ExpectHttpToken(mock *http_client.MockHTTPClient, user *security.User) {
+// Mock Data
+func TestUser() *User {
+	return &User{
+		ID:          primitive.NewObjectID().Hex(),
+		Login:       "Login",
+		Name:        "Name",
+		Permissions: []string{"user"},
+	}
+}
+
+// Http Mocks
+func ExpectHttpToken(mock *http_client.MockHTTPClient, user *User) {
 	response := &http.Response{
 		StatusCode: http.StatusOK,
 		Body:       io.NopCloser(bytes.NewBufferString(str_tools.ToJson(user))),

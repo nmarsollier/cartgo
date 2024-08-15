@@ -142,9 +142,9 @@ Obtiene el carrito actual.
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
-| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
-| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+| 401 | Unauthorized | [server.ErrorData](#servererrordata) |
+| 404 | Not Found | [server.ErrorData](#servererrordata) |
+| 500 | Internal Server Error | [server.ErrorData](#servererrordata) |
 
 ### /v1/cart/article
 
@@ -171,9 +171,9 @@ Agrega un articulo del carrito actual.
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
-| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
-| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+| 401 | Unauthorized | [server.ErrorData](#servererrordata) |
+| 404 | Not Found | [server.ErrorData](#servererrordata) |
+| 500 | Internal Server Error | [server.ErrorData](#servererrordata) |
 
 ### /v1/cart/article/:articleId
 
@@ -199,9 +199,9 @@ Elimina un articulo del carrito actual.
 | ---- | ----------- | ------ |
 | 200 | No Content |  |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
-| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
-| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+| 401 | Unauthorized | [server.ErrorData](#servererrordata) |
+| 404 | Not Found | [server.ErrorData](#servererrordata) |
+| 500 | Internal Server Error | [server.ErrorData](#servererrordata) |
 
 ### /v1/cart/article/:articleId/decrement
 
@@ -227,9 +227,9 @@ Eliminar 1 al articulo actual.
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
-| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
-| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+| 401 | Unauthorized | [server.ErrorData](#servererrordata) |
+| 404 | Not Found | [server.ErrorData](#servererrordata) |
+| 500 | Internal Server Error | [server.ErrorData](#servererrordata) |
 
 ### /v1/cart/article/:articleId/increment
 
@@ -255,9 +255,9 @@ Agregar 1 al articulo actual.
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
-| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
-| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+| 401 | Unauthorized | [server.ErrorData](#servererrordata) |
+| 404 | Not Found | [server.ErrorData](#servererrordata) |
+| 500 | Internal Server Error | [server.ErrorData](#servererrordata) |
 
 ### /v1/cart/checkouts
 
@@ -283,9 +283,9 @@ Hace checkout del carrito actual
 | ---- | ----------- | ------ |
 | 200 | No Content |  |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
-| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
-| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+| 401 | Unauthorized | [server.ErrorData](#servererrordata) |
+| 404 | Not Found | [server.ErrorData](#servererrordata) |
+| 500 | Internal Server Error | [server.ErrorData](#servererrordata) |
 
 ### /v1/cart/validate
 
@@ -310,9 +310,9 @@ Valida el carrito para checkout
 | ---- | ----------- | ------ |
 | 200 | No Content |  |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
-| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
-| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+| 401 | Unauthorized | [server.ErrorData](#servererrordata) |
+| 404 | Not Found | [server.ErrorData](#servererrordata) |
+| 500 | Internal Server Error | [server.ErrorData](#servererrordata) |
 
 ---
 ### Models
@@ -423,12 +423,6 @@ Valida el carrito para checkout
 | queue | string | *Example:* `"cart"` | No |
 | type | string | *Example:* `"article-exist"` | No |
 
-#### engine.ErrorData
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| error | string |  | No |
-
 #### errs.ValidationErr
 
 | Name | Type | Description | Required |
@@ -441,3 +435,9 @@ Valida el carrito para checkout
 | ---- | ---- | ----------- | -------- |
 | message | string |  | No |
 | path | string |  | No |
+
+#### server.ErrorData
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| error | string |  | No |

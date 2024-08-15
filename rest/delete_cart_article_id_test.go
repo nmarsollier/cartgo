@@ -6,7 +6,8 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
-	"github.com/nmarsollier/cartgo/rest/engine"
+	"github.com/nmarsollier/cartgo/rest/server"
+	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/tools/db"
 	"github.com/nmarsollier/cartgo/tools/errs"
 	"github.com/nmarsollier/cartgo/tools/http_client"
@@ -16,7 +17,7 @@ import (
 )
 
 func TestDeleteCartArticleIdHappyPath(t *testing.T) {
-	user := tests.TestUser()
+	user := security.TestUser()
 	cartData := tests.TestCart()
 
 	// DB Mock
@@ -41,10 +42,10 @@ func TestDeleteCartArticleIdHappyPath(t *testing.T) {
 
 	// Security
 	httpMock := http_client.NewMockHTTPClient(ctrl)
-	tests.ExpectHttpToken(httpMock, user)
+	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := engine.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestDeleteRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId, user.ID)
@@ -57,7 +58,7 @@ func TestDeleteCartArticleIdHappyPath(t *testing.T) {
 }
 
 func TestDeleteCartArticleIdDocumentNotFound(t *testing.T) {
-	user := tests.TestUser()
+	user := security.TestUser()
 	cartData := tests.TestCart()
 
 	// DB Mock
@@ -67,10 +68,10 @@ func TestDeleteCartArticleIdDocumentNotFound(t *testing.T) {
 
 	// Security
 	httpMock := http_client.NewMockHTTPClient(ctrl)
-	tests.ExpectHttpToken(httpMock, user)
+	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := engine.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestDeleteRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId, user.ID)
@@ -80,7 +81,7 @@ func TestDeleteCartArticleIdDocumentNotFound(t *testing.T) {
 }
 
 func TestDeleteCartArticleIdUpdateFailed(t *testing.T) {
-	user := tests.TestUser()
+	user := security.TestUser()
 	cartData := tests.TestCart()
 
 	// DB Mock
@@ -99,10 +100,10 @@ func TestDeleteCartArticleIdUpdateFailed(t *testing.T) {
 
 	// Security
 	httpMock := http_client.NewMockHTTPClient(ctrl)
-	tests.ExpectHttpToken(httpMock, user)
+	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := engine.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestDeleteRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId, user.ID)
@@ -112,16 +113,16 @@ func TestDeleteCartArticleIdUpdateFailed(t *testing.T) {
 }
 
 func TestDeleteCartArticleIdInvalidToken(t *testing.T) {
-	user := tests.TestUser()
+	user := security.TestUser()
 	cartData := tests.TestCart()
 
 	// DB Mock
 	ctrl := gomock.NewController(t)
 	httpMock := http_client.NewMockHTTPClient(ctrl)
-	tests.ExpectHttpUnauthorized(httpMock)
+	security.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
-	r := engine.TestRouter(httpMock)
+	r := server.TestRouter(httpMock)
 	InitRoutes()
 
 	req, w := tests.TestDeleteRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId, user.ID)

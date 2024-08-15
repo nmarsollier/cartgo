@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/nmarsollier/cartgo/cart"
-	"github.com/nmarsollier/cartgo/security"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -30,14 +29,5 @@ func TestCart() *cart.Cart {
 				Validated: false,
 			},
 		},
-	}
-}
-
-func TestUser() *security.User {
-	return &security.User{
-		ID:          primitive.NewObjectID().String(),
-		Login:       "Login",
-		Name:        "Name",
-		Permissions: []string{"user", "other"},
 	}
 }

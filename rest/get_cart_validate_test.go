@@ -8,7 +8,8 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
-	"github.com/nmarsollier/cartgo/rest/engine"
+	"github.com/nmarsollier/cartgo/rest/server"
+	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/tools/db"
 	"github.com/nmarsollier/cartgo/tools/errs"
 	"github.com/nmarsollier/cartgo/tools/http_client"
@@ -18,7 +19,7 @@ import (
 )
 
 func TestGetCartValidateHappyPath(t *testing.T) {
-	user := tests.TestUser()
+	user := security.TestUser()
 	cartData := tests.TestCart()
 
 	// DB Mock
@@ -35,9 +36,9 @@ func TestGetCartValidateHappyPath(t *testing.T) {
 
 	// Security
 	httpMock := http_client.NewMockHTTPClient(ctrl)
-	tests.ExpectHttpToken(httpMock, user)
+	security.ExpectHttpToken(httpMock, user)
 
-	// Serice
+	// Service
 	response := &http.Response{
 		StatusCode: http.StatusOK,
 		Body:       io.NopCloser(bytes.NewBufferString(str_tools.ToJson(user))),
@@ -45,7 +46,7 @@ func TestGetCartValidateHappyPath(t *testing.T) {
 	httpMock.EXPECT().Do(gomock.Any()).Return(response, nil).Times(2)
 
 	// REQUEST
-	r := engine.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart/validate", user.ID)
@@ -58,7 +59,7 @@ func TestGetCartValidateHappyPath(t *testing.T) {
 }
 
 func TestGetCartValidateDocumentNotFound(t *testing.T) {
-	user := tests.TestUser()
+	user := security.TestUser()
 
 	// DB Mock
 	ctrl := gomock.NewController(t)
@@ -67,10 +68,10 @@ func TestGetCartValidateDocumentNotFound(t *testing.T) {
 
 	// Security
 	httpMock := http_client.NewMockHTTPClient(ctrl)
-	tests.ExpectHttpToken(httpMock, user)
+	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := engine.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart/validate", user.ID)
@@ -80,15 +81,15 @@ func TestGetCartValidateDocumentNotFound(t *testing.T) {
 }
 
 func TestGetCartValidateInvalidToken(t *testing.T) {
-	user := tests.TestUser()
+	user := security.TestUser()
 
 	// DB Mock
 	ctrl := gomock.NewController(t)
 	httpMock := http_client.NewMockHTTPClient(ctrl)
-	tests.ExpectHttpUnauthorized(httpMock)
+	security.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
-	r := engine.TestRouter(httpMock)
+	r := server.TestRouter(httpMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart/validate", user.ID)
@@ -98,7 +99,7 @@ func TestGetCartValidateInvalidToken(t *testing.T) {
 }
 
 func TestGetCartValidateInvalidArticleAth(t *testing.T) {
-	user := tests.TestUser()
+	user := security.TestUser()
 	cartData := tests.TestCart()
 
 	// DB Mock
@@ -115,13 +116,13 @@ func TestGetCartValidateInvalidArticleAth(t *testing.T) {
 
 	// Security
 	httpMock := http_client.NewMockHTTPClient(ctrl)
-	tests.ExpectHttpToken(httpMock, user)
+	security.ExpectHttpToken(httpMock, user)
 
-	// Serice
-	tests.ExpectHttpUnauthorized(httpMock)
+	// Service
+	security.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
-	r := engine.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock)
 	InitRoutes()
 
 	req, w := tests.TestGetRequest("/v1/cart/validate", user.ID)

@@ -8,7 +8,8 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
-	"github.com/nmarsollier/cartgo/rest/engine"
+	"github.com/nmarsollier/cartgo/rest/server"
+	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/tools/db"
 	"github.com/nmarsollier/cartgo/tools/http_client"
 	"github.com/nmarsollier/cartgo/tools/tests"
@@ -17,7 +18,7 @@ import (
 )
 
 func TestGetCartCheckoutHappyPath(t *testing.T) {
-	user := tests.TestUser()
+	user := security.TestUser()
 	cartData := tests.TestCart()
 
 	// DB Mock
@@ -44,9 +45,9 @@ func TestGetCartCheckoutHappyPath(t *testing.T) {
 
 	// Security
 	httpMock := http_client.NewMockHTTPClient(ctrl)
-	tests.ExpectHttpToken(httpMock, user)
+	security.ExpectHttpToken(httpMock, user)
 
-	// Serice
+	// Service
 	response := &http.Response{
 		StatusCode: http.StatusOK,
 		Body:       io.NopCloser(bytes.NewBufferString("")), // or use an io.NopCloser with a buffer for more control
@@ -68,7 +69,7 @@ func TestGetCartCheckoutHappyPath(t *testing.T) {
 	).Times(1)
 
 	// REQUEST
-	r := engine.TestRouter(collection, httpMock, rabbitMock)
+	r := server.TestRouter(collection, httpMock, rabbitMock)
 	InitRoutes()
 
 	req, w := tests.TestPostRequest("/v1/cart/checkout", "", user.ID)
@@ -81,15 +82,15 @@ func TestGetCartCheckoutHappyPath(t *testing.T) {
 }
 
 func TestGetCartCheckoutInvalidToken(t *testing.T) {
-	user := tests.TestUser()
+	user := security.TestUser()
 
 	// Security
 	ctrl := gomock.NewController(t)
 	httpMock := http_client.NewMockHTTPClient(ctrl)
-	tests.ExpectHttpUnauthorized(httpMock)
+	security.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
-	r := engine.TestRouter(httpMock)
+	r := server.TestRouter(httpMock)
 	InitRoutes()
 
 	req, w := tests.TestPostRequest("/v1/cart/checkout", "", user.ID)
