@@ -26,7 +26,7 @@ func TestGetCartValidateHappyPath(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	collection := db.NewMockMongoCollection(ctrl)
 	collection.EXPECT().FindOne(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
-		func(arg1 interface{}, params cart.FindByUserIdFilter, updated *cart.Cart) error {
+		func(arg1 interface{}, params cart.DbUserIdFilter, updated *cart.Cart) error {
 			assert.Equal(t, 2, len(cartData.Articles))
 
 			*updated = *cartData
@@ -106,7 +106,7 @@ func TestGetCartValidateInvalidArticleAth(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	collection := db.NewMockMongoCollection(ctrl)
 	collection.EXPECT().FindOne(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
-		func(arg1 interface{}, params cart.FindByUserIdFilter, updated *cart.Cart) error {
+		func(arg1 interface{}, params cart.DbUserIdFilter, updated *cart.Cart) error {
 			assert.Equal(t, 2, len(cartData.Articles))
 
 			*updated = *cartData

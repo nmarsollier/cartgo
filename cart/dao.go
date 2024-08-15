@@ -6,7 +6,6 @@ import (
 
 	"github.com/golang/glog"
 	"github.com/nmarsollier/cartgo/tools/db"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -47,9 +46,13 @@ func newCart(userId string) *Cart {
 	}
 }
 
-type FindByUserIdFilter struct {
+type DbUserIdFilter struct {
 	UserId  string `bson:"userId"`
 	Enabled bool   `bson:"enabled"`
+}
+
+type DbIdFilter struct {
+	ID primitive.ObjectID `bson:"_id" json:"_id"`
 }
 
 // findByCartId lee un usuario desde la db
@@ -61,7 +64,7 @@ func findByUserId(userId string, ctx ...interface{}) (*Cart, error) {
 	}
 
 	cart := &Cart{}
-	filter := FindByUserIdFilter{
+	filter := DbUserIdFilter{
 		UserId:  userId,
 		Enabled: true,
 	}
@@ -88,7 +91,7 @@ func findById(cartId string, ctx ...interface{}) (*Cart, error) {
 	}
 
 	cart := &Cart{}
-	filter := bson.M{"_id": _id}
+	filter := DbIdFilter{ID: _id}
 
 	if err = collection.FindOne(context.Background(), filter, cart); err != nil {
 		glog.Error(err)
@@ -130,7 +133,7 @@ func replace(cart *Cart, ctx ...interface{}) (*Cart, error) {
 		return nil, err
 	}
 
-	_, err = collection.ReplaceOne(context.Background(), bson.M{"_id": cart.ID}, cart)
+	_, err = collection.ReplaceOne(context.Background(), DbIdFilter{ID: cart.ID}, cart)
 	if err != nil {
 		glog.Error(err)
 		return nil, err
@@ -154,11 +157,21 @@ func invalidate(cart *Cart, ctx ...interface{}) (*Cart, error) {
 	cart.Enabled = false
 
 	_, err = collection.UpdateOne(context.Background(),
-		bson.M{"_id": cart.ID},
-		bson.M{"$set": bson.M{
-			"enabled": false,
-		}},
+		DbIdFilter{ID: cart.ID},
+		DbDeleteTokenDocument{
+			DbDeleteTokenBody{
+				Enabled: false,
+			},
+		},
 	)
 
 	return cart, err
+}
+
+type DbDeleteTokenBody struct {
+	Enabled bool `bson:"enabled"`
+}
+
+type DbDeleteTokenDocument struct {
+	Set DbDeleteTokenBody `bson:"$set"`
 }

@@ -24,7 +24,7 @@ func TestGetUsersHappyPath(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	collection := db.NewMockMongoCollection(ctrl)
 	collection.EXPECT().FindOne(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
-		func(arg1 interface{}, params cart.FindByUserIdFilter, updated *cart.Cart) error {
+		func(arg1 interface{}, params cart.DbUserIdFilter, updated *cart.Cart) error {
 			// Check parameters
 			assert.Equal(t, user.ID, params.UserId)
 			assert.Equal(t, true, params.Enabled)
@@ -59,7 +59,7 @@ func TestGetUsersNewCartHappyPath(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	collection := db.NewMockMongoCollection(ctrl)
 	collection.EXPECT().FindOne(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
-		func(arg1 interface{}, params cart.FindByUserIdFilter, updated *cart.Cart) error {
+		func(arg1 interface{}, params cart.DbUserIdFilter, updated *cart.Cart) error {
 			return mongo.ErrNoDocuments
 		},
 	).Times(1)
@@ -97,7 +97,7 @@ func TestGetUsersInsertDbError(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	collection := db.NewMockMongoCollection(ctrl)
 	collection.EXPECT().FindOne(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
-		func(arg1 interface{}, params cart.FindByUserIdFilter, updated *cart.Cart) error {
+		func(arg1 interface{}, params cart.DbUserIdFilter, updated *cart.Cart) error {
 			return mongo.ErrNoDocuments
 		},
 	).Times(1)
