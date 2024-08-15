@@ -7,7 +7,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/tools/httpx"
-	"github.com/nmarsollier/cartgo/tools/str_tools"
+	"github.com/nmarsollier/cartgo/tools/strs"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -25,7 +25,7 @@ func TestUser() *User {
 func ExpectHttpToken(mock *httpx.MockHTTPClient, user *User) {
 	response := &http.Response{
 		StatusCode: http.StatusOK,
-		Body:       io.NopCloser(bytes.NewBufferString(str_tools.ToJson(user))),
+		Body:       io.NopCloser(bytes.NewBufferString(strs.ToJson(user))),
 	}
 	mock.EXPECT().Do(gomock.Any()).Return(response, nil).Times(1)
 }

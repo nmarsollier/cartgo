@@ -8,18 +8,17 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
+	"github.com/nmarsollier/cartgo/rabbit/emit"
 	"github.com/nmarsollier/cartgo/rest/server"
 	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/tools/db"
 	"github.com/nmarsollier/cartgo/tools/httpx"
-	"github.com/nmarsollier/cartgo/tools/tests"
 	"github.com/stretchr/testify/assert"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func TestGetCartCheckoutHappyPath(t *testing.T) {
 	user := security.TestUser()
-	cartData := tests.TestCart()
+	cartData := cart.TestCart()
 
 	// DB Mock
 	ctrl := gomock.NewController(t)
@@ -34,9 +33,9 @@ func TestGetCartCheckoutHappyPath(t *testing.T) {
 	).Times(1)
 
 	collection.EXPECT().UpdateOne(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
-		func(arg1 interface{}, filter primitive.M, update primitive.M) (int64, error) {
+		func(arg1 interface{}, filter cart.DbIdFilter, update cart.DbDeleteTokenDocument) (int64, error) {
 			// Check parameters
-			assert.Equal(t, cartData.ID, filter["_id"])
+			assert.Equal(t, cartData.ID, filter.ID)
 
 			// Asign return values
 			return 1, nil
@@ -54,7 +53,7 @@ func TestGetCartCheckoutHappyPath(t *testing.T) {
 	}
 	httpMock.EXPECT().Do(gomock.Any()).Return(response, nil).Times(2)
 
-	rabbitMock := tests.MockRabbitChannel(ctrl, 1)
+	rabbitMock := emit.DefaultRabbitChannel(ctrl, 1)
 	rabbitMock.EXPECT().Publish(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
 		func(exchange string, routingKey string, body []byte) error {
 			assert.Equal(t, "order", exchange)
@@ -72,7 +71,7 @@ func TestGetCartCheckoutHappyPath(t *testing.T) {
 	r := server.TestRouter(collection, httpMock, rabbitMock)
 	InitRoutes()
 
-	req, w := tests.TestPostRequest("/v1/cart/checkout", "", user.ID)
+	req, w := server.TestPostRequest("/v1/cart/checkout", "", user.ID)
 	r.ServeHTTP(w, req)
 
 	assert.Equal(t, http.StatusOK, w.Code)
@@ -93,8 +92,8 @@ func TestGetCartCheckoutInvalidToken(t *testing.T) {
 	r := server.TestRouter(httpMock)
 	InitRoutes()
 
-	req, w := tests.TestPostRequest("/v1/cart/checkout", "", user.ID)
+	req, w := server.TestPostRequest("/v1/cart/checkout", "", user.ID)
 	r.ServeHTTP(w, req)
 
-	tests.AssertUnauthorized(t, w)
+	server.AssertUnauthorized(t, w)
 }

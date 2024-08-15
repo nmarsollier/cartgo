@@ -11,14 +11,13 @@ import (
 	"github.com/nmarsollier/cartgo/tools/db"
 	"github.com/nmarsollier/cartgo/tools/errs"
 	"github.com/nmarsollier/cartgo/tools/httpx"
-	"github.com/nmarsollier/cartgo/tools/tests"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func TestGetUsersHappyPath(t *testing.T) {
 	user := security.TestUser()
-	cartData := tests.TestCart()
+	cartData := cart.TestCart()
 
 	// DB Mock
 	ctrl := gomock.NewController(t)
@@ -43,7 +42,7 @@ func TestGetUsersHappyPath(t *testing.T) {
 	r := server.TestRouter(collection, httpMock)
 	InitRoutes()
 
-	req, w := tests.TestGetRequest("/v1/cart", user.ID)
+	req, w := server.TestGetRequest("/v1/cart", user.ID)
 	r.ServeHTTP(w, req)
 
 	assert.Equal(t, http.StatusOK, w.Code)
@@ -81,7 +80,7 @@ func TestGetUsersNewCartHappyPath(t *testing.T) {
 	r := server.TestRouter(collection, httpMock)
 	InitRoutes()
 
-	req, w := tests.TestGetRequest("/v1/cart", user.ID)
+	req, w := server.TestGetRequest("/v1/cart", user.ID)
 	r.ServeHTTP(w, req)
 
 	assert.Equal(t, http.StatusOK, w.Code)
@@ -102,7 +101,7 @@ func TestGetUsersInsertDbError(t *testing.T) {
 		},
 	).Times(1)
 
-	tests.ExpectInsertOneError(collection, errs.Internal, 1)
+	db.ExpectInsertOneError(collection, errs.Internal, 1)
 
 	// Security
 	httpMock := httpx.NewMockHTTPClient(ctrl)
@@ -112,10 +111,10 @@ func TestGetUsersInsertDbError(t *testing.T) {
 	r := server.TestRouter(collection, httpMock)
 	InitRoutes()
 
-	req, w := tests.TestGetRequest("/v1/cart", user.ID)
+	req, w := server.TestGetRequest("/v1/cart", user.ID)
 	r.ServeHTTP(w, req)
 
-	tests.AssertInternalServerError(t, w)
+	server.AssertInternalServerError(t, w)
 }
 
 func TestGetUsersDbError(t *testing.T) {
@@ -124,7 +123,7 @@ func TestGetUsersDbError(t *testing.T) {
 	// DB Mock
 	ctrl := gomock.NewController(t)
 	collection := db.NewMockMongoCollection(ctrl)
-	tests.ExpectFindOneError(collection, errs.NotFound, 1)
+	db.ExpectFindOneError(collection, errs.NotFound, 1)
 
 	// Security
 	httpMock := httpx.NewMockHTTPClient(ctrl)
@@ -134,10 +133,10 @@ func TestGetUsersDbError(t *testing.T) {
 	r := server.TestRouter(collection, httpMock)
 	InitRoutes()
 
-	req, w := tests.TestGetRequest("/v1/cart", user.ID)
+	req, w := server.TestGetRequest("/v1/cart", user.ID)
 	r.ServeHTTP(w, req)
 
-	tests.AssertDocumentNotFound(t, w)
+	server.AssertDocumentNotFound(t, w)
 }
 
 func TestGetUsersTokenInvalid(t *testing.T) {
@@ -152,8 +151,8 @@ func TestGetUsersTokenInvalid(t *testing.T) {
 	r := server.TestRouter(httpMock)
 	InitRoutes()
 
-	req, w := tests.TestGetRequest("/v1/cart", user.ID)
+	req, w := server.TestGetRequest("/v1/cart", user.ID)
 	r.ServeHTTP(w, req)
 
-	tests.AssertUnauthorized(t, w)
+	server.AssertUnauthorized(t, w)
 }

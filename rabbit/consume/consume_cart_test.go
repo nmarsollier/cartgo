@@ -6,13 +6,11 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/tools/db"
-	"github.com/nmarsollier/cartgo/tools/tests"
 	"github.com/stretchr/testify/assert"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func TestProccessArticleDataHappyPath(t *testing.T) {
-	cartData := tests.TestCart()
+	cartData := cart.TestCart()
 
 	// DB Mock
 	ctrl := gomock.NewController(t)
@@ -27,8 +25,8 @@ func TestProccessArticleDataHappyPath(t *testing.T) {
 	).Times(1)
 
 	collection.EXPECT().ReplaceOne(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
-		func(arg1 interface{}, filter primitive.M, replaced *cart.Cart) (int64, error) {
-			assert.Equal(t, cartData.ID, filter["_id"])
+		func(arg1 interface{}, filter cart.DbIdFilter, replaced *cart.Cart) (int64, error) {
+			assert.Equal(t, cartData.ID, filter.ID)
 			assert.Equal(t, 2, len(replaced.Articles))
 			return 1, nil
 		},
