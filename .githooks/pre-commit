@@ -30,7 +30,7 @@ if ! go build ; then
     exit 1
 fi
 
-rm authgo
+rm cartgo
 
 # Ejecutar las pruebas
 echo "Running tests..."
