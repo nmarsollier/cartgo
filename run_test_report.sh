@@ -3,9 +3,7 @@
 # Ensure gocovmerge is installed
 if ! command -v gocovmerge &> /dev/null; then
     echo "gocovmerge could not be found, installing..."
-    unset GOFLAGS 
     go install github.com/wadey/gocovmerge@latest
-    export GOFLAGS="-mod=vendor"
 fi
 
 # Remove any existing coverage files

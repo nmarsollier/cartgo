@@ -42,11 +42,20 @@ Ver tutorial de instalación en [ecommerce](https://github.com/nmarsollier/ecomm
 
 ## Ejecución
 
-Abrir ventana de comandos en la carpeta del microservicio y ejecutar :
+```bash
+git config core.hooksPath .githooks
+go install github.com/swaggo/gin-swagger/swaggerFiles 
+go install github.com/swaggo/gin-swagger 
+go install github.com/swaggo/swag/cmd/swag
+go install github.com/golang/mock/mockgen@v1.6.0
+```
+
+Build y ejecución
+-
 
 ```bash
-npm install
-npm start
+go install
+cartgo
 ```
 
 ## Swagger
