@@ -2,21 +2,21 @@ package consume
 
 import (
 	"encoding/json"
-	"log"
 
 	"github.com/golang/glog"
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/tools/env"
+	"github.com/nmarsollier/cartgo/tools/strs"
 	"github.com/streadway/amqp"
 )
 
-//	@Summary		Mensage Rabbit order/order-placed
-//	@Description	Cuando se recibe order-placed se actualiza el order id del carrito. No se respode a este evento.
+//	@Summary		Mensage Rabbit order_placed/order_placed
+//	@Description	Cuando se recibe order_placed se actualiza el order id del carrito. No se respode a este evento.
 //	@Tags			Rabbit
 //	@Accept			json
 //	@Produce		json
-//	@Param			type	body	consumeOrderPlacedMessage	true	"Message para Type = order-placed"
-//	@Router			/rabbit/order-placed [get]
+//	@Param			type	body	consumeOrderPlacedMessage	true	"Message order_placed"
+//	@Router			/rabbit/order_placed [get]
 //
 // Consume Order Placed
 func consumeOrderPlaced() error {
@@ -75,7 +75,7 @@ func consumeOrderPlaced() error {
 	mgs, err := chn.Consume(
 		queue.Name, // queue
 		"",         // consumer
-		true,       // auto-ack
+		false,      // auto-ack
 		false,      // exclusive
 		false,      // no-local
 		false,      // no-wait
@@ -93,12 +93,15 @@ func consumeOrderPlaced() error {
 			newMessage := &consumeOrderPlacedMessage{}
 			body := d.Body
 
-			glog.Info("Rabbit Consume: ", string(body))
+			glog.Info("Incomming order_placed :", string(body))
 			err = json.Unmarshal(body, newMessage)
 			if err == nil {
-				switch newMessage.Type {
-				case "order-placed":
-					processOrderPlaced(newMessage)
+				processOrderPlaced(newMessage)
+
+				if err := d.Ack(false); err != nil {
+					glog.Info("Failed ACK order_placed : ", strs.ToJson(newMessage), err)
+				} else {
+					glog.Info("Consumed order_placed :", strs.ToJson(newMessage))
 				}
 			} else {
 				glog.Error(err)
@@ -119,13 +122,8 @@ func processOrderPlaced(newMessage *consumeOrderPlacedMessage, ctx ...interface{
 		glog.Error(err)
 		return
 	}
-
-	log.Print("Order Placed processed : " + data.CartId)
 }
 
 type consumeOrderPlacedMessage struct {
-	Type     string `json:"type" example:"order-placed" `
-	Queue    string `json:"queue" example:"" `
-	Exchange string `json:"exchange" example:"" `
-	Message  *cart.OrderPlacedEvent
+	Message *cart.OrderPlacedEvent
 }

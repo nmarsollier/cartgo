@@ -6,22 +6,21 @@ import (
 	"github.com/golang/glog"
 )
 
-//	@Summary		Emite Validar Artículos a Cart cart/article-exist
-//	@Description	Solicitamos las validaciones ar articulos a catalogo. Queue y Exchange es donde nos reponde.
+//	@Summary		Emite Validar Artículos a Cart article_exist/article_exist
+//	@Description	Solicitamos las validaciones ar articulos a catalogo. Responde en article_exist/cart_article_exist.
 //	@Tags			Rabbit
 //	@Accept			json
 //	@Produce		json
-//	@Param			body	body	SendValidationMessage	true	"Mensage de validacion"
-//	@Router			/rabbit/cart/article-exist [put]
+//	@Param			body	body	SendValidationMessage	true	"Mensage de validacion article_exist/cart_article_exist"
+//	@Router			/rabbit/article_exist [put]
 //
 // Emite Validar Artículos a Cart
 func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error {
 
 	send := SendValidationMessage{
-		Type:     "article-exist",
-		Exchange: "cart",
-		Queue:    "cart",
-		Message:  data,
+		Exchange:   "article_exist",
+		RoutingKey: "cart_article_exist",
+		Message:    data,
 	}
 
 	chn, err := getChannel(ctx...)
@@ -48,8 +47,8 @@ func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error
 	}
 
 	err = chn.Publish(
-		"catalog", // exchange
-		"catalog", // routing key
+		"article_exist", // exchange
+		"article_exist", // routing key
 		body,
 	)
 	if err != nil {
@@ -58,7 +57,7 @@ func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error
 		return err
 	}
 
-	glog.Info("Rabbit article validation enviado ", string(body))
+	glog.Info("Emit article_exist :", string(body))
 
 	return nil
 }
@@ -70,8 +69,7 @@ type ArticleValidationData struct {
 }
 
 type SendValidationMessage struct {
-	Type     string                `json:"type" example:"article-exist"`
-	Exchange string                `json:"exchange" example:"cart"`
-	Queue    string                `json:"queue" example:"cart"`
-	Message  ArticleValidationData `json:"message"`
+	Exchange   string                `json:"exchange" example:"cart"`
+	RoutingKey string                `json:"routing_key" example:""`
+	Message    ArticleValidationData `json:"message"`
 }

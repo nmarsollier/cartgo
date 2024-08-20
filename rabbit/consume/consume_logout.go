@@ -6,10 +6,11 @@ import (
 	"github.com/golang/glog"
 	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/tools/env"
+	"github.com/nmarsollier/cartgo/tools/strs"
 	"github.com/streadway/amqp"
 )
 
-//	@Summary		Mensage Rabbit
+//	@Summary		Mensage Rabbit logout
 //	@Description	Escucha de mensajes logout desde auth.
 //	@Tags			Rabbit
 //	@Accept			json
@@ -91,13 +92,15 @@ func consumeLogout() error {
 		for d := range mgs {
 			newMessage := &logoutMessage{}
 			body := d.Body
-			glog.Info(string(body))
+			glog.Info("Incomming :", string(body))
 
 			err = json.Unmarshal(body, newMessage)
 			if err == nil {
 				if newMessage.Type == "logout" {
 					security.Invalidate(newMessage.Message)
 				}
+				glog.Info("Consumed :", strs.ToJson(newMessage))
+
 			} else {
 				glog.Error(err)
 			}

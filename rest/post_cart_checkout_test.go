@@ -56,10 +56,9 @@ func TestGetCartCheckoutHappyPath(t *testing.T) {
 	rabbitMock := emit.DefaultRabbitChannel(ctrl, 1)
 	rabbitMock.EXPECT().Publish(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
 		func(exchange string, routingKey string, body []byte) error {
-			assert.Equal(t, "order", exchange)
-			assert.Equal(t, "order", routingKey)
+			assert.Equal(t, "place_order", exchange)
+			assert.Equal(t, "place_order", routingKey)
 			bodyStr := string(body)
-			assert.Contains(t, bodyStr, "place-order")
 			assert.Contains(t, bodyStr, "cartId")
 			assert.Contains(t, bodyStr, "userId")
 

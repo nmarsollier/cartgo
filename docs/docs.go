@@ -18,9 +18,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/rabbit/article-exist": {
+        "/rabbit/article_exist": {
             "get": {
-                "description": "Luego de solicitar validaciones de catalogo, las validaciones las recibimos en esta Queue, con el mensaje type article-data.",
+                "description": "Luego de solicitar validaciones de catalogo, Escucha article_exist/cart_article_exist.",
                 "consumes": [
                     "application/json"
                 ],
@@ -30,10 +30,10 @@ const docTemplate = `{
                 "tags": [
                     "Rabbit"
                 ],
-                "summary": "Mensage Rabbit order/article-exist",
+                "summary": "Mensage Rabbit article_exist/cart_article_exist",
                 "parameters": [
                     {
-                        "description": "Message para Type = article-exist",
+                        "description": "Mensaje",
                         "name": "type",
                         "in": "body",
                         "required": true,
@@ -43,11 +43,9 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {}
-            }
-        },
-        "/rabbit/cart/article-exist": {
+            },
             "put": {
-                "description": "Solicitamos las validaciones ar articulos a catalogo. Queue y Exchange es donde nos reponde.",
+                "description": "Solicitamos las validaciones ar articulos a catalogo. Responde en article_exist/cart_article_exist.",
                 "consumes": [
                     "application/json"
                 ],
@@ -57,42 +55,15 @@ const docTemplate = `{
                 "tags": [
                     "Rabbit"
                 ],
-                "summary": "Emite Validar Artículos a Cart cart/article-exist",
+                "summary": "Emite Validar Artículos a Cart article_exist/article_exist",
                 "parameters": [
                     {
-                        "description": "Mensage de validacion",
+                        "description": "Mensage de validacion article_exist/cart_article_exist",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/emit.SendValidationMessage"
-                        }
-                    }
-                ],
-                "responses": {}
-            }
-        },
-        "/rabbit/cart/place-order": {
-            "put": {
-                "description": "Cuando se hace checkout enviamos un comando a orders para que inicie el proceso de la orden.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Rabbit"
-                ],
-                "summary": "Emite Placed Order desde Cart",
-                "parameters": [
-                    {
-                        "description": "Place order",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/emit.SendPlacedMessage"
                         }
                     }
                 ],
@@ -111,7 +82,7 @@ const docTemplate = `{
                 "tags": [
                     "Rabbit"
                 ],
-                "summary": "Mensage Rabbit",
+                "summary": "Mensage Rabbit logout",
                 "parameters": [
                     {
                         "description": "Estructura general del mensage",
@@ -126,9 +97,9 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/rabbit/order-placed": {
+        "/rabbit/order_placed": {
             "get": {
-                "description": "Cuando se recibe order-placed se actualiza el order id del carrito. No se respode a este evento.",
+                "description": "Cuando se recibe order_placed se actualiza el order id del carrito. No se respode a este evento.",
                 "consumes": [
                     "application/json"
                 ],
@@ -138,15 +109,42 @@ const docTemplate = `{
                 "tags": [
                     "Rabbit"
                 ],
-                "summary": "Mensage Rabbit order/order-placed",
+                "summary": "Mensage Rabbit order_placed/order_placed",
                 "parameters": [
                     {
-                        "description": "Message para Type = order-placed",
+                        "description": "Message order_placed",
                         "name": "type",
                         "in": "body",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/consume.consumeOrderPlacedMessage"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/rabbit/place_order": {
+            "put": {
+                "description": "Cuando se hace checkout enviamos un comando a orders para que inicie el proceso de la orden.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rabbit"
+                ],
+                "summary": "Emite place_order/place_order",
+                "parameters": [
+                    {
+                        "description": "Place order",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/emit.SendPlacedMessage"
                         }
                     }
                 ],
@@ -698,40 +696,16 @@ const docTemplate = `{
         "consume.consumeArticleDataMessage": {
             "type": "object",
             "properties": {
-                "exchange": {
-                    "type": "string",
-                    "example": ""
-                },
                 "message": {
                     "$ref": "#/definitions/cart.ValidationEvent"
-                },
-                "queue": {
-                    "type": "string",
-                    "example": ""
-                },
-                "type": {
-                    "type": "string",
-                    "example": "article-exist"
                 }
             }
         },
         "consume.consumeOrderPlacedMessage": {
             "type": "object",
             "properties": {
-                "exchange": {
-                    "type": "string",
-                    "example": ""
-                },
                 "message": {
                     "$ref": "#/definitions/cart.OrderPlacedEvent"
-                },
-                "queue": {
-                    "type": "string",
-                    "example": ""
-                },
-                "type": {
-                    "type": "string",
-                    "example": "order-placed"
                 }
             }
         },
@@ -806,13 +780,9 @@ const docTemplate = `{
                 "message": {
                     "$ref": "#/definitions/emit.ArticleValidationData"
                 },
-                "queue": {
+                "routing_key": {
                     "type": "string",
-                    "example": "cart"
-                },
-                "type": {
-                    "type": "string",
-                    "example": "article-exist"
+                    "example": ""
                 }
             }
         },

@@ -35,9 +35,6 @@ func TestConsumeOrderPlacedHappyPath(t *testing.T) {
 
 	// REQUEST
 	newMessage := &consumeOrderPlacedMessage{
-		Type:     "article-data",
-		Queue:    "orders",
-		Exchange: "orders",
 		Message: &cart.OrderPlacedEvent{
 			CartId:  primitive.NewObjectID().Hex(),
 			OrderId: primitive.NewObjectID().Hex(),

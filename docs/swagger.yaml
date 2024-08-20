@@ -82,31 +82,13 @@ definitions:
     type: object
   consume.consumeArticleDataMessage:
     properties:
-      exchange:
-        example: ""
-        type: string
       message:
         $ref: '#/definitions/cart.ValidationEvent'
-      queue:
-        example: ""
-        type: string
-      type:
-        example: article-exist
-        type: string
     type: object
   consume.consumeOrderPlacedMessage:
     properties:
-      exchange:
-        example: ""
-        type: string
       message:
         $ref: '#/definitions/cart.OrderPlacedEvent'
-      queue:
-        example: ""
-        type: string
-      type:
-        example: order-placed
-        type: string
     type: object
   consume.logoutMessage:
     properties:
@@ -157,11 +139,8 @@ definitions:
         type: string
       message:
         $ref: '#/definitions/emit.ArticleValidationData'
-      queue:
-        example: cart
-        type: string
-      type:
-        example: article-exist
+      routing_key:
+        example: ""
         type: string
     type: object
   errs.ValidationErr:
@@ -192,14 +171,13 @@ info:
   title: CartGo
   version: "1.0"
 paths:
-  /rabbit/article-exist:
+  /rabbit/article_exist:
     get:
       consumes:
       - application/json
-      description: Luego de solicitar validaciones de catalogo, las validaciones las
-        recibimos en esta Queue, con el mensaje type article-data.
+      description: Luego de solicitar validaciones de catalogo, Escucha article_exist/cart_article_exist.
       parameters:
-      - description: Message para Type = article-exist
+      - description: Mensaje
         in: body
         name: type
         required: true
@@ -208,17 +186,16 @@ paths:
       produces:
       - application/json
       responses: {}
-      summary: Mensage Rabbit order/article-exist
+      summary: Mensage Rabbit article_exist/cart_article_exist
       tags:
       - Rabbit
-  /rabbit/cart/article-exist:
     put:
       consumes:
       - application/json
-      description: Solicitamos las validaciones ar articulos a catalogo. Queue y Exchange
-        es donde nos reponde.
+      description: Solicitamos las validaciones ar articulos a catalogo. Responde
+        en article_exist/cart_article_exist.
       parameters:
-      - description: Mensage de validacion
+      - description: Mensage de validacion article_exist/cart_article_exist
         in: body
         name: body
         required: true
@@ -227,26 +204,7 @@ paths:
       produces:
       - application/json
       responses: {}
-      summary: Emite Validar Artículos a Cart cart/article-exist
-      tags:
-      - Rabbit
-  /rabbit/cart/place-order:
-    put:
-      consumes:
-      - application/json
-      description: Cuando se hace checkout enviamos un comando a orders para que inicie
-        el proceso de la orden.
-      parameters:
-      - description: Place order
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/emit.SendPlacedMessage'
-      produces:
-      - application/json
-      responses: {}
-      summary: Emite Placed Order desde Cart
+      summary: Emite Validar Artículos a Cart article_exist/article_exist
       tags:
       - Rabbit
   /rabbit/logout:
@@ -264,17 +222,17 @@ paths:
       produces:
       - application/json
       responses: {}
-      summary: Mensage Rabbit
+      summary: Mensage Rabbit logout
       tags:
       - Rabbit
-  /rabbit/order-placed:
+  /rabbit/order_placed:
     get:
       consumes:
       - application/json
-      description: Cuando se recibe order-placed se actualiza el order id del carrito.
+      description: Cuando se recibe order_placed se actualiza el order id del carrito.
         No se respode a este evento.
       parameters:
-      - description: Message para Type = order-placed
+      - description: Message order_placed
         in: body
         name: type
         required: true
@@ -283,7 +241,26 @@ paths:
       produces:
       - application/json
       responses: {}
-      summary: Mensage Rabbit order/order-placed
+      summary: Mensage Rabbit order_placed/order_placed
+      tags:
+      - Rabbit
+  /rabbit/place_order:
+    put:
+      consumes:
+      - application/json
+      description: Cuando se hace checkout enviamos un comando a orders para que inicie
+        el proceso de la orden.
+      parameters:
+      - description: Place order
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/emit.SendPlacedMessage'
+      produces:
+      - application/json
+      responses: {}
+      summary: Emite place_order/place_order
       tags:
       - Rabbit
   /v1/cart:

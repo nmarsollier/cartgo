@@ -8,66 +8,42 @@ Nestor Marsollier
 nmarsollier@gmail.com  
 
 ---
-### /rabbit/article-exist
+### /rabbit/article_exist
 
 #### GET
 ##### Summary
 
-Mensage Rabbit order/article-exist
+Mensage Rabbit article_exist/cart_article_exist
 
 ##### Description
 
-Luego de solicitar validaciones de catalogo, las validaciones las recibimos en esta Queue, con el mensaje type article-data.
+Luego de solicitar validaciones de catalogo, Escucha article_exist/cart_article_exist.
 
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| type | body | Message para Type = article-exist | Yes | [consume.consumeArticleDataMessage](#consumeconsumearticledatamessage) |
+| type | body | Mensaje | Yes | [consume.consumeArticleDataMessage](#consumeconsumearticledatamessage) |
 
 ##### Responses
 
 | Code | Description |
 | ---- | ----------- |
 
-### /rabbit/cart/article-exist
-
 #### PUT
 ##### Summary
 
-Emite Validar Artículos a Cart cart/article-exist
+Emite Validar Artículos a Cart article_exist/article_exist
 
 ##### Description
 
-Solicitamos las validaciones ar articulos a catalogo. Queue y Exchange es donde nos reponde.
+Solicitamos las validaciones ar articulos a catalogo. Responde en article_exist/cart_article_exist.
 
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| body | body | Mensage de validacion | Yes | [emit.SendValidationMessage](#emitsendvalidationmessage) |
-
-##### Responses
-
-| Code | Description |
-| ---- | ----------- |
-
-### /rabbit/cart/place-order
-
-#### PUT
-##### Summary
-
-Emite Placed Order desde Cart
-
-##### Description
-
-Cuando se hace checkout enviamos un comando a orders para que inicie el proceso de la orden.
-
-##### Parameters
-
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ------ |
-| body | body | Place order | Yes | [emit.SendPlacedMessage](#emitsendplacedmessage) |
+| body | body | Mensage de validacion article_exist/cart_article_exist | Yes | [emit.SendValidationMessage](#emitsendvalidationmessage) |
 
 ##### Responses
 
@@ -79,7 +55,7 @@ Cuando se hace checkout enviamos un comando a orders para que inicie el proceso 
 #### GET
 ##### Summary
 
-Mensage Rabbit
+Mensage Rabbit logout
 
 ##### Description
 
@@ -96,22 +72,44 @@ Escucha de mensajes logout desde auth.
 | Code | Description |
 | ---- | ----------- |
 
-### /rabbit/order-placed
+### /rabbit/order_placed
 
 #### GET
 ##### Summary
 
-Mensage Rabbit order/order-placed
+Mensage Rabbit order_placed/order_placed
 
 ##### Description
 
-Cuando se recibe order-placed se actualiza el order id del carrito. No se respode a este evento.
+Cuando se recibe order_placed se actualiza el order id del carrito. No se respode a este evento.
 
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| type | body | Message para Type = order-placed | Yes | [consume.consumeOrderPlacedMessage](#consumeconsumeorderplacedmessage) |
+| type | body | Message order_placed | Yes | [consume.consumeOrderPlacedMessage](#consumeconsumeorderplacedmessage) |
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+
+### /rabbit/place_order
+
+#### PUT
+##### Summary
+
+Emite place_order/place_order
+
+##### Description
+
+Cuando se hace checkout enviamos un comando a orders para que inicie el proceso de la orden.
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ------ |
+| body | body | Place order | Yes | [emit.SendPlacedMessage](#emitsendplacedmessage) |
 
 ##### Responses
 
@@ -365,19 +363,13 @@ Valida el carrito para checkout
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| exchange | string | *Example:* `""` | No |
 | message | [cart.ValidationEvent](#cartvalidationevent) |  | No |
-| queue | string | *Example:* `""` | No |
-| type | string | *Example:* `"article-exist"` | No |
 
 #### consume.consumeOrderPlacedMessage
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| exchange | string | *Example:* `""` | No |
 | message | [cart.OrderPlacedEvent](#cartorderplacedevent) |  | No |
-| queue | string | *Example:* `""` | No |
-| type | string | *Example:* `"order-placed"` | No |
 
 #### consume.logoutMessage
 
@@ -420,8 +412,7 @@ Valida el carrito para checkout
 | ---- | ---- | ----------- | -------- |
 | exchange | string | *Example:* `"cart"` | No |
 | message | [emit.ArticleValidationData](#emitarticlevalidationdata) |  | No |
-| queue | string | *Example:* `"cart"` | No |
-| type | string | *Example:* `"article-exist"` | No |
+| routing_key | string | *Example:* `""` | No |
 
 #### errs.ValidationErr
 

@@ -6,19 +6,20 @@ import (
 	"github.com/golang/glog"
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/tools/env"
+	"github.com/nmarsollier/cartgo/tools/strs"
 	"github.com/streadway/amqp"
 )
 
-//	@Summary		Mensage Rabbit order/article-exist
-//	@Description	Luego de solicitar validaciones de catalogo, las validaciones las recibimos en esta Queue, con el mensaje type article-data.
+//	@Summary		Mensage Rabbit article_exist/cart_article_exist
+//	@Description	Luego de solicitar validaciones de catalogo, Escucha article_exist/cart_article_exist.
 //	@Tags			Rabbit
 //	@Accept			json
 //	@Produce		json
-//	@Param			type	body	consumeArticleDataMessage	true	"Message para Type = article-exist"
-//	@Router			/rabbit/article-exist [get]
+//	@Param			type	body	consumeArticleDataMessage	true	"Mensaje"
+//	@Router			/rabbit/article_exist [get]
 //
 // Validar Artículos
-func consumeOrders() error {
+func consumeArticleExist() error {
 	conn, err := amqp.Dial(env.Get().RabbitURL)
 	if err != nil {
 		glog.Error(err)
@@ -34,13 +35,13 @@ func consumeOrders() error {
 	defer chn.Close()
 
 	err = chn.ExchangeDeclare(
-		"cart",   // name
-		"direct", // type
-		false,    // durable
-		false,    // auto-deleted
-		false,    // internal
-		false,    // no-wait
-		nil,      // arguments
+		"article_exist", // name
+		"direct",        // type
+		false,           // durable
+		false,           // auto-deleted
+		false,           // internal
+		false,           // no-wait
+		nil,             // arguments
 	)
 	if err != nil {
 		glog.Error(err)
@@ -48,12 +49,12 @@ func consumeOrders() error {
 	}
 
 	queue, err := chn.QueueDeclare(
-		"cart", // name
-		false,  // durable
-		false,  // delete when unused
-		false,  // exclusive
-		false,  // no-wait
-		nil,    // arguments
+		"cart_article_exist", // name
+		false,                // durable
+		false,                // delete when unused
+		false,                // exclusive
+		false,                // no-wait
+		nil,                  // arguments
 	)
 	if err != nil {
 		glog.Error(err)
@@ -61,9 +62,9 @@ func consumeOrders() error {
 	}
 
 	err = chn.QueueBind(
-		queue.Name, // queue name
-		"cart",     // routing key
-		"cart",     // exchange
+		queue.Name,           // queue name
+		"cart_article_exist", // routing key
+		"article_exist",      // exchange
 		false,
 		nil)
 	if err != nil {
@@ -74,7 +75,7 @@ func consumeOrders() error {
 	mgs, err := chn.Consume(
 		queue.Name, // queue
 		"",         // consumer
-		true,       // auto-ack
+		false,      // auto-ack
 		false,      // exclusive
 		false,      // no-local
 		false,      // no-wait
@@ -91,13 +92,16 @@ func consumeOrders() error {
 		for d := range mgs {
 			newMessage := &consumeArticleDataMessage{}
 			body := d.Body
-			glog.Info(string(body))
+			glog.Info("Incomming article_exist :", string(body))
 
 			err = json.Unmarshal(body, newMessage)
 			if err == nil {
-				switch newMessage.Type {
-				case "article-exist":
-					processArticleData(newMessage)
+				processArticleExist(newMessage)
+
+				if err := d.Ack(false); err != nil {
+					glog.Info("Failed ACK article_exist :", strs.ToJson(newMessage), err)
+				} else {
+					glog.Info("Consumed article_exist :", strs.ToJson(newMessage))
 				}
 			} else {
 				glog.Error(err)
@@ -110,7 +114,7 @@ func consumeOrders() error {
 	return nil
 }
 
-func processArticleData(newMessage *consumeArticleDataMessage, ctx ...interface{}) {
+func processArticleExist(newMessage *consumeArticleDataMessage, ctx ...interface{}) {
 	data := newMessage.Message
 
 	err := cart.ProcessArticleData(data, ctx...)
@@ -118,13 +122,8 @@ func processArticleData(newMessage *consumeArticleDataMessage, ctx ...interface{
 		glog.Error(err)
 		return
 	}
-
-	glog.Info("Article exist completed : ", data)
 }
 
 type consumeArticleDataMessage struct {
-	Type     string `json:"type" example:"article-exist"`
-	Queue    string `json:"queue" example:""`
-	Exchange string `json:"exchange" example:""`
-	Message  *cart.ValidationEvent
+	Message *cart.ValidationEvent
 }

@@ -34,9 +34,6 @@ func TestProccessArticleDataHappyPath(t *testing.T) {
 
 	// REQUEST
 	newMessage := &consumeArticleDataMessage{
-		Type:     "article-data",
-		Queue:    "orders",
-		Exchange: "orders",
 		Message: &cart.ValidationEvent{
 			ReferenceId: "123",
 			ArticleId:   "123",
@@ -44,6 +41,6 @@ func TestProccessArticleDataHappyPath(t *testing.T) {
 		},
 	}
 
-	processArticleData(newMessage, collection)
+	processArticleExist(newMessage, collection)
 
 }

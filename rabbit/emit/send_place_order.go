@@ -7,13 +7,13 @@ import (
 	"github.com/nmarsollier/cartgo/cart"
 )
 
-//	@Summary		Emite Placed Order desde Cart
+//	@Summary		Emite place_order/place_order
 //	@Description	Cuando se hace checkout enviamos un comando a orders para que inicie el proceso de la orden.
 //	@Tags			Rabbit
 //	@Accept			json
 //	@Produce		json
 //	@Param			body	body	SendPlacedMessage	true	"Place order"
-//	@Router			/rabbit/cart/place-order [put]
+//	@Router			/rabbit/place_order [put]
 //
 // Emite Placed Order desde Cart
 func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
@@ -32,10 +32,7 @@ func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 	}
 
 	send := SendPlacedMessage{
-		Type:     "place-order",
-		Exchange: "cart",
-		Queue:    "cart",
-		Message:  data,
+		Message: data,
 	}
 
 	chn, err := getChannel(ctx...)
@@ -46,8 +43,8 @@ func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 	}
 
 	err = chn.ExchangeDeclare(
-		"order",  // name
-		"direct", // type
+		"place_order", // name
+		"direct",      // type
 	)
 	if err != nil {
 		glog.Error(err)
@@ -62,8 +59,8 @@ func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 	}
 
 	err = chn.Publish(
-		"order", // exchange
-		"order", // routing key
+		"place_order", // exchange
+		"place_order", // routing key
 		body,
 	)
 	if err != nil {
@@ -72,7 +69,7 @@ func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 		return err
 	}
 
-	glog.Info("Rabbit place order enviado ", string(body))
+	glog.Info("Emit place_order :", string(body))
 	return nil
 }
 
@@ -88,8 +85,5 @@ type PlaceArticlesData struct {
 }
 
 type SendPlacedMessage struct {
-	Type     string     `json:"type" example:"place-order"`
-	Exchange string     `json:"exchange" example:"order"`
-	Queue    string     `json:"queue" example:"order"`
-	Message  PlacedData `json:"message" example:"order"`
+	Message PlacedData `json:"message" example:"order"`
 }

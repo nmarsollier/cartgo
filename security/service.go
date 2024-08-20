@@ -39,5 +39,4 @@ func Invalidate(token string) {
 	}
 
 	cache.Delete(token)
-	glog.Info("Token invalidado: ", token)
 }
