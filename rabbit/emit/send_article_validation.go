@@ -3,7 +3,7 @@ package emit
 import (
 	"encoding/json"
 
-	"github.com/golang/glog"
+	"github.com/nmarsollier/cartgo/log"
 )
 
 //	@Summary		Emite Validar Artículos a Cart article_exist/article_exist
@@ -16,16 +16,22 @@ import (
 //
 // Emite Validar Artículos a Cart
 func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error {
+	logger := log.Get(ctx...).
+		WithField("Controller", "Rabbit").
+		WithField("Method", "Emit").
+		WithField("Queue", "article_exist")
 
+	corrId, _ := logger.Data["CorrelationId"].(string)
 	send := SendValidationMessage{
-		Exchange:   "article_exist",
-		RoutingKey: "cart_article_exist",
-		Message:    data,
+		CorrelationId: corrId,
+		Exchange:      "article_exist",
+		RoutingKey:    "cart_article_exist",
+		Message:       data,
 	}
 
 	chn, err := getChannel(ctx...)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		chn = nil
 		return err
 	}
@@ -35,14 +41,14 @@ func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error
 		"direct",  // type
 	)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		chn = nil
 		return err
 	}
 
 	body, err := json.Marshal(send)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		return err
 	}
 
@@ -52,12 +58,12 @@ func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error
 		body,
 	)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		chn = nil
 		return err
 	}
 
-	glog.Info("Emit article_exist :", string(body))
+	logger.Info("Emit article_exist :", string(body))
 
 	return nil
 }
@@ -69,7 +75,8 @@ type ArticleValidationData struct {
 }
 
 type SendValidationMessage struct {
-	Exchange   string                `json:"exchange" example:"cart"`
-	RoutingKey string                `json:"routing_key" example:""`
-	Message    ArticleValidationData `json:"message"`
+	CorrelationId string                `json:"correlation_id" example:"123123" `
+	Exchange      string                `json:"exchange" example:"cart"`
+	RoutingKey    string                `json:"routing_key" example:""`
+	Message       ArticleValidationData `json:"message"`
 }

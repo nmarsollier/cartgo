@@ -19,6 +19,7 @@ func Router() *gin.Engine {
 		server = gin.Default()
 
 		server.Use(gzip.Gzip(gzip.DefaultCompression))
+		server.Use(GinLoggerMiddleware)
 
 		server.Use(cors.Middleware(cors.Config{
 			Origins:         "*",
@@ -36,4 +37,18 @@ func Router() *gin.Engine {
 	}
 
 	return server
+}
+
+// Obtiene el contexto a serivcios externos
+// En prod este contexto esta vacio.
+func GinCtx(c *gin.Context) []interface{} {
+	var ctx []interface{}
+	// mock_ctx solo es para mocks en testing
+	if mocks, ok := c.Get("mock_ctx"); ok {
+		ctx = mocks.([]interface{})
+	}
+
+	ctx = append(ctx, ginLogger(c))
+
+	return ctx
 }

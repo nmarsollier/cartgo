@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/golang/glog"
 	"github.com/nmarsollier/cartgo/cart"
+	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/rabbit/emit"
 )
 
@@ -31,7 +31,7 @@ func ValidateCheckout(cart *cart.Cart, token string, ctx ...interface{}) error {
 	for _, a := range cart.Articles {
 		err := callValidate(a, token, ctx...)
 		if err != nil {
-			glog.Error(err)
+			log.Get(ctx...).Error(err)
 			return err
 		}
 	}

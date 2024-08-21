@@ -40,7 +40,7 @@ func addArticle(c *gin.Context) {
 		return
 	}
 
-	ctx := server.TestCtx(c)
+	ctx := server.GinCtx(c)
 	_, err := service.AddArticle(user.ID, body, ctx...)
 	if err != nil {
 		server.AbortWithError(c, err)

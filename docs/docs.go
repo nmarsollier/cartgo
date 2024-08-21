@@ -38,7 +38,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/consume.consumeArticleDataMessage"
+                            "$ref": "#/definitions/consume.consumeArticleExistMessage"
                         }
                     }
                 ],
@@ -693,9 +693,13 @@ const docTemplate = `{
                 }
             }
         },
-        "consume.consumeArticleDataMessage": {
+        "consume.consumeArticleExistMessage": {
             "type": "object",
             "properties": {
+                "correlation_id": {
+                    "type": "string",
+                    "example": "123123"
+                },
                 "message": {
                     "$ref": "#/definitions/cart.ValidationEvent"
                 }
@@ -704,6 +708,10 @@ const docTemplate = `{
         "consume.consumeOrderPlacedMessage": {
             "type": "object",
             "properties": {
+                "correlation_id": {
+                    "type": "string",
+                    "example": "123123"
+                },
                 "message": {
                     "$ref": "#/definitions/cart.OrderPlacedEvent"
                 }
@@ -712,13 +720,13 @@ const docTemplate = `{
         "consume.logoutMessage": {
             "type": "object",
             "properties": {
+                "correlation_id": {
+                    "type": "string",
+                    "example": "123123"
+                },
                 "message": {
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg"
-                },
-                "type": {
-                    "type": "string",
-                    "example": "logout"
                 }
             }
         },

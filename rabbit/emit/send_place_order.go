@@ -3,8 +3,8 @@ package emit
 import (
 	"encoding/json"
 
-	"github.com/golang/glog"
 	"github.com/nmarsollier/cartgo/cart"
+	"github.com/nmarsollier/cartgo/log"
 )
 
 //	@Summary		Emite place_order/place_order
@@ -17,6 +17,11 @@ import (
 //
 // Emite Placed Order desde Cart
 func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
+	logger := log.Get(ctx...).
+		WithField("Controller", "Rabbit").
+		WithField("Method", "Emit").
+		WithField("Queue", "place_order")
+
 	articles := []PlaceArticlesData{}
 	for _, a := range cart.Articles {
 		articles = append(articles, PlaceArticlesData{
@@ -31,13 +36,15 @@ func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 		Articles: articles,
 	}
 
+	corrId, _ := logger.Data["CorrelationId"].(string)
 	send := SendPlacedMessage{
-		Message: data,
+		CorrelationId: corrId,
+		Message:       data,
 	}
 
 	chn, err := getChannel(ctx...)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		chn = nil
 		return err
 	}
@@ -47,14 +54,14 @@ func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 		"direct",      // type
 	)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		chn = nil
 		return err
 	}
 
 	body, err := json.Marshal(send)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		return err
 	}
 
@@ -64,12 +71,12 @@ func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 		body,
 	)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		chn = nil
 		return err
 	}
 
-	glog.Info("Emit place_order :", string(body))
+	logger.Info("Emit place_order :", string(body))
 	return nil
 }
 
@@ -85,5 +92,6 @@ type PlaceArticlesData struct {
 }
 
 type SendPlacedMessage struct {
-	Message PlacedData `json:"message" example:"order"`
+	CorrelationId string     `json:"correlation_id" example:"123123" `
+	Message       PlacedData `json:"message" example:"order"`
 }

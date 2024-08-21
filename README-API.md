@@ -23,7 +23,7 @@ Luego de solicitar validaciones de catalogo, Escucha article_exist/cart_article_
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| type | body | Mensaje | Yes | [consume.consumeArticleDataMessage](#consumeconsumearticledatamessage) |
+| type | body | Mensaje | Yes | [consume.consumeArticleExistMessage](#consumeconsumearticleexistmessage) |
 
 ##### Responses
 
@@ -359,24 +359,26 @@ Valida el carrito para checkout
 | referenceId | string | *Example:* `"UserId"` | No |
 | valid | boolean | *Example:* `true` | No |
 
-#### consume.consumeArticleDataMessage
+#### consume.consumeArticleExistMessage
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
+| correlation_id | string | *Example:* `"123123"` | No |
 | message | [cart.ValidationEvent](#cartvalidationevent) |  | No |
 
 #### consume.consumeOrderPlacedMessage
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
+| correlation_id | string | *Example:* `"123123"` | No |
 | message | [cart.OrderPlacedEvent](#cartorderplacedevent) |  | No |
 
 #### consume.logoutMessage
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
+| correlation_id | string | *Example:* `"123123"` | No |
 | message | string | *Example:* `"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg"` | No |
-| type | string | *Example:* `"logout"` | No |
 
 #### emit.ArticleValidationData
 

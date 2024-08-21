@@ -41,7 +41,7 @@ func incrementArticle(c *gin.Context) {
 		Quantity:  1,
 	}
 
-	ctx := server.TestCtx(c)
+	ctx := server.GinCtx(c)
 	_, err := service.AddArticle(user.ID, article, ctx...)
 	if err != nil {
 		server.AbortWithError(c, err)

@@ -34,7 +34,7 @@ func validate(c *gin.Context) {
 	user := c.MustGet("user").(security.User)
 	token := c.MustGet("tokenString").(string)
 
-	ctx := server.TestCtx(c)
+	ctx := server.GinCtx(c)
 	currentCart, err := cart.CurrentCart(user.ID, ctx...)
 	if err != nil {
 		server.AbortWithError(c, err)

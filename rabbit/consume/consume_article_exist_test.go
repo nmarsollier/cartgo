@@ -33,7 +33,7 @@ func TestProccessArticleDataHappyPath(t *testing.T) {
 	).Times(1)
 
 	// REQUEST
-	newMessage := &consumeArticleDataMessage{
+	newMessage := &consumeArticleExistMessage{
 		Message: &cart.ValidationEvent{
 			ReferenceId: "123",
 			ArticleId:   "123",

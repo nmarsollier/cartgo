@@ -1,8 +1,6 @@
 package main
 
 import (
-	"flag"
-
 	"github.com/nmarsollier/cartgo/rabbit/consume"
 	routes "github.com/nmarsollier/cartgo/rest"
 )
@@ -18,11 +16,6 @@ import (
 //
 // Main Method
 func main() {
-	// For logging
-	flag.Parse()
-	flag.Set("logtostderr", "true")
-	flag.Set("v", "2")
-
 	consume.Init()
 	routes.Start()
 }

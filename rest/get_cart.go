@@ -32,7 +32,7 @@ func initGetCart() {
 func currentCart(c *gin.Context) {
 	user := c.MustGet("user").(security.User)
 
-	ctx := server.TestCtx(c)
+	ctx := server.GinCtx(c)
 	cart, err := service.GetCurrentCart(user.ID, ctx...)
 
 	if err != nil {

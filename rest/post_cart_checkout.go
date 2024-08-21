@@ -34,7 +34,7 @@ func checkout(c *gin.Context) {
 	user := c.MustGet("user").(security.User)
 	token := c.MustGet("tokenString").(string)
 
-	ctx := server.TestCtx(c)
+	ctx := server.GinCtx(c)
 	_, err := service.Checkout(user.ID, token, ctx...)
 	if err != nil {
 		server.AbortWithError(c, err)

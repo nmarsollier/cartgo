@@ -3,10 +3,11 @@ package consume
 import (
 	"encoding/json"
 
-	"github.com/golang/glog"
 	"github.com/nmarsollier/cartgo/cart"
+	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/tools/env"
 	"github.com/nmarsollier/cartgo/tools/strs"
+	uuid "github.com/satori/go.uuid"
 	"github.com/streadway/amqp"
 )
 
@@ -15,21 +16,26 @@ import (
 //	@Tags			Rabbit
 //	@Accept			json
 //	@Produce		json
-//	@Param			type	body	consumeArticleDataMessage	true	"Mensaje"
+//	@Param			type	body	consumeArticleExistMessage	true	"Mensaje"
 //	@Router			/rabbit/article_exist [get]
 //
 // Validar Artículos
 func consumeArticleExist() error {
+	logger := log.Get().
+		WithField("Controller", "Rabbit").
+		WithField("Queue", "article_exist").
+		WithField("Method", "Consume")
+
 	conn, err := amqp.Dial(env.Get().RabbitURL)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		return err
 	}
 	defer conn.Close()
 
 	chn, err := conn.Channel()
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		return err
 	}
 	defer chn.Close()
@@ -44,7 +50,7 @@ func consumeArticleExist() error {
 		nil,             // arguments
 	)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		return err
 	}
 
@@ -57,7 +63,7 @@ func consumeArticleExist() error {
 		nil,                  // arguments
 	)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		return err
 	}
 
@@ -68,7 +74,7 @@ func consumeArticleExist() error {
 		false,
 		nil)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		return err
 	}
 
@@ -82,48 +88,61 @@ func consumeArticleExist() error {
 		nil,        // args
 	)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		return err
 	}
 
-	glog.Info("RabbitMQ consumeCart conectado")
+	logger.Info("RabbitMQ consumeCart conectado")
 
 	go func() {
 		for d := range mgs {
-			newMessage := &consumeArticleDataMessage{}
+			newMessage := &consumeArticleExistMessage{}
 			body := d.Body
-			glog.Info("Incomming article_exist :", string(body))
+			logger.Info("Incomming article_exist :", string(body))
 
 			err = json.Unmarshal(body, newMessage)
 			if err == nil {
-				processArticleExist(newMessage)
+				l := logger.WithField("CorrelationId", getArticleExistCorrelationId(newMessage))
+
+				processArticleExist(newMessage, l)
 
 				if err := d.Ack(false); err != nil {
-					glog.Info("Failed ACK article_exist :", strs.ToJson(newMessage), err)
+					l.Info("Failed ACK article_exist :", strs.ToJson(newMessage), err)
 				} else {
-					glog.Info("Consumed article_exist :", strs.ToJson(newMessage))
+					l.Info("Consumed article_exist :", strs.ToJson(newMessage))
 				}
 			} else {
-				glog.Error(err)
+				logger.Error(err)
 			}
 		}
 	}()
 
-	glog.Info("Closed connection: ", <-conn.NotifyClose(make(chan *amqp.Error)))
+	logger.Info("Closed connection: ", <-conn.NotifyClose(make(chan *amqp.Error)))
 
 	return nil
 }
 
-func processArticleExist(newMessage *consumeArticleDataMessage, ctx ...interface{}) {
+func processArticleExist(newMessage *consumeArticleExistMessage, ctx ...interface{}) {
 	data := newMessage.Message
 
 	err := cart.ProcessArticleData(data, ctx...)
 	if err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return
 	}
 }
 
-type consumeArticleDataMessage struct {
-	Message *cart.ValidationEvent
+type consumeArticleExistMessage struct {
+	CorrelationId string `json:"correlation_id" example:"123123" `
+	Message       *cart.ValidationEvent
+}
+
+func getArticleExistCorrelationId(c *consumeArticleExistMessage) string {
+	value := c.CorrelationId
+
+	if len(value) == 0 {
+		value = uuid.NewV4().String()
+	}
+
+	return value
 }

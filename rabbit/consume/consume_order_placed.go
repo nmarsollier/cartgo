@@ -3,10 +3,11 @@ package consume
 import (
 	"encoding/json"
 
-	"github.com/golang/glog"
 	"github.com/nmarsollier/cartgo/cart"
+	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/tools/env"
 	"github.com/nmarsollier/cartgo/tools/strs"
+	uuid "github.com/satori/go.uuid"
 	"github.com/streadway/amqp"
 )
 
@@ -20,16 +21,21 @@ import (
 //
 // Consume Order Placed
 func consumeOrderPlaced() error {
+	logger := log.Get().
+		WithField("Controller", "Rabbit").
+		WithField("Queue", "order_placed").
+		WithField("Method", "Consume")
+
 	conn, err := amqp.Dial(env.Get().RabbitURL)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		return err
 	}
 	defer conn.Close()
 
 	chn, err := conn.Channel()
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		return err
 	}
 	defer chn.Close()
@@ -44,7 +50,7 @@ func consumeOrderPlaced() error {
 		nil,            // arguments
 	)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		return err
 	}
 
@@ -57,7 +63,7 @@ func consumeOrderPlaced() error {
 		nil,                 // arguments
 	)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		return err
 	}
 
@@ -68,7 +74,7 @@ func consumeOrderPlaced() error {
 		false,
 		nil)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		return err
 	}
 
@@ -82,34 +88,36 @@ func consumeOrderPlaced() error {
 		nil,        // args
 	)
 	if err != nil {
-		glog.Error(err)
+		logger.Error(err)
 		return err
 	}
 
-	glog.Info("RabbitMQ consumeOrderPlaced conectado")
+	logger.Info("RabbitMQ consumeOrderPlaced conectado")
 
 	go func() {
 		for d := range mgs {
 			newMessage := &consumeOrderPlacedMessage{}
 			body := d.Body
 
-			glog.Info("Incomming order_placed :", string(body))
+			logger.Info("Incomming order_placed :", string(body))
 			err = json.Unmarshal(body, newMessage)
 			if err == nil {
-				processOrderPlaced(newMessage)
+				l := logger.WithField("CorrelationId", getOrderPlacedCorrelationId(newMessage))
+
+				processOrderPlaced(newMessage, l)
 
 				if err := d.Ack(false); err != nil {
-					glog.Info("Failed ACK order_placed : ", strs.ToJson(newMessage), err)
+					l.Info("Failed ACK order_placed : ", strs.ToJson(newMessage), err)
 				} else {
-					glog.Info("Consumed order_placed :", strs.ToJson(newMessage))
+					l.Info("Consumed order_placed :", strs.ToJson(newMessage))
 				}
 			} else {
-				glog.Error(err)
+				logger.Error(err)
 			}
 		}
 	}()
 
-	glog.Info("Closed connection: ", <-conn.NotifyClose(make(chan *amqp.Error)))
+	logger.Info("Closed connection: ", <-conn.NotifyClose(make(chan *amqp.Error)))
 
 	return nil
 }
@@ -119,11 +127,22 @@ func processOrderPlaced(newMessage *consumeOrderPlacedMessage, ctx ...interface{
 
 	err := cart.ProcessOrderPlaced(data, ctx...)
 	if err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return
 	}
 }
 
 type consumeOrderPlacedMessage struct {
-	Message *cart.OrderPlacedEvent
+	CorrelationId string `json:"correlation_id" example:"123123" `
+	Message       *cart.OrderPlacedEvent
+}
+
+func getOrderPlacedCorrelationId(c *consumeOrderPlacedMessage) string {
+	value := c.CorrelationId
+
+	if len(value) == 0 {
+		value = uuid.NewV4().String()
+	}
+
+	return value
 }

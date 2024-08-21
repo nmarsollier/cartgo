@@ -3,7 +3,7 @@ package security
 import (
 	"time"
 
-	"github.com/golang/glog"
+	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/tools/errs"
 	gocache "github.com/patrickmn/go-cache"
 )
@@ -21,7 +21,7 @@ func Validate(token string, ctx ...interface{}) (*User, error) {
 
 	user, err := getRemoteToken(token, ctx...)
 	if err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, errs.Unauthorized
 	}
 
@@ -32,11 +32,12 @@ func Validate(token string, ctx ...interface{}) (*User, error) {
 }
 
 // Invalidate invalida un token del cache
-func Invalidate(token string) {
+func Invalidate(token string, ctx ...interface{}) {
 	if len(token) <= 7 {
-		glog.Info("Token no valido: ", token)
+		log.Get(ctx...).Info("Token no valido: ", token)
 		return
 	}
 
 	cache.Delete(token)
+	log.Get(ctx...).Info("Token invalidado: ", token)
 }

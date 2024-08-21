@@ -3,7 +3,7 @@ package emit
 import (
 	"errors"
 
-	"github.com/golang/glog"
+	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/tools/env"
 	"github.com/streadway/amqp"
 )
@@ -20,13 +20,13 @@ func getChannel(ctx ...interface{}) (RabbitChannel, error) {
 
 	conn, err := amqp.Dial(env.Get().RabbitURL)
 	if err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, err
 	}
 
 	channel, err := conn.Channel()
 	if err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, err
 	}
 

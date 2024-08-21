@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/golang/glog"
+	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/tools/db"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -25,7 +25,7 @@ func dbCollection(ctx ...interface{}) (db.MongoCollection, error) {
 
 	database, err := db.Get()
 	if err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, err
 	}
 
@@ -59,7 +59,7 @@ type DbIdFilter struct {
 func findByUserId(userId string, ctx ...interface{}) (*Cart, error) {
 	var collection, err = dbCollection(ctx...)
 	if err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, err
 	}
 
@@ -80,13 +80,13 @@ func findByUserId(userId string, ctx ...interface{}) (*Cart, error) {
 func findById(cartId string, ctx ...interface{}) (*Cart, error) {
 	_id, err := primitive.ObjectIDFromHex(cartId)
 	if err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, ErrID
 	}
 
 	collection, err := dbCollection(ctx...)
 	if err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, err
 	}
 
@@ -94,7 +94,7 @@ func findById(cartId string, ctx ...interface{}) (*Cart, error) {
 	filter := DbIdFilter{ID: _id}
 
 	if err = collection.FindOne(context.Background(), filter, cart); err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, err
 	}
 
@@ -103,18 +103,18 @@ func findById(cartId string, ctx ...interface{}) (*Cart, error) {
 
 func insert(cart *Cart, ctx ...interface{}) (*Cart, error) {
 	if err := cart.ValidateSchema(); err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, err
 	}
 
 	var collection, err = dbCollection(ctx...)
 	if err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, err
 	}
 
 	if _, err := collection.InsertOne(context.Background(), cart); err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, err
 	}
 
@@ -123,19 +123,19 @@ func insert(cart *Cart, ctx ...interface{}) (*Cart, error) {
 
 func replace(cart *Cart, ctx ...interface{}) (*Cart, error) {
 	if err := cart.ValidateSchema(); err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, err
 	}
 
 	var collection, err = dbCollection(ctx...)
 	if err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, err
 	}
 
 	_, err = collection.ReplaceOne(context.Background(), DbIdFilter{ID: cart.ID}, cart)
 	if err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, err
 	}
 
@@ -144,13 +144,13 @@ func replace(cart *Cart, ctx ...interface{}) (*Cart, error) {
 
 func invalidate(cart *Cart, ctx ...interface{}) (*Cart, error) {
 	if err := cart.ValidateSchema(); err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, err
 	}
 
 	var collection, err = dbCollection(ctx...)
 	if err != nil {
-		glog.Error(err)
+		log.Get(ctx...).Error(err)
 		return nil, err
 	}
 
