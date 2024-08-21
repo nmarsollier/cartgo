@@ -11,7 +11,8 @@ type Configuration struct {
 	RabbitURL         string `json:"rabbitUrl"`
 	MongoURL          string `json:"mongoUrl"`
 	SecurityServerURL string `json:"securityServerUrl"`
-	CatalogServerURL  string `json:"securityServerUrl"`
+	CatalogServerURL  string `json:"catalogUrl"`
+	FluentUrl         string `json:"fluentUrl"`
 }
 
 var config *Configuration
@@ -23,6 +24,7 @@ func new() *Configuration {
 		MongoURL:          "mongodb://localhost:27017",
 		SecurityServerURL: "http://localhost:3000",
 		CatalogServerURL:  "http://localhost:3002",
+		FluentUrl:         "localhost:24224",
 	}
 }
 
@@ -55,6 +57,10 @@ func load() *Configuration {
 
 	if value := os.Getenv("AUTH_SERVICE_URL"); len(value) > 0 {
 		result.SecurityServerURL = value
+	}
+
+	if value := os.Getenv("FLUENT_URL"); len(value) > 0 {
+		result.FluentUrl = value
 	}
 
 	if value := os.Getenv("CATALOG_SERVICE_URL"); len(value) > 0 {

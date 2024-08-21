@@ -8,6 +8,7 @@ ENV MONGO_URL=mongodb://host.docker.internal:27017
 ENV RABBIT_URL=amqp://host.docker.internal
 ENV AUTH_SERVICE_URL=http://host.docker.internal:3000
 ENV CATALOG_SERVICE_URL=http://host.docker.internal:3002
+ENV FLUENT_URL=host.docker.internal:24224
 
 RUN curl -L https://github.com/nmarsollier/cartgo/archive/refs/heads/master.tar.gz | tar xz --strip=1
 RUN go install /go/src/github.com/nmarsollier/cartgo
