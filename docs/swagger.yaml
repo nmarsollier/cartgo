@@ -140,6 +140,9 @@ definitions:
     type: object
   emit.SendValidationMessage:
     properties:
+      correlation_id:
+        example: "123123"
+        type: string
       exchange:
         example: cart
         type: string

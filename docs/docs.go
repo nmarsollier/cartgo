@@ -781,6 +781,10 @@ const docTemplate = `{
         "emit.SendValidationMessage": {
             "type": "object",
             "properties": {
+                "correlation_id": {
+                    "type": "string",
+                    "example": "123123"
+                },
                 "exchange": {
                     "type": "string",
                     "example": "cart"

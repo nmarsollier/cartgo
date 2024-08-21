@@ -412,6 +412,7 @@ Valida el carrito para checkout
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
+| correlation_id | string | *Example:* `"123123"` | No |
 | exchange | string | *Example:* `"cart"` | No |
 | message | [emit.ArticleValidationData](#emitarticlevalidationdata) |  | No |
 | routing_key | string | *Example:* `""` | No |
