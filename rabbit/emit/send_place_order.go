@@ -18,9 +18,10 @@ import (
 // Emite Placed Order desde Cart
 func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 	logger := log.Get(ctx...).
-		WithField("Controller", "Rabbit").
-		WithField("Method", "Emit").
-		WithField("Queue", "place_order")
+		WithField(log.LOG_FIELD_CONTOROLLER, "Rabbit").
+		WithField(log.LOG_FIELD_RABBIT_ACTION, "Emit").
+		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "place_order").
+		WithField(log.LOG_FIELD_RABBIT_QUEUE, "place_order")
 
 	articles := []PlaceArticlesData{}
 	for _, a := range cart.Articles {
@@ -36,7 +37,7 @@ func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 		Articles: articles,
 	}
 
-	corrId, _ := logger.Data["CorrelationId"].(string)
+	corrId, _ := logger.Data[log.LOG_FIELD_CORRELATION_ID].(string)
 	send := SendPlacedMessage{
 		CorrelationId: corrId,
 		Message:       data,
@@ -76,7 +77,7 @@ func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 		return err
 	}
 
-	logger.Info("Emit place_order :", string(body))
+	logger.Info(string(body))
 	return nil
 }
 

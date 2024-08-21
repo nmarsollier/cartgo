@@ -17,11 +17,12 @@ import (
 // Emite Validar Artículos a Cart
 func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error {
 	logger := log.Get(ctx...).
-		WithField("Controller", "Rabbit").
-		WithField("Method", "Emit").
-		WithField("Queue", "article_exist")
+		WithField(log.LOG_FIELD_CONTOROLLER, "Rabbit").
+		WithField(log.LOG_FIELD_RABBIT_ACTION, "Emit").
+		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "article_exist").
+		WithField(log.LOG_FIELD_RABBIT_QUEUE, "article_exist")
 
-	corrId, _ := logger.Data["CorrelationId"].(string)
+	corrId, _ := logger.Data[log.LOG_FIELD_CORRELATION_ID].(string)
 	send := SendValidationMessage{
 		CorrelationId: corrId,
 		Exchange:      "article_exist",
@@ -63,7 +64,7 @@ func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error
 		return err
 	}
 
-	logger.Info("Emit article_exist :", string(body))
+	logger.Info(string(body))
 
 	return nil
 }

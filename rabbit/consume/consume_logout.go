@@ -22,9 +22,10 @@ import (
 // Escucha de mensajes logout desde auth.
 func consumeLogout() error {
 	logger := log.Get().
-		WithField("Controller", "Rabbit").
-		WithField("Queue", "logout").
-		WithField("Method", "Consume")
+		WithField(log.LOG_FIELD_CONTOROLLER, "Rabbit").
+		WithField(log.LOG_FIELD_RABBIT_QUEUE, "logout").
+		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "auth").
+		WithField(log.LOG_FIELD_RABBIT_ACTION, "Consume")
 
 	conn, err := amqp.Dial(env.Get().RabbitURL)
 	if err != nil {
@@ -102,7 +103,7 @@ func consumeLogout() error {
 
 			err = json.Unmarshal(body, newMessage)
 			if err == nil {
-				l := logger.WithField("CorrelationId", getLogoutCorrelationId(newMessage))
+				l := logger.WithField(log.LOG_FIELD_CORRELATION_ID, getLogoutCorrelationId(newMessage))
 
 				security.Invalidate(newMessage.Message, l)
 				l.Info("Consumed :", strs.ToJson(newMessage))

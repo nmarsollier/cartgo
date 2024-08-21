@@ -30,7 +30,7 @@ func ValidateAuthentication(c *gin.Context) {
 	}
 
 	ctx := GinCtx(c)
-	c.Set("logger", log.Get(ctx...).WithField("UserId", user.ID))
+	c.Set("logger", log.Get(ctx...).WithField(log.LOG_FIELD_USER_ID, user.ID))
 }
 
 // get token from Authorization header
