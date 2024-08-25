@@ -1,6 +1,8 @@
 package server
 
 import (
+	"flag"
+
 	"github.com/gin-gonic/gin"
 	"github.com/nmarsollier/cartgo/log"
 	uuid "github.com/satori/go.uuid"
@@ -10,12 +12,20 @@ import (
 func newGinLogger(c *gin.Context) *logrus.Entry {
 	return log.Get().
 		WithField(log.LOG_FIELD_CORRELATION_ID, getCorrelationId(c)).
-		WithField(log.LOG_FIELD_CONTOROLLER, "Rest").
+		WithField(log.LOG_FIELD_CONTROLLER, "Rest").
 		WithField(log.LOG_FIELD_HTTP_METHOD, c.Request.Method).
 		WithField(log.LOG_FIELD_HTTP_PATH, c.Request.URL.Path)
 }
 
 func GinLoggerMiddleware(c *gin.Context) {
+	inTestMode := flag.Lookup("test.v") != nil
+	if inTestMode {
+		c.Set("logger", log.NewTestLogger())
+
+		c.Next()
+		return
+	}
+
 	logger := newGinLogger(c)
 	c.Set("logger", logger)
 

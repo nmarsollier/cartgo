@@ -22,7 +22,7 @@ import (
 // Validar Artículos
 func consumeArticleExist() error {
 	logger := log.Get().
-		WithField(log.LOG_FIELD_CONTOROLLER, "Rabbit").
+		WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
 		WithField(log.LOG_FIELD_RABBIT_QUEUE, "cart_article_exist").
 		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "article_exist").
 		WithField(log.LOG_FIELD_RABBIT_ACTION, "Consume")

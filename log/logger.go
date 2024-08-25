@@ -10,7 +10,7 @@ import (
 )
 
 const LOG_FIELD_CORRELATION_ID = "correlation_id"
-const LOG_FIELD_CONTOROLLER = "controller"
+const LOG_FIELD_CONTROLLER = "controller"
 const LOG_FIELD_RABBIT_ACTION = "rabbit_action"
 const LOG_FIELD_RABBIT_EXCHANGE = "exchange"
 const LOG_FIELD_RABBIT_QUEUE = "queue"

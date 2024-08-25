@@ -6,6 +6,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
+	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/rest/server"
 	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/tools/db"
@@ -44,7 +45,7 @@ func TestPostCartArticleIdDecrementHappyPath1(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId+"/decrement", "", user.ID)
@@ -86,7 +87,7 @@ func TestPostCartArticleIdDecrementHappyPath2(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[1].ArticleId+"/decrement", "", user.ID)
@@ -108,7 +109,7 @@ func TestPostCartArticleIdDecrementInvalidToken(t *testing.T) {
 	security.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
-	r := server.TestRouter(httpMock)
+	r := server.TestRouter(httpMock, log.NewTestLogger())
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[1].ArticleId+"/decrement", "", user.ID)
@@ -131,7 +132,7 @@ func TestPostCartArticleIdDecrementDocumentNotFound(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId+"/decrement", "", user.ID)
@@ -164,7 +165,7 @@ func TestPostCartArticleIdDecrementReplaceError(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId+"/decrement", "", user.ID)

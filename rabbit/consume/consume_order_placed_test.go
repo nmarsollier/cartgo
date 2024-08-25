@@ -5,6 +5,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
+	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/tools/db"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -42,5 +43,5 @@ func TestConsumeOrderPlacedHappyPath(t *testing.T) {
 		},
 	}
 
-	processOrderPlaced(newMessage, collection)
+	processOrderPlaced(newMessage, collection, log.NewTestLogger())
 }

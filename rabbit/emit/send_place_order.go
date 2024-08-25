@@ -18,7 +18,7 @@ import (
 // Emite Placed Order desde Cart
 func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 	logger := log.Get(ctx...).
-		WithField(log.LOG_FIELD_CONTOROLLER, "Rabbit").
+		WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
 		WithField(log.LOG_FIELD_RABBIT_ACTION, "Emit").
 		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "place_order").
 		WithField(log.LOG_FIELD_RABBIT_QUEUE, "place_order")

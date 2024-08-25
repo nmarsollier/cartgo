@@ -6,6 +6,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
+	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/rest/server"
 	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/tools/db"
@@ -44,7 +45,7 @@ func TestPostCartArticleIdIncrementHappyPath2(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[1].ArticleId+"/increment", "", user.ID)
@@ -66,7 +67,7 @@ func TestPostCartArticleIdIncrementInvalidToken(t *testing.T) {
 	security.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
-	r := server.TestRouter(httpMock)
+	r := server.TestRouter(httpMock, log.NewTestLogger())
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[1].ArticleId+"/increment", "", user.ID)
@@ -89,7 +90,7 @@ func TestPostCartArticleIdIncrementDocumentNotFound(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId+"/increment", "", user.ID)
@@ -122,7 +123,7 @@ func TestPostCartArticleIdIncrementReplaceError(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId+"/increment", "", user.ID)

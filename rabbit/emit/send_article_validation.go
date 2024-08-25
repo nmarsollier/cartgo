@@ -17,7 +17,7 @@ import (
 // Emite Validar Artículos a Cart
 func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error {
 	logger := log.Get(ctx...).
-		WithField(log.LOG_FIELD_CONTOROLLER, "Rabbit").
+		WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
 		WithField(log.LOG_FIELD_RABBIT_ACTION, "Emit").
 		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "article_exist").
 		WithField(log.LOG_FIELD_RABBIT_QUEUE, "article_exist")

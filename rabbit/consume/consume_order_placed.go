@@ -22,7 +22,7 @@ import (
 // Consume Order Placed
 func consumeOrderPlaced() error {
 	logger := log.Get().
-		WithField(log.LOG_FIELD_CONTOROLLER, "Rabbit").
+		WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
 		WithField(log.LOG_FIELD_RABBIT_QUEUE, "cart_order_placed").
 		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "order_placed").
 		WithField(log.LOG_FIELD_RABBIT_ACTION, "Consume")

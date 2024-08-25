@@ -5,6 +5,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
+	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/tools/db"
 	"github.com/stretchr/testify/assert"
 )
@@ -41,6 +42,6 @@ func TestProccessArticleDataHappyPath(t *testing.T) {
 		},
 	}
 
-	processArticleExist(newMessage, collection)
+	processArticleExist(newMessage, collection, log.NewTestLogger())
 
 }

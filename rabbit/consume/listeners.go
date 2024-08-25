@@ -8,7 +8,7 @@ import (
 
 func Init() {
 	logger := log.Get().
-		WithField(log.LOG_FIELD_CONTOROLLER, "Rabbit").
+		WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
 		WithField(log.LOG_FIELD_RABBIT_ACTION, "Init")
 
 	go func() {

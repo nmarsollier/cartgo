@@ -8,6 +8,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
+	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/rabbit/emit"
 	"github.com/nmarsollier/cartgo/rest/server"
 	"github.com/nmarsollier/cartgo/security"
@@ -67,7 +68,7 @@ func TestGetCartCheckoutHappyPath(t *testing.T) {
 	).Times(1)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock, rabbitMock)
+	r := server.TestRouter(collection, httpMock, rabbitMock, log.NewTestLogger())
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/checkout", "", user.ID)
@@ -88,7 +89,7 @@ func TestGetCartCheckoutInvalidToken(t *testing.T) {
 	security.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
-	r := server.TestRouter(httpMock)
+	r := server.TestRouter(httpMock, log.NewTestLogger())
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/checkout", "", user.ID)

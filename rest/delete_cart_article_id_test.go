@@ -6,6 +6,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
+	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/rest/server"
 	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/tools/db"
@@ -43,7 +44,7 @@ func TestDeleteCartArticleIdHappyPath(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
 	InitRoutes()
 
 	req, w := server.TestDeleteRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId, user.ID)
@@ -69,7 +70,7 @@ func TestDeleteCartArticleIdDocumentNotFound(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
 	InitRoutes()
 
 	req, w := server.TestDeleteRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId, user.ID)
@@ -101,7 +102,7 @@ func TestDeleteCartArticleIdUpdateFailed(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock)
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
 	InitRoutes()
 
 	req, w := server.TestDeleteRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId, user.ID)
@@ -120,7 +121,7 @@ func TestDeleteCartArticleIdInvalidToken(t *testing.T) {
 	security.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
-	r := server.TestRouter(httpMock)
+	r := server.TestRouter(httpMock, log.NewTestLogger())
 	InitRoutes()
 
 	req, w := server.TestDeleteRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId, user.ID)

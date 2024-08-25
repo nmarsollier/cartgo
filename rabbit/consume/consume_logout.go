@@ -22,7 +22,7 @@ import (
 // Escucha de mensajes logout desde auth.
 func consumeLogout() error {
 	logger := log.Get().
-		WithField(log.LOG_FIELD_CONTOROLLER, "Rabbit").
+		WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
 		WithField(log.LOG_FIELD_RABBIT_QUEUE, "logout").
 		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "auth").
 		WithField(log.LOG_FIELD_RABBIT_ACTION, "Consume")
@@ -99,7 +99,7 @@ func consumeLogout() error {
 		for d := range mgs {
 			newMessage := &logoutMessage{}
 			body := d.Body
-			logger.Info("Incomming :", string(body))
+			logger.Info("Incoming :", string(body))
 
 			err = json.Unmarshal(body, newMessage)
 			if err == nil {
