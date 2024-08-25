@@ -45,7 +45,7 @@ func TestPostCartArticleIdIncrementHappyPath2(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger(ctrl, 14, 0, 3, 3))
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[1].ArticleId+"/increment", "", user.ID)
@@ -67,7 +67,7 @@ func TestPostCartArticleIdIncrementInvalidToken(t *testing.T) {
 	security.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
-	r := server.TestRouter(httpMock, log.NewTestLogger())
+	r := server.TestRouter(httpMock, log.NewTestLogger(ctrl, 5, 2, 1, 1))
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[1].ArticleId+"/increment", "", user.ID)
@@ -90,7 +90,7 @@ func TestPostCartArticleIdIncrementDocumentNotFound(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger(ctrl, 6, 0, 1, 1))
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId+"/increment", "", user.ID)
@@ -123,7 +123,7 @@ func TestPostCartArticleIdIncrementReplaceError(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger(ctrl, 6, 1, 1, 1))
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId+"/increment", "", user.ID)

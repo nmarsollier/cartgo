@@ -68,7 +68,7 @@ func TestGetCartCheckoutHappyPath(t *testing.T) {
 	).Times(1)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock, rabbitMock, log.NewTestLogger())
+	r := server.TestRouter(collection, httpMock, rabbitMock, log.NewTestLogger(ctrl, 10, 0, 2, 4))
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/checkout", "", user.ID)
@@ -89,7 +89,7 @@ func TestGetCartCheckoutInvalidToken(t *testing.T) {
 	security.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
-	r := server.TestRouter(httpMock, log.NewTestLogger())
+	r := server.TestRouter(httpMock, log.NewTestLogger(ctrl, 5, 2, 1, 1))
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/checkout", "", user.ID)

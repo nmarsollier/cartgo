@@ -47,7 +47,7 @@ func TestPostCartArticleHappyPath(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger(ctrl, 18, 0, 4, 4))
 	InitRoutes()
 
 	body := cart.AddArticleData{
@@ -94,7 +94,7 @@ func TestPostCartArticleHappyPath2(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger(ctrl, 14, 0, 3, 3))
 	InitRoutes()
 
 	body := cart.AddArticleData{
@@ -120,7 +120,7 @@ func TestPostCartArticleInvalidToken(t *testing.T) {
 	security.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
-	r := server.TestRouter(httpMock, log.NewTestLogger())
+	r := server.TestRouter(httpMock, log.NewTestLogger(ctrl, 5, 2, 1, 1))
 	InitRoutes()
 
 	body := cart.AddArticleData{
@@ -146,7 +146,7 @@ func TestPostCartArticleDocumentNotFound(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger(ctrl, 6, 0, 1, 1))
 	InitRoutes()
 
 	body := cart.AddArticleData{
@@ -182,7 +182,7 @@ func TestPostCartArticleReplaceError(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger(ctrl, 6, 1, 1, 1))
 	InitRoutes()
 
 	body := cart.AddArticleData{

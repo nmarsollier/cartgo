@@ -42,6 +42,6 @@ func TestProccessArticleDataHappyPath(t *testing.T) {
 		},
 	}
 
-	processArticleExist(newMessage, collection, log.NewTestLogger())
+	processArticleExist(newMessage, collection, log.NewTestLogger(ctrl, 0, 0, 0, 0))
 
 }

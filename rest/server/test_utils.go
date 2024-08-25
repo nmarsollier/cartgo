@@ -16,7 +16,7 @@ import (
 // mockeando interfaces a serivcios externos
 func TestRouter(ctx ...interface{}) *gin.Engine {
 	server = nil
-	Router()
+	Router(ctx...)
 	if len(ctx) > 0 {
 		server.Use(func(c *gin.Context) {
 			c.Set("mock_ctx", ctx)

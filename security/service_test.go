@@ -24,11 +24,12 @@ func TestInvalidateHappyPath(t *testing.T) {
 	ExpectHttpToken(httpMock, testUser)
 
 	// REQUEST
-	user, err := Validate(token, httpMock, log.NewTestLogger())
+	logm := log.NewTestLogger(ctrl, 0, 0, 1, 2)
+	user, err := Validate(token, httpMock, logm)
 	assert.Equal(t, testUser.ID, user.ID)
 	assert.Equal(t, nil, err)
-	Invalidate(token, log.NewTestLogger())
-	user, err = Validate(token, httpMock, log.NewTestLogger())
+	Invalidate(token, logm)
+	user, err = Validate(token, httpMock, logm)
 	assert.Equal(t, testUser.ID, user.ID)
 	assert.Equal(t, nil, err)
 }
@@ -44,11 +45,12 @@ func TestInvalidateNotAuthorized(t *testing.T) {
 	ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
-	user, err := Validate(token, httpMock, log.NewTestLogger())
+	logm := log.NewTestLogger(ctrl, 0, 2, 1, 2)
+	user, err := Validate(token, httpMock, logm)
 	assert.Equal(t, testUser.ID, user.ID)
 	assert.Equal(t, nil, err)
-	Invalidate(token, log.NewTestLogger())
-	user, err = Validate(token, httpMock, log.NewTestLogger())
+	Invalidate(token, logm)
+	user, err = Validate(token, httpMock, logm)
 	assert.Equal(t, nil, user)
 	assert.Equal(t, errs.Unauthorized, err)
 }
@@ -64,11 +66,12 @@ func TestInvalidateNotAuthorized2(t *testing.T) {
 	ExpectHttpToken(httpMock, testUser)
 
 	// REQUEST
-	user, err := Validate(token, httpMock, log.NewTestLogger())
+	logm := log.NewTestLogger(ctrl, 0, 2, 1, 2)
+	user, err := Validate(token, httpMock, logm)
 	assert.Equal(t, nil, user)
 	assert.Equal(t, errs.Unauthorized, err)
-	Invalidate(token, log.NewTestLogger())
-	user, err = Validate(token, httpMock, log.NewTestLogger())
+	Invalidate(token, logm)
+	user, err = Validate(token, httpMock, logm)
 	assert.Equal(t, testUser.ID, user.ID)
 	assert.Equal(t, nil, err)
 }
@@ -87,7 +90,7 @@ func TestInvalidateInvalidData(t *testing.T) {
 	httpMock.EXPECT().Do(gomock.Any()).Return(response, nil).Times(1)
 
 	// REQUEST
-	user, err := Validate(token, httpMock, log.NewTestLogger())
+	user, err := Validate(token, httpMock, log.NewTestLogger(ctrl, 0, 2, 0, 1))
 	assert.Equal(t, nil, user)
 	assert.Equal(t, errs.Unauthorized, err)
 }

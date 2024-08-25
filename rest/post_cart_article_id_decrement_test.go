@@ -45,7 +45,7 @@ func TestPostCartArticleIdDecrementHappyPath1(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger(ctrl, 10, 0, 2, 2))
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId+"/decrement", "", user.ID)
@@ -87,7 +87,7 @@ func TestPostCartArticleIdDecrementHappyPath2(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger(ctrl, 14, 0, 3, 3))
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[1].ArticleId+"/decrement", "", user.ID)
@@ -109,7 +109,7 @@ func TestPostCartArticleIdDecrementInvalidToken(t *testing.T) {
 	security.ExpectHttpUnauthorized(httpMock)
 
 	// REQUEST
-	r := server.TestRouter(httpMock, log.NewTestLogger())
+	r := server.TestRouter(httpMock, log.NewTestLogger(ctrl, 5, 2, 1, 1))
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[1].ArticleId+"/decrement", "", user.ID)
@@ -132,7 +132,7 @@ func TestPostCartArticleIdDecrementDocumentNotFound(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger(ctrl, 6, 0, 1, 1))
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId+"/decrement", "", user.ID)
@@ -165,7 +165,7 @@ func TestPostCartArticleIdDecrementReplaceError(t *testing.T) {
 	security.ExpectHttpToken(httpMock, user)
 
 	// REQUEST
-	r := server.TestRouter(collection, httpMock, log.NewTestLogger())
+	r := server.TestRouter(collection, httpMock, log.NewTestLogger(ctrl, 6, 1, 1, 1))
 	InitRoutes()
 
 	req, w := server.TestPostRequest("/v1/cart/article/"+cartData.Articles[0].ArticleId+"/decrement", "", user.ID)

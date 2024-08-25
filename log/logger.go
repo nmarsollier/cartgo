@@ -58,20 +58,16 @@ func configureFluent(logger *logrus.Logger) {
 	}
 }
 
-func new() *logrus.Entry {
+func Get(ctx ...interface{}) LogRusEntry {
+	for _, o := range ctx {
+		if ti, ok := o.(LogRusEntry); ok {
+			return ti
+		}
+	}
 	logger := logrus.New()
 	configureFluent(logger)
 
 	logger.SetLevel(logrus.DebugLevel)
 	result := logger.WithField(LOG_FIELD_SERVER, "cartgo").WithField(LOG_FIELD_THREAD, uuid.NewV4().String())
-	return result
-}
-
-func Get(ctx ...interface{}) *logrus.Entry {
-	for _, o := range ctx {
-		if tc, ok := o.(*logrus.Entry); ok {
-			return tc
-		}
-	}
-	return new()
+	return logRusEntry{entry: result}
 }

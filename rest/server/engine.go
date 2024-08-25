@@ -13,13 +13,13 @@ import (
 
 var server *gin.Engine = nil
 
-func Router() *gin.Engine {
+func Router(ctx ...interface{}) *gin.Engine {
 	if server == nil {
 
 		server = gin.Default()
 
 		server.Use(gzip.Gzip(gzip.DefaultCompression))
-		server.Use(GinLoggerMiddleware)
+		server.Use(GinLoggerMiddleware(ctx...))
 
 		server.Use(cors.Middleware(cors.Config{
 			Origins:         "*",

@@ -37,7 +37,7 @@ func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 		Articles: articles,
 	}
 
-	corrId, _ := logger.Data[log.LOG_FIELD_CORRELATION_ID].(string)
+	corrId, _ := logger.Data()[log.LOG_FIELD_CORRELATION_ID].(string)
 	send := SendPlacedMessage{
 		CorrelationId: corrId,
 		Message:       data,

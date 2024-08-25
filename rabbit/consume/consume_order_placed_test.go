@@ -43,5 +43,5 @@ func TestConsumeOrderPlacedHappyPath(t *testing.T) {
 		},
 	}
 
-	processOrderPlaced(newMessage, collection, log.NewTestLogger())
+	processOrderPlaced(newMessage, collection, log.NewTestLogger(ctrl, 0, 0, 0, 0))
 }

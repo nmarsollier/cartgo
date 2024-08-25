@@ -22,7 +22,7 @@ func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error
 		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "article_exist").
 		WithField(log.LOG_FIELD_RABBIT_QUEUE, "article_exist")
 
-	corrId, _ := logger.Data[log.LOG_FIELD_CORRELATION_ID].(string)
+	corrId, _ := logger.Data()[log.LOG_FIELD_CORRELATION_ID].(string)
 	send := SendValidationMessage{
 		CorrelationId: corrId,
 		Exchange:      "article_exist",
