@@ -7,6 +7,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestDefault(t *testing.T) {
+	// Set environment variables
+	os.Setenv("RABBIT_URL", "amqp://test-rabbit-url")
+	os.Setenv("MONGO_URL", "mongodb://test-mongo-url")
+	os.Setenv("PORT", "8080")
+	os.Setenv("AUTH_SERVICE_URL", "http://test-auth-service-url")
+	os.Setenv("FLUENT_URL", "test-fluent-url")
+	os.Setenv("CATALOG_SERVICE_URL", "http://test-catalog-service-url")
+}
+
 func TestLoad(t *testing.T) {
 	// Set environment variables
 	os.Setenv("RABBIT_URL", "amqp://test-rabbit-url")
