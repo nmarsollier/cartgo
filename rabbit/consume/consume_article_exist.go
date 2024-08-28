@@ -93,8 +93,6 @@ func consumeArticleExist() error {
 		return err
 	}
 
-	logger.Info("RabbitMQ consumeCart conectado")
-
 	go func() {
 		for d := range mgs {
 			newMessage := &consumeArticleExistMessage{}

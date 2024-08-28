@@ -93,8 +93,6 @@ func consumeOrderPlaced() error {
 		return err
 	}
 
-	logger.Info("RabbitMQ consumeOrderPlaced conectado")
-
 	go func() {
 		for d := range mgs {
 			newMessage := &consumeOrderPlacedMessage{}

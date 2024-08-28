@@ -93,17 +93,15 @@ func consumeLogout() error {
 		return err
 	}
 
-	logger.Info("RabbitMQ listenLogout conectado")
-
 	go func() {
 		for d := range mgs {
 			newMessage := &logoutMessage{}
 			body := d.Body
-			logger.Info("Incoming :", string(body))
 
 			err = json.Unmarshal(body, newMessage)
 			if err == nil {
 				l := logger.WithField(log.LOG_FIELD_CORRELATION_ID, getLogoutCorrelationId(newMessage))
+				l.Info("Incoming logout :", string(body))
 
 				security.Invalidate(newMessage.Message, l)
 				l.Info("Consumed :", strs.ToJson(newMessage))
