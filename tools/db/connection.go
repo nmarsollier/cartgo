@@ -23,7 +23,7 @@ func Get() (*mongo.Database, error) {
 			return nil, err
 		}
 
-		database = client.Database("cart_go")
+		database = client.Database("cart")
 	}
 	return database, nil
 }
