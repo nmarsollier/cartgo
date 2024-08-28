@@ -99,11 +99,11 @@ func consumeArticleExist() error {
 		for d := range mgs {
 			newMessage := &consumeArticleExistMessage{}
 			body := d.Body
-			logger.Info(string(body))
 
 			err = json.Unmarshal(body, newMessage)
 			if err == nil {
 				l := logger.WithField(log.LOG_FIELD_CORRELATION_ID, getArticleExistCorrelationId(newMessage))
+				l.Info("Incoming article_exist :", string(body))
 
 				processArticleExist(newMessage, l)
 
