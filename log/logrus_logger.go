@@ -18,12 +18,13 @@ func (l logRusEntry) Error(args ...interface{}) {
 }
 
 func (l logRusEntry) WithField(key string, value interface{}) LogRusEntry {
-	l.entry.WithField(key, value)
-	return l
+	return logRusEntry{
+		entry: l.entry.WithField(key, value),
+	}
 }
 
 func (l logRusEntry) Info(args ...interface{}) {
-	l.entry.Log(logrus.InfoLevel, args...)
+	l.entry.Info(args...)
 }
 
 func (l logRusEntry) Data() logrus.Fields {
