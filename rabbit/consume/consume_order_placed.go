@@ -100,10 +100,10 @@ func consumeOrderPlaced() error {
 			newMessage := &consumeOrderPlacedMessage{}
 			body := d.Body
 
-			logger.Info("Incomming order_placed :", string(body))
 			err = json.Unmarshal(body, newMessage)
 			if err == nil {
 				l := logger.WithField(log.LOG_FIELD_CORRELATION_ID, getOrderPlacedCorrelationId(newMessage))
+				l.Info("Incoming order_placed :", string(body))
 
 				processOrderPlaced(newMessage, l)
 
