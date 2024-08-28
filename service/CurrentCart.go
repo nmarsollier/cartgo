@@ -13,10 +13,13 @@ func GetCurrentCart(userId string, ctx ...interface{}) (*cart.Cart, error) {
 
 	for _, a := range cart.Articles {
 		if !a.Validated {
-			emit.SendArticleValidation(emit.ArticleValidationData{
-				ReferenceId: cart.UserId,
-				ArticleId:   a.ArticleId,
-			}, ctx...)
+			emit.SendArticleValidation(
+				emit.ArticleValidationData{
+					ReferenceId: cart.UserId,
+					ArticleId:   a.ArticleId,
+				},
+				ctx...,
+			)
 		}
 	}
 

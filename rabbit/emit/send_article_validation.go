@@ -29,7 +29,6 @@ func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error
 		RoutingKey:    "cart_article_exist",
 		Message:       data,
 	}
-
 	chn, err := getChannel(ctx...)
 	if err != nil {
 		logger.Error(err)

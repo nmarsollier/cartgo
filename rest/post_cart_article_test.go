@@ -7,6 +7,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/log"
+	"github.com/nmarsollier/cartgo/rabbit/emit"
 	"github.com/nmarsollier/cartgo/rest/server"
 	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/tools/db"
@@ -46,8 +47,16 @@ func TestPostCartArticleHappyPath(t *testing.T) {
 	httpMock := httpx.NewMockHTTPClient(ctrl)
 	security.ExpectHttpToken(httpMock, user)
 
+	rabbitMock := emit.DefaultRabbitChannel(ctrl, 3)
+	rabbitMock.EXPECT().Publish(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
+		func(exchange string, routingKey string, body []byte) error {
+			assert.Equal(t, "article_exist", exchange)
+			return nil
+		},
+	).Times(3)
+
 	// REQUEST
-	r := server.TestRouter(collection, httpMock, log.NewTestLogger(ctrl, 18, 0, 4, 4))
+	r := server.TestRouter(collection, httpMock, rabbitMock, log.NewTestLogger(ctrl, 18, 0, 4, 4))
 	InitRoutes()
 
 	body := cart.AddArticleData{
@@ -93,8 +102,16 @@ func TestPostCartArticleHappyPath2(t *testing.T) {
 	httpMock := httpx.NewMockHTTPClient(ctrl)
 	security.ExpectHttpToken(httpMock, user)
 
+	rabbitMock := emit.DefaultRabbitChannel(ctrl, 2)
+	rabbitMock.EXPECT().Publish(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
+		func(exchange string, routingKey string, body []byte) error {
+			assert.Equal(t, "article_exist", exchange)
+			return nil
+		},
+	).Times(2)
+
 	// REQUEST
-	r := server.TestRouter(collection, httpMock, log.NewTestLogger(ctrl, 14, 0, 3, 3))
+	r := server.TestRouter(collection, httpMock, rabbitMock, log.NewTestLogger(ctrl, 14, 0, 3, 3))
 	InitRoutes()
 
 	body := cart.AddArticleData{
