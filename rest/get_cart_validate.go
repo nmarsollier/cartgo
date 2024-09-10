@@ -5,7 +5,7 @@ import (
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/rest/server"
 	"github.com/nmarsollier/cartgo/security"
-	"github.com/nmarsollier/cartgo/service"
+	"github.com/nmarsollier/cartgo/services"
 )
 
 //	@Summary		Validar Carrito
@@ -41,7 +41,7 @@ func validate(c *gin.Context) {
 		return
 	}
 
-	err = service.ValidateCheckout(currentCart, token, ctx...)
+	err = services.ValidateCheckout(currentCart, token, ctx...)
 	if err != nil {
 		server.AbortWithError(c, err)
 		return

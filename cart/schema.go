@@ -18,8 +18,8 @@ type Cart struct {
 	Updated  time.Time          `bson:"updated" json:"updated"`
 }
 
-// ValidateSchema valida la estructura para ser insertada en la db
-func (e *Cart) ValidateSchema() error {
+// validateSchema valida la estructura para ser insertada en la db
+func (e *Cart) validateSchema() error {
 	return validator.New().Struct(e)
 }
 

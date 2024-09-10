@@ -1,14 +1,10 @@
 package security
 
 import (
-	"time"
-
-	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/tools/errs"
+	"github.com/nmarsollier/cartgo/tools/log"
 	gocache "github.com/patrickmn/go-cache"
 )
-
-var cache = gocache.New(60*time.Minute, 10*time.Minute)
 
 // Validate valida si el token es valido
 func Validate(token string, ctx ...interface{}) (*User, error) {
@@ -29,15 +25,4 @@ func Validate(token string, ctx ...interface{}) (*User, error) {
 	cache.Set(token, user, gocache.DefaultExpiration)
 
 	return user, nil
-}
-
-// Invalidate invalida un token del cache
-func Invalidate(token string, ctx ...interface{}) {
-	if len(token) <= 7 {
-		log.Get(ctx...).Info("Token no valido: ", token)
-		return
-	}
-
-	cache.Delete(token)
-	log.Get(ctx...).Info("Token invalidado: ", token)
 }

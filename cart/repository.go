@@ -4,10 +4,13 @@ import (
 	"context"
 	"time"
 
-	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/tools/db"
+	"github.com/nmarsollier/cartgo/tools/errs"
+	"github.com/nmarsollier/cartgo/tools/log"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
+
+var ErrID = errs.NewValidation().Add("id", "Invalid")
 
 // Define mongo Collection
 var collection db.MongoCollection
@@ -102,7 +105,7 @@ func findById(cartId string, ctx ...interface{}) (*Cart, error) {
 }
 
 func insert(cart *Cart, ctx ...interface{}) (*Cart, error) {
-	if err := cart.ValidateSchema(); err != nil {
+	if err := cart.validateSchema(); err != nil {
 		log.Get(ctx...).Error(err)
 		return nil, err
 	}
@@ -122,7 +125,7 @@ func insert(cart *Cart, ctx ...interface{}) (*Cart, error) {
 }
 
 func replace(cart *Cart, ctx ...interface{}) (*Cart, error) {
-	if err := cart.ValidateSchema(); err != nil {
+	if err := cart.validateSchema(); err != nil {
 		log.Get(ctx...).Error(err)
 		return nil, err
 	}
@@ -143,7 +146,7 @@ func replace(cart *Cart, ctx ...interface{}) (*Cart, error) {
 }
 
 func invalidate(cart *Cart, ctx ...interface{}) (*Cart, error) {
-	if err := cart.ValidateSchema(); err != nil {
+	if err := cart.validateSchema(); err != nil {
 		log.Get(ctx...).Error(err)
 		return nil, err
 	}

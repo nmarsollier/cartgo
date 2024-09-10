@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nmarsollier/cartgo/cart"
-	"github.com/nmarsollier/cartgo/log"
+	"github.com/nmarsollier/cartgo/tools/log"
 )
 
 //	@Summary		Emite place_order/place_order

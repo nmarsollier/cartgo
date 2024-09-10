@@ -7,9 +7,9 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/tools/errs"
 	"github.com/nmarsollier/cartgo/tools/httpx"
+	"github.com/nmarsollier/cartgo/tools/log"
 	"gopkg.in/go-playground/assert.v1"
 )
 

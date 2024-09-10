@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nmarsollier/cartgo/rest/server"
 	"github.com/nmarsollier/cartgo/security"
-	"github.com/nmarsollier/cartgo/service"
+	"github.com/nmarsollier/cartgo/services"
 )
 
 //	@Summary		Checkout Articulo
@@ -35,7 +35,7 @@ func checkout(c *gin.Context) {
 	token := c.MustGet("tokenString").(string)
 
 	ctx := server.GinCtx(c)
-	_, err := service.Checkout(user.ID, token, ctx...)
+	_, err := services.Checkout(user.ID, token, ctx...)
 	if err != nil {
 		server.AbortWithError(c, err)
 		return

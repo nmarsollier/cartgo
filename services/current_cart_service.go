@@ -1,12 +1,12 @@
-package service
+package services
 
 import (
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/rabbit/emit"
 )
 
-func AddArticle(userId string, article cart.AddArticleData, ctx ...interface{}) (*cart.Cart, error) {
-	cart, err := cart.AddArticle(userId, article, ctx...)
+func GetCurrentCart(userId string, ctx ...interface{}) (*cart.Cart, error) {
+	cart, err := cart.CurrentCart(userId, ctx...)
 	if err != nil {
 		return nil, err
 	}
@@ -18,7 +18,8 @@ func AddArticle(userId string, article cart.AddArticleData, ctx ...interface{}) 
 					ReferenceId: cart.UserId,
 					ArticleId:   a.ArticleId,
 				},
-				ctx...)
+				ctx...,
+			)
 		}
 	}
 

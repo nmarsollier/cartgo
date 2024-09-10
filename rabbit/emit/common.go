@@ -3,8 +3,8 @@ package emit
 import (
 	"errors"
 
-	"github.com/nmarsollier/cartgo/log"
 	"github.com/nmarsollier/cartgo/tools/env"
+	"github.com/nmarsollier/cartgo/tools/log"
 	"github.com/streadway/amqp"
 )
 

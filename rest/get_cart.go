@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nmarsollier/cartgo/rest/server"
 	"github.com/nmarsollier/cartgo/security"
-	"github.com/nmarsollier/cartgo/service"
+	"github.com/nmarsollier/cartgo/services"
 )
 
 //	@Summary		Obtener carrito.
@@ -33,7 +33,7 @@ func currentCart(c *gin.Context) {
 	user := c.MustGet("user").(security.User)
 
 	ctx := server.GinCtx(c)
-	cart, err := service.GetCurrentCart(user.ID, ctx...)
+	cart, err := services.GetCurrentCart(user.ID, ctx...)
 
 	if err != nil {
 		server.AbortWithError(c, err)

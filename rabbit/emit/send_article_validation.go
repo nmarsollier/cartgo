@@ -3,7 +3,7 @@ package emit
 import (
 	"encoding/json"
 
-	"github.com/nmarsollier/cartgo/log"
+	"github.com/nmarsollier/cartgo/tools/log"
 )
 
 //	@Summary		Emite Validar Artículos a Cart article_exist/article_exist

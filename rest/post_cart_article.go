@@ -5,7 +5,7 @@ import (
 	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/rest/server"
 	"github.com/nmarsollier/cartgo/security"
-	"github.com/nmarsollier/cartgo/service"
+	"github.com/nmarsollier/cartgo/services"
 )
 
 //	@Summary		Agregar Articulo
@@ -41,7 +41,7 @@ func addArticle(c *gin.Context) {
 	}
 
 	ctx := server.GinCtx(c)
-	_, err := service.AddArticle(user.ID, body, ctx...)
+	_, err := services.AddArticle(user.ID, body, ctx...)
 	if err != nil {
 		server.AbortWithError(c, err)
 		return
