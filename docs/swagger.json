@@ -161,7 +161,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "bearer {token}",
+                        "description": "Bearer {token}",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -224,7 +224,7 @@
                     },
                     {
                         "type": "string",
-                        "description": "bearer {token}",
+                        "description": "Bearer {token}",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -296,7 +296,7 @@
                     },
                     {
                         "type": "string",
-                        "description": "bearer {token}",
+                        "description": "Bearer {token}",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -356,7 +356,7 @@
                     },
                     {
                         "type": "string",
-                        "description": "bearer {token}",
+                        "description": "Bearer {token}",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -419,7 +419,7 @@
                     },
                     {
                         "type": "string",
-                        "description": "bearer {token}",
+                        "description": "Bearer {token}",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -482,7 +482,7 @@
                     },
                     {
                         "type": "string",
-                        "description": "bearer {token}",
+                        "description": "Bearer {token}",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -535,7 +535,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "bearer {token}",
+                        "description": "Bearer {token}",
                         "name": "Authorization",
                         "in": "header",
                         "required": true

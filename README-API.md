@@ -132,7 +132,7 @@ Obtiene el carrito actual.
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| Authorization | header | bearer {token} | Yes | string |
+| Authorization | header | Bearer {token} | Yes | string |
 
 ##### Responses
 
@@ -160,7 +160,7 @@ Agrega un articulo del carrito actual.
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
 | articleId | path | ID de articlo | Yes | string |
-| Authorization | header | bearer {token} | Yes | string |
+| Authorization | header | Bearer {token} | Yes | string |
 | body | body | Articulo a Agregar | Yes | [cart.AddArticleData](#cartaddarticledata) |
 
 ##### Responses
@@ -189,7 +189,7 @@ Elimina un articulo del carrito actual.
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
 | articleId | path | ID de articlo | Yes | string |
-| Authorization | header | bearer {token} | Yes | string |
+| Authorization | header | Bearer {token} | Yes | string |
 
 ##### Responses
 
@@ -217,7 +217,7 @@ Eliminar 1 al articulo actual.
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
 | articleId | path | ID de articlo | Yes | string |
-| Authorization | header | bearer {token} | Yes | string |
+| Authorization | header | Bearer {token} | Yes | string |
 
 ##### Responses
 
@@ -245,7 +245,7 @@ Agregar 1 al articulo actual.
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
 | articleId | path | ID de articlo | Yes | string |
-| Authorization | header | bearer {token} | Yes | string |
+| Authorization | header | Bearer {token} | Yes | string |
 
 ##### Responses
 
@@ -273,7 +273,7 @@ Hace checkout del carrito actual
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
 | articleId | path | ID de articlo | Yes | string |
-| Authorization | header | bearer {token} | Yes | string |
+| Authorization | header | Bearer {token} | Yes | string |
 
 ##### Responses
 
@@ -300,7 +300,7 @@ Valida el carrito para checkout
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| Authorization | header | bearer {token} | Yes | string |
+| Authorization | header | Bearer {token} | Yes | string |
 
 ##### Responses
 

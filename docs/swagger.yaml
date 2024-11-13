@@ -278,7 +278,7 @@ paths:
       - application/json
       description: Obtiene el carrito actual.
       parameters:
-      - description: bearer {token}
+      - description: Bearer {token}
         in: header
         name: Authorization
         required: true
@@ -320,7 +320,7 @@ paths:
         name: articleId
         required: true
         type: string
-      - description: bearer {token}
+      - description: Bearer {token}
         in: header
         name: Authorization
         required: true
@@ -368,7 +368,7 @@ paths:
         name: articleId
         required: true
         type: string
-      - description: bearer {token}
+      - description: Bearer {token}
         in: header
         name: Authorization
         required: true
@@ -408,7 +408,7 @@ paths:
         name: articleId
         required: true
         type: string
-      - description: bearer {token}
+      - description: Bearer {token}
         in: header
         name: Authorization
         required: true
@@ -450,7 +450,7 @@ paths:
         name: articleId
         required: true
         type: string
-      - description: bearer {token}
+      - description: Bearer {token}
         in: header
         name: Authorization
         required: true
@@ -492,7 +492,7 @@ paths:
         name: articleId
         required: true
         type: string
-      - description: bearer {token}
+      - description: Bearer {token}
         in: header
         name: Authorization
         required: true
@@ -527,7 +527,7 @@ paths:
       - application/json
       description: Valida el carrito para checkout
       parameters:
-      - description: bearer {token}
+      - description: Bearer {token}
         in: header
         name: Authorization
         required: true
