@@ -44,7 +44,7 @@ func callValidate(article *cart.Article, token string, ctx ...interface{}) error
 		log.Get(ctx...).Error(err)
 		return errs.Invalid
 	}
-	req.Header.Add("Authorization", "bearer "+token)
+	req.Header.Add("Authorization", "Bearer "+token)
 	resp, err := httpx.Get(ctx...).Do(req)
 	if err != nil || resp.StatusCode != 200 {
 		log.Get(ctx...).Error(err)

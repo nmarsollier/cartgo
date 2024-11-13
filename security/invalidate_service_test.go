@@ -15,7 +15,7 @@ import (
 
 func TestInvalidateHappyPath(t *testing.T) {
 	testUser := TestUser()
-	token := "bearer " + testUser.ID
+	token := "Bearer " + testUser.ID
 
 	// Mocks
 	ctrl := gomock.NewController(t)
@@ -36,7 +36,7 @@ func TestInvalidateHappyPath(t *testing.T) {
 
 func TestInvalidateNotAuthorized(t *testing.T) {
 	testUser := TestUser()
-	token := "bearer " + testUser.ID
+	token := "Bearer " + testUser.ID
 
 	// Mocks
 	ctrl := gomock.NewController(t)
@@ -57,7 +57,7 @@ func TestInvalidateNotAuthorized(t *testing.T) {
 
 func TestInvalidateNotAuthorized2(t *testing.T) {
 	testUser := TestUser()
-	token := "bearer " + testUser.ID
+	token := "Bearer " + testUser.ID
 
 	// Mocks
 	ctrl := gomock.NewController(t)
@@ -78,7 +78,7 @@ func TestInvalidateNotAuthorized2(t *testing.T) {
 
 func TestInvalidateInvalidData(t *testing.T) {
 	testUser := TestUser()
-	token := "bearer " + testUser.ID
+	token := "Bearer " + testUser.ID
 
 	// Mocks
 	ctrl := gomock.NewController(t)

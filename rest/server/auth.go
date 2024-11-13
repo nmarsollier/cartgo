@@ -36,7 +36,7 @@ func ValidateAuthentication(c *gin.Context) {
 // get token from Authorization header
 func HeaderToken(c *gin.Context) (string, error) {
 	tokenString := c.GetHeader("Authorization")
-	if strings.Index(tokenString, "bearer ") != 0 {
+	if strings.Index(strings.ToUpper(tokenString), "BEARER ") != 0 {
 		return "", errs.Unauthorized
 	}
 	return tokenString[7:], nil

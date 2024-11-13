@@ -13,7 +13,7 @@ import (
 //	@Tags			Cart
 //	@Accept			json
 //	@Produce		json
-//	@Param			Authorization	header	string	true	"bearer {token}"
+//	@Param			Authorization	header	string	true	"Bearer {token}"
 //	@Success		200				"No Content"
 //	@Failure		400				{object}	errs.ValidationErr	"Bad Request"
 //	@Failure		401				{object}	server.ErrorData	"Unauthorized"
