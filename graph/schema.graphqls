@@ -1,4 +1,4 @@
-type CartData {
+type CartData @key(fields: "id") {
   id: String!
   userId: String!
   orderId: String

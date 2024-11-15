@@ -9,3 +9,5 @@ type CartData struct {
 	Articles []*cart.Article `json:"articles" validate:"required"`
 	Enabled  bool            `json:"enabled"`
 }
+
+func (CartData) IsEntity() {}
