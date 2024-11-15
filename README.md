@@ -1,4 +1,5 @@
 ### Si queres sabes mas sobre mi:
+
 [Nestor Marsollier](https://github.com/nmarsollier/profile)
 
 # Microservicio de Carrito
@@ -13,6 +14,8 @@ Una vez hecha la compra el carrito se cierra y se genera una orden.
 
 La documentación de las api también se pueden consultar desde el home del microservicio
 que una vez levantado el servidor se puede navegar en [localhost:3003](http://localhost:3003/)
+
+El servidor GraphQL puede navegar en [localhost:4003](http://localhost:4003/)
 
 ## Dependencias
 
@@ -44,14 +47,13 @@ Ver tutorial de instalación en [ecommerce](https://github.com/nmarsollier/ecomm
 
 ```bash
 git config core.hooksPath .githooks
-go install github.com/swaggo/gin-swagger/swaggerFiles 
-go install github.com/swaggo/gin-swagger 
+go install github.com/swaggo/gin-swagger/swaggerFiles
+go install github.com/swaggo/gin-swagger
 go install github.com/swaggo/swag/cmd/swag
 go install github.com/golang/mock/mockgen@v1.6.0
 ```
 
-Build y ejecución
--
+## Build y ejecución
 
 ```bash
 go install
@@ -62,7 +64,7 @@ cartgo
 
 Usamos [swaggo](https://github.com/swaggo/swag)
 
-Requisitos 
+Requisitos
 
 ```bash
 go install github.com/swaggo/swag/cmd/swag@latest
@@ -76,13 +78,13 @@ swag init
 
 Para generar el archivo README-API.md
 
-Requisito 
+Requisito
 
 ```bash
 sudo npm install -g swagger-markdown
 ```
 
-y ejecutamos 
+y ejecutamos
 
 ```bash
 npx swagger-markdown -i ./docs/swagger.yaml -o README-API.md
@@ -110,11 +112,13 @@ docker build -t dev-cart-go .
 ### El contenedor
 
 Mac | Windows
+
 ```bash
-docker run -it --name dev-cart-go -p 3003:3003 -v $PWD:/go/src/github.com/nmarsollier/cartgo dev-cart-go
+docker run -it --name dev-cart-go -p 3003:3003 -p 4003:4003 -v $PWD:/go/src/github.com/nmarsollier/cartgo dev-cart-go
 ```
 
 Linux
+
 ```bash
-docker run -it --add-host host.docker.internal:172.17.0.1 --name dev-cart-go -p 3003:3003 -v $PWD:/go/src/github.com/nmarsollier/cartgo dev-cart-go
+docker run -it --add-host host.docker.internal:172.17.0.1 --name dev-cart-go -p 3003:3003 -p 4003:4003-v $PWD:/go/src/github.com/nmarsollier/cartgo dev-cart-go
 ```
