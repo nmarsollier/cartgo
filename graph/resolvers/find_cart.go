@@ -10,10 +10,10 @@ import (
 func FindCartById(ctx context.Context, id string) (*services.CartData, error) {
 	env := tools.GqlCtx(ctx)
 
-	_, err := tools.ValidateLoggedIn(ctx)
-	if err != nil {
-		return nil, err
-	}
+	/*	_, err := tools.ValidateLoggedIn(ctx)
+		if err != nil {
+			return nil, err
+		}*/
 
 	cart, err := services.FindCartById(id, env...)
 
