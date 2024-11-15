@@ -138,7 +138,7 @@ Obtiene el carrito actual.
 
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
-| 200 | Cart | [cart.Cart](#cartcart) |
+| 200 | Cart | [services.CartData](#servicescartdata) |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
 | 401 | Unauthorized | [server.ErrorData](#servererrordata) |
 | 404 | Not Found | [server.ErrorData](#servererrordata) |
@@ -435,3 +435,13 @@ Valida el carrito para checkout
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
 | error | string |  | No |
+
+#### services.CartData
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| _id | string |  | No |
+| articles | [ [cart.Article](#cartarticle) ] |  | Yes |
+| enabled | boolean |  | No |
+| orderId | string |  | No |
+| userId | string |  | Yes |

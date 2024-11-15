@@ -177,7 +177,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Cart",
                         "schema": {
-                            "$ref": "#/definitions/cart.Cart"
+                            "$ref": "#/definitions/services.CartData"
                         }
                     },
                     "400": {
@@ -825,6 +825,35 @@ const docTemplate = `{
             "properties": {
                 "error": {
                     "type": "string"
+                }
+            }
+        },
+        "services.CartData": {
+            "type": "object",
+            "required": [
+                "articles",
+                "userId"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "articles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/cart.Article"
+                    }
+                },
+                "enabled": {
+                    "type": "boolean"
+                },
+                "orderId": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
                 }
             }
         }

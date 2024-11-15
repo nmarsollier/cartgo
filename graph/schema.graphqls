@@ -1,0 +1,32 @@
+type CartData {
+  id: String!
+  userId: String!
+  orderId: String
+  articles: [Article!]!
+  enabled: Boolean!
+}
+
+input AddArticleData {
+  articleId: String!
+  quantity: Int!
+}
+
+type Article {
+  articleId: String!
+  quantity: Int!
+  valid: Boolean!
+  validated: Boolean!
+}
+
+type Query {
+  currentCart: CartData!
+}
+
+type Mutation {
+  validateCart: Boolean!
+  decrementArticle(articleId: String!): Boolean!
+  incrementArticle(articleId: String!): Boolean!
+  removeArticle(articleId: String!): Boolean!
+  addArticle(data: AddArticleData!): Boolean!
+  checkout: Boolean!
+}

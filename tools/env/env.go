@@ -8,6 +8,7 @@ import (
 // Configuration properties
 type Configuration struct {
 	Port              int    `json:"port"`
+	GqlPort           int    `json:"gqlPort"`
 	RabbitURL         string `json:"rabbitUrl"`
 	MongoURL          string `json:"mongoUrl"`
 	SecurityServerURL string `json:"securityServerUrl"`
@@ -20,6 +21,7 @@ var config *Configuration
 func new() *Configuration {
 	return &Configuration{
 		Port:              3003,
+		GqlPort:           4003,
 		RabbitURL:         "amqp://localhost",
 		MongoURL:          "mongodb://localhost:27017",
 		SecurityServerURL: "http://localhost:3000",
@@ -52,6 +54,12 @@ func load() *Configuration {
 	if value := os.Getenv("PORT"); len(value) > 0 {
 		if intVal, err := strconv.Atoi(value); err == nil {
 			result.Port = intVal
+		}
+	}
+
+	if value := os.Getenv("GQL_PORT"); len(value) > 0 {
+		if intVal, err := strconv.Atoi(value); err == nil {
+			result.GqlPort = intVal
 		}
 	}
 

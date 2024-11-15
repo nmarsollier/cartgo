@@ -171,6 +171,26 @@ definitions:
       error:
         type: string
     type: object
+  services.CartData:
+    properties:
+      _id:
+        type: string
+      articles:
+        items:
+          $ref: '#/definitions/cart.Article'
+        type: array
+      enabled:
+        type: boolean
+      orderId:
+        type: string
+      userId:
+        maxLength: 100
+        minLength: 1
+        type: string
+    required:
+    - articles
+    - userId
+    type: object
 host: localhost:3003
 info:
   contact:
@@ -289,7 +309,7 @@ paths:
         "200":
           description: Cart
           schema:
-            $ref: '#/definitions/cart.Cart'
+            $ref: '#/definitions/services.CartData'
         "400":
           description: Bad Request
           schema:
