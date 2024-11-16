@@ -177,7 +177,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Cart",
                         "schema": {
-                            "$ref": "#/definitions/services.CartData"
+                            "$ref": "#/definitions/cart.Cart"
                         }
                     },
                     "400": {
@@ -241,7 +241,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/cart.AddArticleData"
+                            "$ref": "#/definitions/rest.AddArticleData"
                         }
                     }
                 ],
@@ -580,25 +580,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "cart.AddArticleData": {
-            "type": "object",
-            "required": [
-                "articleId",
-                "quantity"
-            ],
-            "properties": {
-                "articleId": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 1
-                },
-                "quantity": {
-                    "type": "integer",
-                    "maximum": 100,
-                    "minimum": 1
-                }
-            }
-        },
         "cart.Article": {
             "type": "object",
             "required": [
@@ -820,40 +801,30 @@ const docTemplate = `{
                 }
             }
         },
+        "rest.AddArticleData": {
+            "type": "object",
+            "required": [
+                "articleId",
+                "quantity"
+            ],
+            "properties": {
+                "articleId": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "quantity": {
+                    "type": "integer",
+                    "maximum": 100,
+                    "minimum": 1
+                }
+            }
+        },
         "server.ErrorData": {
             "type": "object",
             "properties": {
                 "error": {
                     "type": "string"
-                }
-            }
-        },
-        "services.CartData": {
-            "type": "object",
-            "required": [
-                "articles",
-                "userId"
-            ],
-            "properties": {
-                "_id": {
-                    "type": "string"
-                },
-                "articles": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/cart.Article"
-                    }
-                },
-                "enabled": {
-                    "type": "boolean"
-                },
-                "orderId": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 1
                 }
             }
         }

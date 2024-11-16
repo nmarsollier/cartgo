@@ -1,19 +1,14 @@
 package cart
 
-type AddArticleData struct {
-	ArticleId string `bson:"articleId" validate:"required,min=1,max=100"`
-	Quantity  int    `bson:"quantity" validate:"required,min=1,max=100"`
-}
-
-func AddArticle(userId string, articleData AddArticleData, ctx ...interface{}) (*Cart, error) {
+func AddArticle(userId string, articleId string, quantity int, ctx ...interface{}) (*Cart, error) {
 	cart, err := CurrentCart(userId, ctx...)
 	if err != nil {
 		return nil, err
 	}
 
 	article := &Article{
-		ArticleId: articleData.ArticleId,
-		Quantity:  articleData.Quantity,
+		ArticleId: articleId,
+		Quantity:  quantity,
 		Validated: false,
 	}
 

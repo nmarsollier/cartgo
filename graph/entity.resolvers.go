@@ -9,11 +9,10 @@ import (
 
 	"github.com/nmarsollier/cartgo/graph/model"
 	"github.com/nmarsollier/cartgo/graph/resolvers"
-	"github.com/nmarsollier/cartgo/services"
 )
 
-// FindCartDataByID is the resolver for the findCartDataByID field.
-func (r *entityResolver) FindCartDataByID(ctx context.Context, id string) (*services.CartData, error) {
+// FindCartByID is the resolver for the findCartByID field.
+func (r *entityResolver) FindCartByID(ctx context.Context, id string) (*model.Cart, error) {
 	cart, err := resolvers.FindCartById(ctx, id)
 	if err != nil {
 		return nil, err

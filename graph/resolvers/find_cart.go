@@ -3,11 +3,12 @@ package resolvers
 import (
 	"context"
 
+	"github.com/nmarsollier/cartgo/graph/model"
 	"github.com/nmarsollier/cartgo/graph/tools"
 	"github.com/nmarsollier/cartgo/services"
 )
 
-func FindCartById(ctx context.Context, id string) (*services.CartData, error) {
+func FindCartById(ctx context.Context, id string) (*model.Cart, error) {
 	env := tools.GqlCtx(ctx)
 
 	/*	_, err := tools.ValidateLoggedIn(ctx)
@@ -21,5 +22,5 @@ func FindCartById(ctx context.Context, id string) (*services.CartData, error) {
 		return nil, err
 	}
 
-	return cart, nil
+	return cartToModel(cart), nil
 }

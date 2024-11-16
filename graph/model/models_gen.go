@@ -2,6 +2,23 @@
 
 package model
 
+type Article struct {
+	ArticleID string `json:"articleId"`
+	Quantity  int    `json:"quantity"`
+	Valid     bool   `json:"valid"`
+	Validated bool   `json:"validated"`
+}
+
+type Cart struct {
+	ID       string     `json:"id"`
+	UserID   string     `json:"userId"`
+	OrderID  *string    `json:"orderId,omitempty"`
+	Articles []*Article `json:"articles"`
+	Enabled  bool       `json:"enabled"`
+}
+
+func (Cart) IsEntity() {}
+
 type Mutation struct {
 }
 

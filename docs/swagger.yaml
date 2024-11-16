@@ -1,19 +1,5 @@
 basePath: /v1
 definitions:
-  cart.AddArticleData:
-    properties:
-      articleId:
-        maxLength: 100
-        minLength: 1
-        type: string
-      quantity:
-        maximum: 100
-        minimum: 1
-        type: integer
-    required:
-    - articleId
-    - quantity
-    type: object
   cart.Article:
     properties:
       articleId:
@@ -166,30 +152,24 @@ definitions:
       path:
         type: string
     type: object
+  rest.AddArticleData:
+    properties:
+      articleId:
+        maxLength: 100
+        minLength: 1
+        type: string
+      quantity:
+        maximum: 100
+        minimum: 1
+        type: integer
+    required:
+    - articleId
+    - quantity
+    type: object
   server.ErrorData:
     properties:
       error:
         type: string
-    type: object
-  services.CartData:
-    properties:
-      _id:
-        type: string
-      articles:
-        items:
-          $ref: '#/definitions/cart.Article'
-        type: array
-      enabled:
-        type: boolean
-      orderId:
-        type: string
-      userId:
-        maxLength: 100
-        minLength: 1
-        type: string
-    required:
-    - articles
-    - userId
     type: object
 host: localhost:3003
 info:
@@ -309,7 +289,7 @@ paths:
         "200":
           description: Cart
           schema:
-            $ref: '#/definitions/services.CartData'
+            $ref: '#/definitions/cart.Cart'
         "400":
           description: Bad Request
           schema:
@@ -350,7 +330,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/cart.AddArticleData'
+          $ref: '#/definitions/rest.AddArticleData'
       produces:
       - application/json
       responses:

@@ -2,7 +2,6 @@ package rest
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/rest/server"
 	"github.com/nmarsollier/cartgo/security"
 	"github.com/nmarsollier/cartgo/services"
@@ -36,13 +35,8 @@ func incrementArticle(c *gin.Context) {
 	user := c.MustGet("user").(security.User)
 	articleId := c.Param("articleId")
 
-	article := cart.AddArticleData{
-		ArticleId: articleId,
-		Quantity:  1,
-	}
-
 	ctx := server.GinCtx(c)
-	_, err := services.AddArticle(user.ID, article, ctx...)
+	_, err := services.AddArticle(user.ID, articleId, 1, ctx...)
 	if err != nil {
 		server.AbortWithError(c, err)
 		return

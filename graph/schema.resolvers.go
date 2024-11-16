@@ -7,10 +7,8 @@ package graph
 import (
 	"context"
 
-	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/graph/model"
 	"github.com/nmarsollier/cartgo/graph/resolvers"
-	"github.com/nmarsollier/cartgo/services"
 )
 
 // ValidateCart is the resolver for the validateCart field.
@@ -34,8 +32,8 @@ func (r *mutationResolver) RemoveArticle(ctx context.Context, articleID string) 
 }
 
 // AddArticle is the resolver for the addArticle field.
-func (r *mutationResolver) AddArticle(ctx context.Context, data cart.AddArticleData) (bool, error) {
-	return resolvers.AddArticle(ctx, data)
+func (r *mutationResolver) AddArticle(ctx context.Context, articleID string, quantity int) (bool, error) {
+	return resolvers.AddArticle(ctx, articleID, quantity)
 }
 
 // Checkout is the resolver for the checkout field.
@@ -44,7 +42,7 @@ func (r *mutationResolver) Checkout(ctx context.Context) (bool, error) {
 }
 
 // CurrentCart is the resolver for the currentCart field.
-func (r *queryResolver) CurrentCart(ctx context.Context) (*services.CartData, error) {
+func (r *queryResolver) CurrentCart(ctx context.Context) (*model.Cart, error) {
 	return resolvers.CurrentCartResolver(ctx)
 }
 

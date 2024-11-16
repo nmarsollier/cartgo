@@ -153,21 +153,21 @@ func (ec *executionContext) resolveEntity(
 	}()
 
 	switch typeName {
-	case "CartData":
-		resolverName, err := entityResolverNameForCartData(ctx, rep)
+	case "Cart":
+		resolverName, err := entityResolverNameForCart(ctx, rep)
 		if err != nil {
-			return nil, fmt.Errorf(`finding resolver for Entity "CartData": %w`, err)
+			return nil, fmt.Errorf(`finding resolver for Entity "Cart": %w`, err)
 		}
 		switch resolverName {
 
-		case "findCartDataByID":
+		case "findCartByID":
 			id0, err := ec.unmarshalNString2string(ctx, rep["id"])
 			if err != nil {
-				return nil, fmt.Errorf(`unmarshalling param 0 for findCartDataByID(): %w`, err)
+				return nil, fmt.Errorf(`unmarshalling param 0 for findCartByID(): %w`, err)
 			}
-			entity, err := ec.resolvers.Entity().FindCartDataByID(ctx, id0)
+			entity, err := ec.resolvers.Entity().FindCartByID(ctx, id0)
 			if err != nil {
-				return nil, fmt.Errorf(`resolving Entity "CartData": %w`, err)
+				return nil, fmt.Errorf(`resolving Entity "Cart": %w`, err)
 			}
 
 			return entity, nil
@@ -198,7 +198,7 @@ func (ec *executionContext) resolveManyEntities(
 	}
 }
 
-func entityResolverNameForCartData(ctx context.Context, rep EntityRepresentation) (string, error) {
+func entityResolverNameForCart(ctx context.Context, rep EntityRepresentation) (string, error) {
 	for {
 		var (
 			m   EntityRepresentation
@@ -220,7 +220,7 @@ func entityResolverNameForCartData(ctx context.Context, rep EntityRepresentation
 		if allNull {
 			break
 		}
-		return "findCartDataByID", nil
+		return "findCartByID", nil
 	}
-	return "", fmt.Errorf("%w for CartData", ErrTypeNotFound)
+	return "", fmt.Errorf("%w for Cart", ErrTypeNotFound)
 }

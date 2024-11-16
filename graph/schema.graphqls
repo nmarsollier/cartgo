@@ -1,14 +1,9 @@
-type CartData @key(fields: "id") {
+type Cart @key(fields: "id") {
   id: String!
   userId: String!
   orderId: String
   articles: [Article!]!
   enabled: Boolean!
-}
-
-input AddArticleData {
-  articleId: String!
-  quantity: Int!
 }
 
 type Article {
@@ -19,7 +14,7 @@ type Article {
 }
 
 type Query {
-  currentCart: CartData!
+  currentCart: Cart!
 }
 
 type Mutation {
@@ -27,6 +22,6 @@ type Mutation {
   decrementArticle(articleId: String!): Boolean!
   incrementArticle(articleId: String!): Boolean!
   removeArticle(articleId: String!): Boolean!
-  addArticle(data: AddArticleData!): Boolean!
+  addArticle(articleId: String!, quantity: Int!): Boolean!
   checkout: Boolean!
 }

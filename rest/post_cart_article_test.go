@@ -59,7 +59,7 @@ func TestPostCartArticleHappyPath(t *testing.T) {
 	r := server.TestRouter(collection, httpMock, rabbitMock, log.NewTestLogger(ctrl, 18, 0, 4, 4))
 	InitRoutes()
 
-	body := cart.AddArticleData{
+	body := AddArticleData{
 		ArticleId: "new_1",
 		Quantity:  10,
 	}
@@ -114,7 +114,7 @@ func TestPostCartArticleHappyPath2(t *testing.T) {
 	r := server.TestRouter(collection, httpMock, rabbitMock, log.NewTestLogger(ctrl, 14, 0, 3, 3))
 	InitRoutes()
 
-	body := cart.AddArticleData{
+	body := AddArticleData{
 		ArticleId: cartData.Articles[0].ArticleId,
 		Quantity:  10,
 	}
@@ -140,7 +140,7 @@ func TestPostCartArticleInvalidToken(t *testing.T) {
 	r := server.TestRouter(httpMock, log.NewTestLogger(ctrl, 5, 2, 1, 1))
 	InitRoutes()
 
-	body := cart.AddArticleData{
+	body := AddArticleData{
 		ArticleId: cartData.Articles[0].ArticleId,
 		Quantity:  10,
 	}
@@ -166,7 +166,7 @@ func TestPostCartArticleDocumentNotFound(t *testing.T) {
 	r := server.TestRouter(collection, httpMock, log.NewTestLogger(ctrl, 6, 0, 1, 1))
 	InitRoutes()
 
-	body := cart.AddArticleData{
+	body := AddArticleData{
 		ArticleId: "new_1",
 		Quantity:  10,
 	}
@@ -202,7 +202,7 @@ func TestPostCartArticleReplaceError(t *testing.T) {
 	r := server.TestRouter(collection, httpMock, log.NewTestLogger(ctrl, 6, 1, 1, 1))
 	InitRoutes()
 
-	body := cart.AddArticleData{
+	body := AddArticleData{
 		ArticleId: "new_1",
 		Quantity:  10,
 	}

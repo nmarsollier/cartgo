@@ -3,7 +3,6 @@ package resolvers
 import (
 	"context"
 
-	"github.com/nmarsollier/cartgo/cart"
 	"github.com/nmarsollier/cartgo/graph/tools"
 	"github.com/nmarsollier/cartgo/services"
 )
@@ -16,12 +15,7 @@ func DecrementArticleResolver(ctx context.Context, articleID string) (bool, erro
 
 	env := tools.GqlCtx(ctx)
 
-	article := cart.AddArticleData{
-		ArticleId: articleID,
-		Quantity:  -1,
-	}
-
-	_, err = services.AddArticle(user.ID, article, env...)
+	_, err = services.AddArticle(user.ID, articleID, -1, env...)
 	if err != nil {
 		return false, err
 	}

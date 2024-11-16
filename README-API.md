@@ -138,7 +138,7 @@ Obtiene el carrito actual.
 
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
-| 200 | Cart | [services.CartData](#servicescartdata) |
+| 200 | Cart | [cart.Cart](#cartcart) |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
 | 401 | Unauthorized | [server.ErrorData](#servererrordata) |
 | 404 | Not Found | [server.ErrorData](#servererrordata) |
@@ -161,7 +161,7 @@ Agrega un articulo del carrito actual.
 | ---- | ---------- | ----------- | -------- | ------ |
 | articleId | path | ID de articlo | Yes | string |
 | Authorization | header | Bearer {token} | Yes | string |
-| body | body | Articulo a Agregar | Yes | [cart.AddArticleData](#cartaddarticledata) |
+| body | body | Articulo a Agregar | Yes | [rest.AddArticleData](#restaddarticledata) |
 
 ##### Responses
 
@@ -315,13 +315,6 @@ Valida el carrito para checkout
 ---
 ### Models
 
-#### cart.AddArticleData
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| articleId | string |  | Yes |
-| quantity | integer |  | Yes |
-
 #### cart.Article
 
 | Name | Type | Description | Required |
@@ -430,18 +423,15 @@ Valida el carrito para checkout
 | message | string |  | No |
 | path | string |  | No |
 
+#### rest.AddArticleData
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| articleId | string |  | Yes |
+| quantity | integer |  | Yes |
+
 #### server.ErrorData
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
 | error | string |  | No |
-
-#### services.CartData
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| _id | string |  | No |
-| articles | [ [cart.Article](#cartarticle) ] |  | Yes |
-| enabled | boolean |  | No |
-| orderId | string |  | No |
-| userId | string |  | Yes |

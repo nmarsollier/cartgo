@@ -16,10 +16,6 @@ resolver:
 
 call_argument_directives_with_null: true
 
-autobind:
-  - "github.com/nmarsollier/cartgo/cart"
-  - "github.com/nmarsollier/cartgo/services"
-
 federation:
   filename: graph/model/federation.go
   package: model
