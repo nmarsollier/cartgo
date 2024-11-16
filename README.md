@@ -1,6 +1,4 @@
-### Si queres sabes mas sobre mi:
-
-[Nestor Marsollier](https://github.com/nmarsollier/profile)
+<!-- cSpell:language es -->
 
 # Microservicio de Carrito
 
@@ -16,6 +14,16 @@ La documentación de las api también se pueden consultar desde el home del micr
 que una vez levantado el servidor se puede navegar en [localhost:3003](http://localhost:3003/)
 
 El servidor GraphQL puede navegar en [localhost:4003](http://localhost:4003/)
+
+## Directorios
+
+- **cart:** Logica de negocio del agregado carrito
+- **services:** Domain services.
+- **security:** Validaciones de usuario contra el MS de Auth
+- **graph:** Servidor y Controllers GraphQL federation server
+- **rabbit:** Servidor y Controllers RabbitMQ
+- **rest:** Servidor y Controllers Rest
+- **tools:** Herramientas varias
 
 ## Dependencias
 
