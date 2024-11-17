@@ -170,6 +170,14 @@ func (ec *executionContext) resolveEntity(
 				return nil, fmt.Errorf(`resolving Entity "Cart": %w`, err)
 			}
 
+			entity.UserID, err = ec.unmarshalNString2string(ctx, rep["userId"])
+			if err != nil {
+				return nil, err
+			}
+			entity.OrderID, err = ec.unmarshalOString2ᚖstring(ctx, rep["orderId"])
+			if err != nil {
+				return nil, err
+			}
 			return entity, nil
 		}
 

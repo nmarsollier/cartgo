@@ -1,7 +1,9 @@
 type Cart @key(fields: "id") {
   id: String!
   userId: String!
+  user: User @requires(fields: "userId")
   orderId: String
+  order: Order @requires(fields: "orderId")
   articles: [CartArticle!]!
   enabled: Boolean!
 }
@@ -28,5 +30,13 @@ type Mutation {
 }
 
 extend type Article @key(fields: "id") {
+  id: String! @external
+}
+
+extend type Order @key(fields: "id") {
+  id: String! @external
+}
+
+extend type User @key(fields: "id") {
   id: String! @external
 }

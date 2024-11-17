@@ -11,7 +11,9 @@ func (Article) IsEntity() {}
 type Cart struct {
 	ID       string         `json:"id"`
 	UserID   string         `json:"userId"`
+	User     *User          `json:"user,omitempty"`
 	OrderID  *string        `json:"orderId,omitempty"`
+	Order    *Order         `json:"order,omitempty"`
 	Articles []*CartArticle `json:"articles"`
 	Enabled  bool           `json:"enabled"`
 }
@@ -29,5 +31,17 @@ type CartArticle struct {
 type Mutation struct {
 }
 
+type Order struct {
+	ID string `json:"id"`
+}
+
+func (Order) IsEntity() {}
+
 type Query struct {
 }
+
+type User struct {
+	ID string `json:"id"`
+}
+
+func (User) IsEntity() {}
