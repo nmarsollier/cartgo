@@ -15,11 +15,12 @@ func cartToModel(cart *cart.Cart) *model.Cart {
 	}
 }
 
-func articlesToModel(articles []*cart.Article) []*model.Article {
-	result := make([]*model.Article, len(articles))
+func articlesToModel(articles []*cart.Article) []*model.CartArticle {
+	result := make([]*model.CartArticle, len(articles))
 	for i, a := range articles {
-		result[i] = &model.Article{
+		result[i] = &model.CartArticle{
 			ArticleID: a.ArticleId,
+			Article:   &model.Article{ID: a.ArticleId},
 			Quantity:  a.Quantity,
 			Valid:     a.Valid,
 			Validated: a.Validated,

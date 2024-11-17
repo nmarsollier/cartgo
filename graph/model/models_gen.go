@@ -3,21 +3,28 @@
 package model
 
 type Article struct {
-	ArticleID string `json:"articleId"`
-	Quantity  int    `json:"quantity"`
-	Valid     bool   `json:"valid"`
-	Validated bool   `json:"validated"`
+	ID string `json:"id"`
 }
 
+func (Article) IsEntity() {}
+
 type Cart struct {
-	ID       string     `json:"id"`
-	UserID   string     `json:"userId"`
-	OrderID  *string    `json:"orderId,omitempty"`
-	Articles []*Article `json:"articles"`
-	Enabled  bool       `json:"enabled"`
+	ID       string         `json:"id"`
+	UserID   string         `json:"userId"`
+	OrderID  *string        `json:"orderId,omitempty"`
+	Articles []*CartArticle `json:"articles"`
+	Enabled  bool           `json:"enabled"`
 }
 
 func (Cart) IsEntity() {}
+
+type CartArticle struct {
+	ArticleID string   `json:"articleId"`
+	Article   *Article `json:"article,omitempty"`
+	Quantity  int      `json:"quantity"`
+	Valid     bool     `json:"valid"`
+	Validated bool     `json:"validated"`
+}
 
 type Mutation struct {
 }

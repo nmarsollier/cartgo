@@ -2,12 +2,13 @@ type Cart @key(fields: "id") {
   id: String!
   userId: String!
   orderId: String
-  articles: [Article!]!
+  articles: [CartArticle!]!
   enabled: Boolean!
 }
 
-type Article {
+type CartArticle {
   articleId: String!
+  article: Article @requires(fields: "articleId")
   quantity: Int!
   valid: Boolean!
   validated: Boolean!
@@ -24,4 +25,8 @@ type Mutation {
   removeArticle(articleId: String!): Boolean!
   addArticle(articleId: String!, quantity: Int!): Boolean!
   checkout: Boolean!
+}
+
+extend type Article @key(fields: "id") {
+  id: String! @external
 }

@@ -48,10 +48,7 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Article struct {
-		ArticleID func(childComplexity int) int
-		Quantity  func(childComplexity int) int
-		Valid     func(childComplexity int) int
-		Validated func(childComplexity int) int
+		ID func(childComplexity int) int
 	}
 
 	Cart struct {
@@ -60,6 +57,14 @@ type ComplexityRoot struct {
 		ID       func(childComplexity int) int
 		OrderID  func(childComplexity int) int
 		UserID   func(childComplexity int) int
+	}
+
+	CartArticle struct {
+		Article   func(childComplexity int) int
+		ArticleID func(childComplexity int) int
+		Quantity  func(childComplexity int) int
+		Valid     func(childComplexity int) int
+		Validated func(childComplexity int) int
 	}
 
 	Entity struct {
@@ -120,33 +125,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
-	case "Article.articleId":
-		if e.complexity.Article.ArticleID == nil {
+	case "Article.id":
+		if e.complexity.Article.ID == nil {
 			break
 		}
 
-		return e.complexity.Article.ArticleID(childComplexity), true
-
-	case "Article.quantity":
-		if e.complexity.Article.Quantity == nil {
-			break
-		}
-
-		return e.complexity.Article.Quantity(childComplexity), true
-
-	case "Article.valid":
-		if e.complexity.Article.Valid == nil {
-			break
-		}
-
-		return e.complexity.Article.Valid(childComplexity), true
-
-	case "Article.validated":
-		if e.complexity.Article.Validated == nil {
-			break
-		}
-
-		return e.complexity.Article.Validated(childComplexity), true
+		return e.complexity.Article.ID(childComplexity), true
 
 	case "Cart.articles":
 		if e.complexity.Cart.Articles == nil {
@@ -182,6 +166,41 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Cart.UserID(childComplexity), true
+
+	case "CartArticle.article":
+		if e.complexity.CartArticle.Article == nil {
+			break
+		}
+
+		return e.complexity.CartArticle.Article(childComplexity), true
+
+	case "CartArticle.articleId":
+		if e.complexity.CartArticle.ArticleID == nil {
+			break
+		}
+
+		return e.complexity.CartArticle.ArticleID(childComplexity), true
+
+	case "CartArticle.quantity":
+		if e.complexity.CartArticle.Quantity == nil {
+			break
+		}
+
+		return e.complexity.CartArticle.Quantity(childComplexity), true
+
+	case "CartArticle.valid":
+		if e.complexity.CartArticle.Valid == nil {
+			break
+		}
+
+		return e.complexity.CartArticle.Valid(childComplexity), true
+
+	case "CartArticle.validated":
+		if e.complexity.CartArticle.Validated == nil {
+			break
+		}
+
+		return e.complexity.CartArticle.Validated(childComplexity), true
 
 	case "Entity.findCartByID":
 		if e.complexity.Entity.FindCartByID == nil {
@@ -398,12 +417,13 @@ var sources = []*ast.Source{
   id: String!
   userId: String!
   orderId: String
-  articles: [Article!]!
+  articles: [CartArticle!]!
   enabled: Boolean!
 }
 
-type Article {
+type CartArticle {
   articleId: String!
+  article: Article @requires(fields: "articleId")
   quantity: Int!
   valid: Boolean!
   validated: Boolean!
@@ -421,6 +441,10 @@ type Mutation {
   addArticle(articleId: String!, quantity: Int!): Boolean!
   checkout: Boolean!
 }
+
+extend type Article @key(fields: "id") {
+  id: String! @external
+}
 `, BuiltIn: false},
 	{Name: "../../federation/directives.graphql", Input: `
 	directive @key(fields: _FieldSet!) repeatable on OBJECT | INTERFACE
@@ -433,7 +457,7 @@ type Mutation {
 `, BuiltIn: true},
 	{Name: "../../federation/entity.graphql", Input: `
 # a union of all types that use the @key directive
-union _Entity = Cart
+union _Entity = Article | Cart
 
 # fake type to build resolver interfaces for users to implement
 type Entity {
@@ -689,8 +713,8 @@ func (ec *executionContext) field___Type_fields_argsIncludeDeprecated(
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _Article_articleId(ctx context.Context, field graphql.CollectedField, obj *Article) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Article_articleId(ctx, field)
+func (ec *executionContext) _Article_id(ctx context.Context, field graphql.CollectedField, obj *Article) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Article_id(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -703,7 +727,7 @@ func (ec *executionContext) _Article_articleId(ctx context.Context, field graphq
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.ArticleID, nil
+		return obj.ID, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -720,7 +744,7 @@ func (ec *executionContext) _Article_articleId(ctx context.Context, field graphq
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Article_articleId(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Article_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Article",
 		Field:      field,
@@ -728,138 +752,6 @@ func (ec *executionContext) fieldContext_Article_articleId(_ context.Context, fi
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Article_quantity(ctx context.Context, field graphql.CollectedField, obj *Article) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Article_quantity(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Quantity, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Article_quantity(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Article",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Article_valid(ctx context.Context, field graphql.CollectedField, obj *Article) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Article_valid(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Valid, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(bool)
-	fc.Result = res
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Article_valid(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Article",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Article_validated(ctx context.Context, field graphql.CollectedField, obj *Article) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Article_validated(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Validated, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(bool)
-	fc.Result = res
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Article_validated(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Article",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
 		},
 	}
 	return fc, nil
@@ -1020,9 +912,9 @@ func (ec *executionContext) _Cart_articles(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*Article)
+	res := resTmp.([]*CartArticle)
 	fc.Result = res
-	return ec.marshalNArticle2ᚕᚖgithubᚗcomᚋnmarsollierᚋcartgoᚋgraphᚋmodelᚐArticleᚄ(ctx, field.Selections, res)
+	return ec.marshalNCartArticle2ᚕᚖgithubᚗcomᚋnmarsollierᚋcartgoᚋgraphᚋmodelᚐCartArticleᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Cart_articles(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1034,15 +926,17 @@ func (ec *executionContext) fieldContext_Cart_articles(_ context.Context, field 
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "articleId":
-				return ec.fieldContext_Article_articleId(ctx, field)
+				return ec.fieldContext_CartArticle_articleId(ctx, field)
+			case "article":
+				return ec.fieldContext_CartArticle_article(ctx, field)
 			case "quantity":
-				return ec.fieldContext_Article_quantity(ctx, field)
+				return ec.fieldContext_CartArticle_quantity(ctx, field)
 			case "valid":
-				return ec.fieldContext_Article_valid(ctx, field)
+				return ec.fieldContext_CartArticle_valid(ctx, field)
 			case "validated":
-				return ec.fieldContext_Article_validated(ctx, field)
+				return ec.fieldContext_CartArticle_validated(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Article", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type CartArticle", field.Name)
 		},
 	}
 	return fc, nil
@@ -1082,6 +976,227 @@ func (ec *executionContext) _Cart_enabled(ctx context.Context, field graphql.Col
 func (ec *executionContext) fieldContext_Cart_enabled(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Cart",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CartArticle_articleId(ctx context.Context, field graphql.CollectedField, obj *CartArticle) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CartArticle_articleId(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ArticleID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CartArticle_articleId(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CartArticle",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CartArticle_article(ctx context.Context, field graphql.CollectedField, obj *CartArticle) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CartArticle_article(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Article, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*Article)
+	fc.Result = res
+	return ec.marshalOArticle2ᚖgithubᚗcomᚋnmarsollierᚋcartgoᚋgraphᚋmodelᚐArticle(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CartArticle_article(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CartArticle",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Article_id(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Article", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CartArticle_quantity(ctx context.Context, field graphql.CollectedField, obj *CartArticle) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CartArticle_quantity(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Quantity, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CartArticle_quantity(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CartArticle",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CartArticle_valid(ctx context.Context, field graphql.CollectedField, obj *CartArticle) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CartArticle_valid(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Valid, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CartArticle_valid(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CartArticle",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CartArticle_validated(ctx context.Context, field graphql.CollectedField, obj *CartArticle) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CartArticle_validated(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Validated, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CartArticle_validated(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CartArticle",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -3577,6 +3692,13 @@ func (ec *executionContext) __Entity(ctx context.Context, sel ast.SelectionSet, 
 	switch obj := (obj).(type) {
 	case nil:
 		return graphql.Null
+	case Article:
+		return ec._Article(ctx, sel, &obj)
+	case *Article:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._Article(ctx, sel, obj)
 	case Cart:
 		return ec._Cart(ctx, sel, &obj)
 	case *Cart:
@@ -3593,7 +3715,7 @@ func (ec *executionContext) __Entity(ctx context.Context, sel ast.SelectionSet, 
 
 // region    **************************** object.gotpl ****************************
 
-var articleImplementors = []string{"Article"}
+var articleImplementors = []string{"Article", "_Entity"}
 
 func (ec *executionContext) _Article(ctx context.Context, sel ast.SelectionSet, obj *Article) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, articleImplementors)
@@ -3604,23 +3726,8 @@ func (ec *executionContext) _Article(ctx context.Context, sel ast.SelectionSet, 
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Article")
-		case "articleId":
-			out.Values[i] = ec._Article_articleId(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "quantity":
-			out.Values[i] = ec._Article_quantity(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "valid":
-			out.Values[i] = ec._Article_valid(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "validated":
-			out.Values[i] = ec._Article_validated(ctx, field, obj)
+		case "id":
+			out.Values[i] = ec._Article_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -3677,6 +3784,62 @@ func (ec *executionContext) _Cart(ctx context.Context, sel ast.SelectionSet, obj
 			}
 		case "enabled":
 			out.Values[i] = ec._Cart_enabled(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var cartArticleImplementors = []string{"CartArticle"}
+
+func (ec *executionContext) _CartArticle(ctx context.Context, sel ast.SelectionSet, obj *CartArticle) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, cartArticleImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("CartArticle")
+		case "articleId":
+			out.Values[i] = ec._CartArticle_articleId(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "article":
+			out.Values[i] = ec._CartArticle_article(ctx, field, obj)
+		case "quantity":
+			out.Values[i] = ec._CartArticle_quantity(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "valid":
+			out.Values[i] = ec._CartArticle_valid(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "validated":
+			out.Values[i] = ec._CartArticle_validated(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -4329,60 +4492,6 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 
 // region    ***************************** type.gotpl *****************************
 
-func (ec *executionContext) marshalNArticle2ᚕᚖgithubᚗcomᚋnmarsollierᚋcartgoᚋgraphᚋmodelᚐArticleᚄ(ctx context.Context, sel ast.SelectionSet, v []*Article) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNArticle2ᚖgithubᚗcomᚋnmarsollierᚋcartgoᚋgraphᚋmodelᚐArticle(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) marshalNArticle2ᚖgithubᚗcomᚋnmarsollierᚋcartgoᚋgraphᚋmodelᚐArticle(ctx context.Context, sel ast.SelectionSet, v *Article) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._Article(ctx, sel, v)
-}
-
 func (ec *executionContext) unmarshalNBoolean2bool(ctx context.Context, v interface{}) (bool, error) {
 	res, err := graphql.UnmarshalBoolean(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -4410,6 +4519,60 @@ func (ec *executionContext) marshalNCart2ᚖgithubᚗcomᚋnmarsollierᚋcartgo�
 		return graphql.Null
 	}
 	return ec._Cart(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNCartArticle2ᚕᚖgithubᚗcomᚋnmarsollierᚋcartgoᚋgraphᚋmodelᚐCartArticleᚄ(ctx context.Context, sel ast.SelectionSet, v []*CartArticle) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNCartArticle2ᚖgithubᚗcomᚋnmarsollierᚋcartgoᚋgraphᚋmodelᚐCartArticle(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNCartArticle2ᚖgithubᚗcomᚋnmarsollierᚋcartgoᚋgraphᚋmodelᚐCartArticle(ctx context.Context, sel ast.SelectionSet, v *CartArticle) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._CartArticle(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
@@ -4803,6 +4966,13 @@ func (ec *executionContext) marshalN__TypeKind2string(ctx context.Context, sel a
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalOArticle2ᚖgithubᚗcomᚋnmarsollierᚋcartgoᚋgraphᚋmodelᚐArticle(ctx context.Context, sel ast.SelectionSet, v *Article) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Article(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOBoolean2bool(ctx context.Context, v interface{}) (bool, error) {
