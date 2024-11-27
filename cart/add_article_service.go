@@ -1,7 +1,7 @@
 package cart
 
-func AddArticle(userId string, articleId string, quantity int, ctx ...interface{}) (*Cart, error) {
-	cart, err := CurrentCart(userId, ctx...)
+func AddArticle(userId string, articleId string, quantity int, deps ...interface{}) (*Cart, error) {
+	cart, err := CurrentCart(userId, deps...)
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +34,7 @@ func AddArticle(userId string, articleId string, quantity int, ctx ...interface{
 	}
 	cart.Articles = newArticles
 
-	cart, err = replace(cart, ctx...)
+	cart, err = replace(cart, deps...)
 	if err != nil {
 		return nil, err
 	}

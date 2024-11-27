@@ -6,8 +6,8 @@ type ValidationEvent struct {
 	Valid       bool   `json:"valid" example:"true"`
 }
 
-func ProcessArticleData(data *ValidationEvent, ctx ...interface{}) error {
-	cart, err := findByUserId(data.ReferenceId, ctx...)
+func ProcessArticleData(data *ValidationEvent, deps ...interface{}) error {
+	cart, err := findByUserId(data.ReferenceId, deps...)
 	if err != nil {
 		return err
 	}
@@ -19,7 +19,7 @@ func ProcessArticleData(data *ValidationEvent, ctx ...interface{}) error {
 		}
 	}
 
-	_, err = replace(cart, ctx...)
+	_, err = replace(cart, deps...)
 	if err != nil {
 		return err
 	}

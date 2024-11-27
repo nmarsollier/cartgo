@@ -5,8 +5,8 @@ import (
 	"github.com/nmarsollier/cartgo/rabbit/emit"
 )
 
-func GetCurrentCart(userId string, ctx ...interface{}) (*cart.Cart, error) {
-	cart, err := cart.CurrentCart(userId, ctx...)
+func GetCurrentCart(userId string, deps ...interface{}) (*cart.Cart, error) {
+	cart, err := cart.CurrentCart(userId, deps...)
 	if err != nil {
 		return nil, err
 	}
@@ -18,7 +18,7 @@ func GetCurrentCart(userId string, ctx ...interface{}) (*cart.Cart, error) {
 					ReferenceId: cart.UserId,
 					ArticleId:   a.ArticleId,
 				},
-				ctx...,
+				deps...,
 			)
 		}
 	}

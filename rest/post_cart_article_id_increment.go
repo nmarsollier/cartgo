@@ -35,8 +35,8 @@ func incrementArticle(c *gin.Context) {
 	user := c.MustGet("user").(security.User)
 	articleId := c.Param("articleId")
 
-	ctx := server.GinCtx(c)
-	_, err := services.AddArticle(user.ID, articleId, 1, ctx...)
+	deps := server.GinDeps(c)
+	_, err := services.AddArticle(user.ID, articleId, 1, deps...)
 	if err != nil {
 		server.AbortWithError(c, err)
 		return

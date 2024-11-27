@@ -34,14 +34,14 @@ func validate(c *gin.Context) {
 	user := c.MustGet("user").(security.User)
 	token := c.MustGet("tokenString").(string)
 
-	ctx := server.GinCtx(c)
-	currentCart, err := cart.CurrentCart(user.ID, ctx...)
+	deps := server.GinDeps(c)
+	currentCart, err := cart.CurrentCart(user.ID, deps...)
 	if err != nil {
 		server.AbortWithError(c, err)
 		return
 	}
 
-	err = services.ValidateCheckout(currentCart, token, ctx...)
+	err = services.ValidateCheckout(currentCart, token, deps...)
 	if err != nil {
 		server.AbortWithError(c, err)
 		return

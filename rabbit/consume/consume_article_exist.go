@@ -121,12 +121,12 @@ func consumeArticleExist() error {
 	return nil
 }
 
-func processArticleExist(newMessage *consumeArticleExistMessage, ctx ...interface{}) {
+func processArticleExist(newMessage *consumeArticleExistMessage, deps ...interface{}) {
 	data := newMessage.Message
 
-	err := cart.ProcessArticleData(data, ctx...)
+	err := cart.ProcessArticleData(data, deps...)
 	if err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return
 	}
 }

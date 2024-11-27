@@ -121,12 +121,12 @@ func consumeOrderPlaced() error {
 	return nil
 }
 
-func processOrderPlaced(newMessage *consumeOrderPlacedMessage, ctx ...interface{}) {
+func processOrderPlaced(newMessage *consumeOrderPlacedMessage, deps ...interface{}) {
 	data := newMessage.Message
 
-	err := cart.ProcessOrderPlaced(data, ctx...)
+	err := cart.ProcessOrderPlaced(data, deps...)
 	if err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return
 	}
 }

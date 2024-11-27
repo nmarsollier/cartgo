@@ -16,8 +16,8 @@ import (
 //	@Router			/rabbit/place_order [put]
 //
 // Emite Placed Order desde Cart
-func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
-	logger := log.Get(ctx...).
+func SendPlaceOrder(cart *cart.Cart, deps ...interface{}) error {
+	logger := log.Get(deps...).
 		WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
 		WithField(log.LOG_FIELD_RABBIT_ACTION, "Emit").
 		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "place_order").
@@ -43,7 +43,7 @@ func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error {
 		Message:       data,
 	}
 
-	chn, err := getChannel(ctx...)
+	chn, err := getChannel(deps...)
 	if err != nil {
 		logger.Error(err)
 		chn = nil

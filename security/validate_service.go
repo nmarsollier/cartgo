@@ -7,7 +7,7 @@ import (
 )
 
 // Validate valida si el token es valido
-func Validate(token string, ctx ...interface{}) (*User, error) {
+func Validate(token string, deps ...interface{}) (*User, error) {
 	// Si esta en cache, retornamos el cache
 	if found, ok := cache.Get(token); ok {
 		if user, ok := found.(*User); ok {
@@ -15,9 +15,9 @@ func Validate(token string, ctx ...interface{}) (*User, error) {
 		}
 	}
 
-	user, err := getRemoteToken(token, ctx...)
+	user, err := getRemoteToken(token, deps...)
 	if err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, errs.Unauthorized
 	}
 

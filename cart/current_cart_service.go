@@ -1,7 +1,7 @@
 package cart
 
-func CurrentCart(userId string, ctx ...interface{}) (*Cart, error) {
-	cart, err := findByUserId(userId, ctx...)
+func CurrentCart(userId string, deps ...interface{}) (*Cart, error) {
+	cart, err := findByUserId(userId, deps...)
 	if err != nil {
 		if err.Error() != "mongo: no documents in result" {
 			return nil, err
@@ -9,7 +9,7 @@ func CurrentCart(userId string, ctx ...interface{}) (*Cart, error) {
 		}
 
 		cart = newCart(userId)
-		cart, err = insert(cart, ctx...)
+		cart, err = insert(cart, deps...)
 		if err != nil {
 			return nil, err
 		}

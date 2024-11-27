@@ -6,14 +6,14 @@ type OrderPlacedEvent struct {
 	Valid   bool   `json:"valid" example:"true"`
 }
 
-func ProcessOrderPlaced(data *OrderPlacedEvent, ctx ...interface{}) error {
-	cart, err := findById(data.CartId, ctx...)
+func ProcessOrderPlaced(data *OrderPlacedEvent, deps ...interface{}) error {
+	cart, err := findById(data.CartId, deps...)
 	if err != nil {
 		return err
 	}
 
 	cart.OrderId = data.OrderId
-	_, err = replace(cart, ctx...)
+	_, err = replace(cart, deps...)
 	if err != nil {
 		return err
 	}

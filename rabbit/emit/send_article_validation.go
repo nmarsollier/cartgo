@@ -15,8 +15,8 @@ import (
 //	@Router			/rabbit/article_exist [put]
 //
 // Emite Validar Artículos a Cart
-func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error {
-	logger := log.Get(ctx...).
+func SendArticleValidation(data ArticleValidationData, deps ...interface{}) error {
+	logger := log.Get(deps...).
 		WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
 		WithField(log.LOG_FIELD_RABBIT_ACTION, "Emit").
 		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "article_exist").
@@ -29,7 +29,7 @@ func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error
 		RoutingKey:    "cart_article_exist",
 		Message:       data,
 	}
-	chn, err := getChannel(ctx...)
+	chn, err := getChannel(deps...)
 	if err != nil {
 		logger.Error(err)
 		chn = nil

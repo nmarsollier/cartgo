@@ -32,8 +32,8 @@ func initGetCart() {
 func currentCart(c *gin.Context) {
 	user := c.MustGet("user").(security.User)
 
-	ctx := server.GinCtx(c)
-	cart, err := services.GetCurrentCart(user.ID, ctx...)
+	deps := server.GinDeps(c)
+	cart, err := services.GetCurrentCart(user.ID, deps...)
 
 	if err != nil {
 		server.AbortWithError(c, err)

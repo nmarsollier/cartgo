@@ -11,8 +11,8 @@ import (
 // ErrChannelNotInitialized Rabbit channel could not be initialized
 var ErrChannelNotInitialized = errors.New("channel not initialized")
 
-func getChannel(ctx ...interface{}) (RabbitChannel, error) {
-	for _, o := range ctx {
+func getChannel(deps ...interface{}) (RabbitChannel, error) {
+	for _, o := range deps {
 		if ti, ok := o.(RabbitChannel); ok {
 			return ti, nil
 		}
@@ -20,13 +20,13 @@ func getChannel(ctx ...interface{}) (RabbitChannel, error) {
 
 	conn, err := amqp.Dial(env.Get().RabbitURL)
 	if err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, err
 	}
 
 	channel, err := conn.Channel()
 	if err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, err
 	}
 

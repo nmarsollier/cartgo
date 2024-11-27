@@ -13,13 +13,13 @@ import (
 
 var server *gin.Engine = nil
 
-func Router(ctx ...interface{}) *gin.Engine {
+func Router(deps ...interface{}) *gin.Engine {
 	if server == nil {
 
 		server = gin.Default()
 
 		server.Use(gzip.Gzip(gzip.DefaultCompression))
-		server.Use(GinLoggerMiddleware(ctx...))
+		server.Use(GinLoggerMiddleware(deps...))
 
 		server.Use(cors.Middleware(cors.Config{
 			Origins:         "*",
@@ -41,14 +41,14 @@ func Router(ctx ...interface{}) *gin.Engine {
 
 // Obtiene el contexto a serivcios externos
 // En prod este contexto esta vacio.
-func GinCtx(c *gin.Context) []interface{} {
-	var ctx []interface{}
-	// mock_ctx solo es para mocks en testing
-	if mocks, ok := c.Get("mock_ctx"); ok {
-		ctx = mocks.([]interface{})
+func GinDeps(c *gin.Context) []interface{} {
+	var deps []interface{}
+	// mock_deps solo es para mocks en testing
+	if mocks, ok := c.Get("mock_deps"); ok {
+		deps = mocks.([]interface{})
 	}
 
-	ctx = append(ctx, ginLogger(c))
+	deps = append(deps, ginLogger(c))
 
-	return ctx
+	return deps
 }

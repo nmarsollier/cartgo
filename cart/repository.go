@@ -15,8 +15,8 @@ var ErrID = errs.NewValidation().Add("id", "Invalid")
 // Define mongo Collection
 var collection db.MongoCollection
 
-func dbCollection(ctx ...interface{}) (db.MongoCollection, error) {
-	for _, o := range ctx {
+func dbCollection(deps ...interface{}) (db.MongoCollection, error) {
+	for _, o := range deps {
 		if coll, ok := o.(db.MongoCollection); ok {
 			return coll, nil
 		}
@@ -28,7 +28,7 @@ func dbCollection(ctx ...interface{}) (db.MongoCollection, error) {
 
 	database, err := db.Get()
 	if err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, err
 	}
 
@@ -59,10 +59,10 @@ type DbIdFilter struct {
 }
 
 // findByCartId lee un usuario desde la db
-func findByUserId(userId string, ctx ...interface{}) (*Cart, error) {
-	var collection, err = dbCollection(ctx...)
+func findByUserId(userId string, deps ...interface{}) (*Cart, error) {
+	var collection, err = dbCollection(deps...)
 	if err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, err
 	}
 
@@ -80,16 +80,16 @@ func findByUserId(userId string, ctx ...interface{}) (*Cart, error) {
 }
 
 // findByCartId lee un usuario desde la db
-func findById(cartId string, ctx ...interface{}) (*Cart, error) {
+func findById(cartId string, deps ...interface{}) (*Cart, error) {
 	_id, err := primitive.ObjectIDFromHex(cartId)
 	if err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, ErrID
 	}
 
-	collection, err := dbCollection(ctx...)
+	collection, err := dbCollection(deps...)
 	if err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, err
 	}
 
@@ -97,63 +97,63 @@ func findById(cartId string, ctx ...interface{}) (*Cart, error) {
 	filter := DbIdFilter{ID: _id}
 
 	if err = collection.FindOne(context.Background(), filter, cart); err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, err
 	}
 
 	return cart, nil
 }
 
-func insert(cart *Cart, ctx ...interface{}) (*Cart, error) {
+func insert(cart *Cart, deps ...interface{}) (*Cart, error) {
 	if err := cart.validateSchema(); err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, err
 	}
 
-	var collection, err = dbCollection(ctx...)
+	var collection, err = dbCollection(deps...)
 	if err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, err
 	}
 
 	if _, err := collection.InsertOne(context.Background(), cart); err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, err
 	}
 
 	return cart, nil
 }
 
-func replace(cart *Cart, ctx ...interface{}) (*Cart, error) {
+func replace(cart *Cart, deps ...interface{}) (*Cart, error) {
 	if err := cart.validateSchema(); err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, err
 	}
 
-	var collection, err = dbCollection(ctx...)
+	var collection, err = dbCollection(deps...)
 	if err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, err
 	}
 
 	_, err = collection.ReplaceOne(context.Background(), DbIdFilter{ID: cart.ID}, cart)
 	if err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, err
 	}
 
 	return cart, nil
 }
 
-func invalidate(cart *Cart, ctx ...interface{}) (*Cart, error) {
+func invalidate(cart *Cart, deps ...interface{}) (*Cart, error) {
 	if err := cart.validateSchema(); err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, err
 	}
 
-	var collection, err = dbCollection(ctx...)
+	var collection, err = dbCollection(deps...)
 	if err != nil {
-		log.Get(ctx...).Error(err)
+		log.Get(deps...).Error(err)
 		return nil, err
 	}
 

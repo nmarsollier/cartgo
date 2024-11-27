@@ -34,8 +34,8 @@ func deleteArticle(c *gin.Context) {
 	user := c.MustGet("user").(security.User)
 	articleId := c.Param("articleId")
 
-	ctx := server.GinCtx(c)
-	_, err := cart.RemoveArticle(user.ID, articleId, ctx...)
+	deps := server.GinDeps(c)
+	_, err := cart.RemoveArticle(user.ID, articleId, deps...)
 	if err != nil {
 		server.AbortWithError(c, err)
 		return

@@ -44,8 +44,8 @@ func addArticle(c *gin.Context) {
 		return
 	}
 
-	ctx := server.GinCtx(c)
-	_, err := services.AddArticle(user.ID, body.ArticleId, body.Quantity, ctx...)
+	deps := server.GinDeps(c)
+	_, err := services.AddArticle(user.ID, body.ArticleId, body.Quantity, deps...)
 	if err != nil {
 		server.AbortWithError(c, err)
 		return
