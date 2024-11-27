@@ -1,0 +1,3768 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>cart: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/nmarsollier/cartgo/cart/dao.go (58.0%)</option>
+				
+				<option value="file1">github.com/nmarsollier/cartgo/cart/schema.go (100.0%)</option>
+				
+				<option value="file2">github.com/nmarsollier/cartgo/cart/service.go (89.1%)</option>
+				
+				<option value="file3">github.com/nmarsollier/cartgo/cart/test_tools.go (100.0%)</option>
+				
+				<option value="file4">github.com/nmarsollier/cartgo/docs/docs.go (100.0%)</option>
+				
+				<option value="file5">github.com/nmarsollier/cartgo/main.go (0.0%)</option>
+				
+				<option value="file6">github.com/nmarsollier/cartgo/rabbit/consume/consume_cart.go (8.9%)</option>
+				
+				<option value="file7">github.com/nmarsollier/cartgo/rabbit/consume/consume_logout.go (0.0%)</option>
+				
+				<option value="file8">github.com/nmarsollier/cartgo/rabbit/consume/consume_order_placed.go (8.9%)</option>
+				
+				<option value="file9">github.com/nmarsollier/cartgo/rabbit/consume/listeners.go (0.0%)</option>
+				
+				<option value="file10">github.com/nmarsollier/cartgo/rabbit/emit/common.go (58.3%)</option>
+				
+				<option value="file11">github.com/nmarsollier/cartgo/rabbit/emit/rabbit_channel.go (0.0%)</option>
+				
+				<option value="file12">github.com/nmarsollier/cartgo/rabbit/emit/rabbit_channel_mocks.go (100.0%)</option>
+				
+				<option value="file13">github.com/nmarsollier/cartgo/rabbit/emit/send_article_validation.go (27.3%)</option>
+				
+				<option value="file14">github.com/nmarsollier/cartgo/rabbit/emit/send_place_order.go (57.7%)</option>
+				
+				<option value="file15">github.com/nmarsollier/cartgo/rabbit/emit/test_tools.go (100.0%)</option>
+				
+				<option value="file16">github.com/nmarsollier/cartgo/rest/delete_cart_article_id.go (100.0%)</option>
+				
+				<option value="file17">github.com/nmarsollier/cartgo/rest/get_cart.go (100.0%)</option>
+				
+				<option value="file18">github.com/nmarsollier/cartgo/rest/get_cart_validate.go (100.0%)</option>
+				
+				<option value="file19">github.com/nmarsollier/cartgo/rest/post_cart_article.go (83.3%)</option>
+				
+				<option value="file20">github.com/nmarsollier/cartgo/rest/post_cart_article_id_decrement.go (100.0%)</option>
+				
+				<option value="file21">github.com/nmarsollier/cartgo/rest/post_cart_article_id_increment.go (100.0%)</option>
+				
+				<option value="file22">github.com/nmarsollier/cartgo/rest/post_cart_checkout.go (77.8%)</option>
+				
+				<option value="file23">github.com/nmarsollier/cartgo/rest/router.go (77.8%)</option>
+				
+				<option value="file24">github.com/nmarsollier/cartgo/rest/server/auth_validator.go (85.0%)</option>
+				
+				<option value="file25">github.com/nmarsollier/cartgo/rest/server/engine.go (100.0%)</option>
+				
+				<option value="file26">github.com/nmarsollier/cartgo/rest/server/error_handler.go (63.6%)</option>
+				
+				<option value="file27">github.com/nmarsollier/cartgo/rest/server/test_utils.go (100.0%)</option>
+				
+				<option value="file28">github.com/nmarsollier/cartgo/security/dao.go (80.0%)</option>
+				
+				<option value="file29">github.com/nmarsollier/cartgo/security/service.go (71.4%)</option>
+				
+				<option value="file30">github.com/nmarsollier/cartgo/security/test_utils.go (100.0%)</option>
+				
+				<option value="file31">github.com/nmarsollier/cartgo/service/AddArticle.go (100.0%)</option>
+				
+				<option value="file32">github.com/nmarsollier/cartgo/service/Checkout.go (82.4%)</option>
+				
+				<option value="file33">github.com/nmarsollier/cartgo/service/CurrentCart.go (100.0%)</option>
+				
+				<option value="file34">github.com/nmarsollier/cartgo/service/dao.go (81.8%)</option>
+				
+				<option value="file35">github.com/nmarsollier/cartgo/tools/db/connection.go (0.0%)</option>
+				
+				<option value="file36">github.com/nmarsollier/cartgo/tools/db/mongo_collection.go (0.0%)</option>
+				
+				<option value="file37">github.com/nmarsollier/cartgo/tools/db/mongo_collection_mocks.go (58.5%)</option>
+				
+				<option value="file38">github.com/nmarsollier/cartgo/tools/db/test_tools.go (80.0%)</option>
+				
+				<option value="file39">github.com/nmarsollier/cartgo/tools/env/env.go (64.7%)</option>
+				
+				<option value="file40">github.com/nmarsollier/cartgo/tools/errs/rest_error.go (100.0%)</option>
+				
+				<option value="file41">github.com/nmarsollier/cartgo/tools/errs/validation.go (77.8%)</option>
+				
+				<option value="file42">github.com/nmarsollier/cartgo/tools/httpx/client.go (75.0%)</option>
+				
+				<option value="file43">github.com/nmarsollier/cartgo/tools/httpx/client_mocks.go (100.0%)</option>
+				
+				<option value="file44">github.com/nmarsollier/cartgo/tools/strs/json_tools.go (100.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package cart
+
+import (
+        "context"
+        "time"
+
+        "github.com/golang/glog"
+        "github.com/nmarsollier/cartgo/tools/db"
+        "go.mongodb.org/mongo-driver/bson/primitive"
+)
+
+// Define mongo Collection
+var collection db.MongoCollection
+
+func dbCollection(ctx ...interface{}) (db.MongoCollection, error) <span class="cov8" title="1">{
+        for _, o := range ctx </span><span class="cov8" title="1">{
+                if coll, ok := o.(db.MongoCollection); ok </span><span class="cov8" title="1">{
+                        return coll, nil
+                }</span>
+        }
+
+        <span class="cov0" title="0">if collection != nil </span><span class="cov0" title="0">{
+                return collection, nil
+        }</span>
+
+        <span class="cov0" title="0">database, err := db.Get()
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">col := database.Collection("cart")
+
+        collection = db.NewMongoCollection(col)
+        return collection, nil</span>
+}
+
+func newCart(userId string) *Cart <span class="cov8" title="1">{
+        return &amp;Cart{
+                ID:       primitive.NewObjectID(),
+                UserId:   userId,
+                Enabled:  true,
+                Created:  time.Now(),
+                Updated:  time.Now(),
+                Articles: []*Article{},
+        }
+}</span>
+
+type DbUserIdFilter struct {
+        UserId  string `bson:"userId"`
+        Enabled bool   `bson:"enabled"`
+}
+
+type DbIdFilter struct {
+        ID primitive.ObjectID `bson:"_id" json:"_id"`
+}
+
+// findByCartId lee un usuario desde la db
+func findByUserId(userId string, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+        var collection, err = dbCollection(ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">cart := &amp;Cart{}
+        filter := DbUserIdFilter{
+                UserId:  userId,
+                Enabled: true,
+        }
+
+        if err = collection.FindOne(context.Background(), filter, cart); err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">return cart, nil</span>
+}
+
+// findByCartId lee un usuario desde la db
+func findById(cartId string, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+        _id, err := primitive.ObjectIDFromHex(cartId)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return nil, ErrID
+        }</span>
+
+        <span class="cov8" title="1">collection, err := dbCollection(ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">cart := &amp;Cart{}
+        filter := DbIdFilter{ID: _id}
+
+        if err = collection.FindOne(context.Background(), filter, cart); err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">return cart, nil</span>
+}
+
+func insert(cart *Cart, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+        if err := cart.ValidateSchema(); err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">var collection, err = dbCollection(ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">if _, err := collection.InsertOne(context.Background(), cart); err != nil </span><span class="cov8" title="1">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">return cart, nil</span>
+}
+
+func replace(cart *Cart, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+        if err := cart.ValidateSchema(); err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">var collection, err = dbCollection(ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">_, err = collection.ReplaceOne(context.Background(), DbIdFilter{ID: cart.ID}, cart)
+        if err != nil </span><span class="cov8" title="1">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">return cart, nil</span>
+}
+
+func invalidate(cart *Cart, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+        if err := cart.ValidateSchema(); err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">var collection, err = dbCollection(ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">cart.Enabled = false
+
+        _, err = collection.UpdateOne(context.Background(),
+                DbIdFilter{ID: cart.ID},
+                DbDeleteTokenDocument{
+                        DbDeleteTokenBody{
+                                Enabled: false,
+                        },
+                },
+        )
+
+        return cart, err</span>
+}
+
+type DbDeleteTokenBody struct {
+        Enabled bool `bson:"enabled"`
+}
+
+type DbDeleteTokenDocument struct {
+        Set DbDeleteTokenBody `bson:"$set"`
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package cart
+
+import (
+        "time"
+
+        "github.com/go-playground/validator/v10"
+        "go.mongodb.org/mongo-driver/bson/primitive"
+)
+
+// Estuctura basica de del evento
+type Cart struct {
+        ID       primitive.ObjectID `bson:"_id" json:"_id"`
+        UserId   string             `bson:"userId"  json:"userId" validate:"required,min=1,max=100"`
+        OrderId  string             `bson:"orderId" json:"orderId"`
+        Articles []*Article         `bson:"articles"  json:"articles" validate:"required"`
+        Enabled  bool               `bson:"enabled" json:"enabled"`
+        Created  time.Time          `bson:"created" json:"created"`
+        Updated  time.Time          `bson:"updated" json:"updated"`
+}
+
+// ValidateSchema valida la estructura para ser insertada en la db
+func (e *Cart) ValidateSchema() error <span class="cov8" title="1">{
+        return validator.New().Struct(e)
+}</span>
+
+type Article struct {
+        ArticleId string `bson:"articleId" json:"articleId" validate:"required,min=1,max=100"`
+        Quantity  int    `bson:"quantity" json:"quantity" validate:"required,min=1,max=100"`
+        Valid     bool   `bson:"valid" json:"valid"`
+        Validated bool   `bson:"validated" json:"validated"`
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package cart
+
+func CurrentCart(userId string, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+        cart, err := findByUserId(userId, ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                if err.Error() != "mongo: no documents in result" </span><span class="cov8" title="1">{
+                        return nil, err
+
+                }</span>
+
+                <span class="cov8" title="1">cart = newCart(userId)
+                cart, err = insert(cart, ctx...)
+                if err != nil </span><span class="cov8" title="1">{
+                        return nil, err
+                }</span>
+        }
+
+        <span class="cov8" title="1">return cart, nil</span>
+}
+
+type AddArticleData struct {
+        ArticleId string `bson:"articleId" validate:"required,min=1,max=100"`
+        Quantity  int    `bson:"quantity" validate:"required,min=1,max=100"`
+}
+
+func AddArticle(userId string, articleData AddArticleData, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+        cart, err := CurrentCart(userId, ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">article := &amp;Article{
+                ArticleId: articleData.ArticleId,
+                Quantity:  articleData.Quantity,
+                Validated: false,
+        }
+
+        // Si existe solo incremento la cantidad
+        exist := false
+        for _, a := range cart.Articles </span><span class="cov8" title="1">{
+                if a.ArticleId == article.ArticleId </span><span class="cov8" title="1">{
+                        a.Quantity += article.Quantity
+                        exist = true
+                }</span>
+        }
+
+        // Sino lo agregamos a la lista
+        <span class="cov8" title="1">if !exist </span><span class="cov8" title="1">{
+                cart.Articles = append(cart.Articles, article)
+        }</span>
+
+        <span class="cov8" title="1">newArticles := []*Article{}
+        for _, a := range cart.Articles </span><span class="cov8" title="1">{
+                if a.Quantity &gt; 0 </span><span class="cov8" title="1">{
+                        newArticles = append(newArticles, a)
+                }</span>
+        }
+        <span class="cov8" title="1">cart.Articles = newArticles
+
+        cart, err = replace(cart, ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">return cart, nil</span>
+}
+
+func RemoveArticle(userId string, articleId string, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+        cart, err := CurrentCart(userId, ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">newArticles := []*Article{}
+        for _, a := range cart.Articles </span><span class="cov8" title="1">{
+                if a.ArticleId != articleId </span><span class="cov8" title="1">{
+                        newArticles = append(newArticles, a)
+                }</span>
+        }
+        <span class="cov8" title="1">cart.Articles = newArticles
+
+        cart, err = replace(cart, ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">return cart, nil</span>
+}
+
+func InvalidateCurrentCart(cart *Cart, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+        cart, err := invalidate(cart, ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">return cart, nil</span>
+}
+
+type ValidationEvent struct {
+        ReferenceId string `json:"referenceId" example:"UserId"`
+        ArticleId   string `json:"articleId" example:"ArticleId"`
+        Valid       bool   `json:"valid" example:"true"`
+}
+
+func ProcessArticleData(data *ValidationEvent, ctx ...interface{}) error <span class="cov8" title="1">{
+        cart, err := findByUserId(data.ReferenceId, ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">for _, a := range cart.Articles </span><span class="cov8" title="1">{
+                if a.ArticleId == data.ArticleId </span><span class="cov0" title="0">{
+                        a.Validated = true
+                        a.Valid = data.Valid
+                }</span>
+        }
+
+        <span class="cov8" title="1">_, err = replace(cart, ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+
+type OrderPlacedEvent struct {
+        CartId  string `json:"cartId" example:"CartId"`
+        OrderId string `json:"orderId" example:"OrderId"`
+        Valid   bool   `json:"valid" example:"true"`
+}
+
+func ProcessOrderPlaced(data *OrderPlacedEvent, ctx ...interface{}) error <span class="cov8" title="1">{
+        cart, err := findById(data.CartId, ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">cart.OrderId = data.OrderId
+        _, err = replace(cart, ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package cart
+
+import (
+        "time"
+
+        "go.mongodb.org/mongo-driver/bson/primitive"
+)
+
+// Mock Data
+func TestCart() *Cart <span class="cov8" title="1">{
+        return &amp;Cart{
+                ID:      primitive.NewObjectID(),
+                UserId:  "123",
+                Enabled: true,
+                Created: time.Now(),
+                Updated: time.Now(),
+                Articles: []*Article{
+                        {
+                                ArticleId: "article_1",
+                                Quantity:  1,
+                                Valid:     false,
+                                Validated: false,
+                        },
+                        {
+                                ArticleId: "article_2",
+                                Quantity:  2,
+                                Valid:     false,
+                                Validated: false,
+                        },
+                },
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">// Package docs Code generated by swaggo/swag. DO NOT EDIT
+package docs
+
+import "github.com/swaggo/swag"
+
+const docTemplate = `{
+    "schemes": {{ marshal .Schemes }},
+    "swagger": "2.0",
+    "info": {
+        "description": "{{escape .Description}}",
+        "title": "{{.Title}}",
+        "contact": {
+            "name": "Nestor Marsollier",
+            "email": "nmarsollier@gmail.com"
+        },
+        "version": "{{.Version}}"
+    },
+    "host": "{{.Host}}",
+    "basePath": "{{.BasePath}}",
+    "paths": {
+        "/rabbit/article-exist": {
+            "get": {
+                "description": "Luego de solicitar validaciones de catalogo, las validaciones las recibimos en esta Queue, con el mensaje type article-data.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rabbit"
+                ],
+                "summary": "Mensage Rabbit order/article-exist",
+                "parameters": [
+                    {
+                        "description": "Message para Type = article-exist",
+                        "name": "type",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/consume.consumeArticleDataMessage"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/rabbit/cart/article-exist": {
+            "put": {
+                "description": "Solicitamos las validaciones ar articulos a catalogo. Queue y Exchange es donde nos reponde.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rabbit"
+                ],
+                "summary": "Emite Validar Artículos a Cart cart/article-exist",
+                "parameters": [
+                    {
+                        "description": "Mensage de validacion",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/emit.SendValidationMessage"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/rabbit/cart/place-order": {
+            "put": {
+                "description": "Cuando se hace checkout enviamos un comando a orders para que inicie el proceso de la orden.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rabbit"
+                ],
+                "summary": "Emite Placed Order desde Cart",
+                "parameters": [
+                    {
+                        "description": "Place order",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/emit.SendPlacedMessage"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/rabbit/logout": {
+            "get": {
+                "description": "Escucha de mensajes logout desde auth.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rabbit"
+                ],
+                "summary": "Mensage Rabbit",
+                "parameters": [
+                    {
+                        "description": "Estructura general del mensage",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/consume.logoutMessage"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/rabbit/order-placed": {
+            "get": {
+                "description": "Cuando se recibe order-placed se actualiza el order id del carrito. No se respode a este evento.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rabbit"
+                ],
+                "summary": "Mensage Rabbit order/order-placed",
+                "parameters": [
+                    {
+                        "description": "Message para Type = order-placed",
+                        "name": "type",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/consume.consumeOrderPlacedMessage"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/v1/cart": {
+            "get": {
+                "description": "Obtiene el carrito actual.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Obtener carrito.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cart",
+                        "schema": {
+                            "$ref": "#/definitions/cart.Cart"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.ValidationErr"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/cart/article": {
+            "post": {
+                "description": "Agrega un articulo del carrito actual.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Agregar Articulo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID de articlo",
+                        "name": "articleId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Articulo a Agregar",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cart.AddArticleData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cart",
+                        "schema": {
+                            "$ref": "#/definitions/cart.Cart"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.ValidationErr"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/cart/article/:articleId": {
+            "delete": {
+                "description": "Elimina un articulo del carrito actual.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Eliminar Articulo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID de articlo",
+                        "name": "articleId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.ValidationErr"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/cart/article/:articleId/decrement": {
+            "post": {
+                "description": "Eliminar 1 al articulo actual.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Agregar 1 Articulo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID de articlo",
+                        "name": "articleId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cart",
+                        "schema": {
+                            "$ref": "#/definitions/cart.Cart"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.ValidationErr"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/cart/article/:articleId/increment": {
+            "post": {
+                "description": "Agregar 1 al articulo actual.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Agregar 1 Articulo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID de articlo",
+                        "name": "articleId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cart",
+                        "schema": {
+                            "$ref": "#/definitions/cart.Cart"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.ValidationErr"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/cart/checkouts": {
+            "post": {
+                "description": "Hace checkout del carrito actual",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Checkout Articulo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID de articlo",
+                        "name": "articleId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.ValidationErr"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/cart/validate": {
+            "get": {
+                "description": "Valida el carrito para checkout",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Validar Carrito",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.ValidationErr"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ErrorData"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "cart.AddArticleData": {
+            "type": "object",
+            "required": [
+                "articleId",
+                "quantity"
+            ],
+            "properties": {
+                "articleId": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "quantity": {
+                    "type": "integer",
+                    "maximum": 100,
+                    "minimum": 1
+                }
+            }
+        },
+        "cart.Article": {
+            "type": "object",
+            "required": [
+                "articleId",
+                "quantity"
+            ],
+            "properties": {
+                "articleId": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "quantity": {
+                    "type": "integer",
+                    "maximum": 100,
+                    "minimum": 1
+                },
+                "valid": {
+                    "type": "boolean"
+                },
+                "validated": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "cart.Cart": {
+            "type": "object",
+            "required": [
+                "articles",
+                "userId"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "articles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/cart.Article"
+                    }
+                },
+                "created": {
+                    "type": "string"
+                },
+                "enabled": {
+                    "type": "boolean"
+                },
+                "orderId": {
+                    "type": "string"
+                },
+                "updated": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                }
+            }
+        },
+        "cart.OrderPlacedEvent": {
+            "type": "object",
+            "properties": {
+                "cartId": {
+                    "type": "string",
+                    "example": "CartId"
+                },
+                "orderId": {
+                    "type": "string",
+                    "example": "OrderId"
+                },
+                "valid": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "cart.ValidationEvent": {
+            "type": "object",
+            "properties": {
+                "articleId": {
+                    "type": "string",
+                    "example": "ArticleId"
+                },
+                "referenceId": {
+                    "type": "string",
+                    "example": "UserId"
+                },
+                "valid": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "consume.consumeArticleDataMessage": {
+            "type": "object",
+            "properties": {
+                "exchange": {
+                    "type": "string",
+                    "example": ""
+                },
+                "message": {
+                    "$ref": "#/definitions/cart.ValidationEvent"
+                },
+                "queue": {
+                    "type": "string",
+                    "example": ""
+                },
+                "type": {
+                    "type": "string",
+                    "example": "article-exist"
+                }
+            }
+        },
+        "consume.consumeOrderPlacedMessage": {
+            "type": "object",
+            "properties": {
+                "exchange": {
+                    "type": "string",
+                    "example": ""
+                },
+                "message": {
+                    "$ref": "#/definitions/cart.OrderPlacedEvent"
+                },
+                "queue": {
+                    "type": "string",
+                    "example": ""
+                },
+                "type": {
+                    "type": "string",
+                    "example": "order-placed"
+                }
+            }
+        },
+        "consume.logoutMessage": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "logout"
+                }
+            }
+        },
+        "emit.ArticleValidationData": {
+            "type": "object",
+            "properties": {
+                "articleId": {
+                    "type": "string",
+                    "example": "ArticleId"
+                },
+                "referenceId": {
+                    "type": "string",
+                    "example": "UserId"
+                }
+            }
+        },
+        "emit.PlaceArticlesData": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "ArticleId"
+                },
+                "quantity": {
+                    "type": "integer",
+                    "example": 10
+                }
+            }
+        },
+        "emit.PlacedData": {
+            "type": "object",
+            "properties": {
+                "articles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/emit.PlaceArticlesData"
+                    }
+                },
+                "cartId": {
+                    "type": "string",
+                    "example": "CartId"
+                },
+                "userId": {
+                    "type": "string",
+                    "example": "UserId"
+                }
+            }
+        },
+        "emit.SendPlacedMessage": {
+            "type": "object"
+        },
+        "emit.SendValidationMessage": {
+            "type": "object",
+            "properties": {
+                "exchange": {
+                    "type": "string",
+                    "example": "cart"
+                },
+                "message": {
+                    "$ref": "#/definitions/emit.ArticleValidationData"
+                },
+                "queue": {
+                    "type": "string",
+                    "example": "cart"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "article-exist"
+                }
+            }
+        },
+        "errs.ValidationErr": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/errs.errField"
+                    }
+                }
+            }
+        },
+        "errs.errField": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "server.ErrorData": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}`
+
+// SwaggerInfo holds exported Swagger Info so clients can modify it
+var SwaggerInfo = &amp;swag.Spec{
+        Version:          "1.0",
+        Host:             "localhost:3003",
+        BasePath:         "/v1",
+        Schemes:          []string{},
+        Title:            "CartGo",
+        Description:      "Microservicio de Carrito.",
+        InfoInstanceName: "swagger",
+        SwaggerTemplate:  docTemplate,
+        LeftDelim:        "{{",
+        RightDelim:       "}}",
+}
+
+func init() <span class="cov8" title="1">{
+        swag.Register(SwaggerInfo.InstanceName(), SwaggerInfo)
+}</span>
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package main
+
+import (
+        "flag"
+
+        "github.com/nmarsollier/cartgo/rabbit/consume"
+        routes "github.com/nmarsollier/cartgo/rest"
+)
+
+//        @title                        CartGo
+//        @version                1.0
+//        @description        Microservicio de Carrito.
+//        @contact.name        Nestor Marsollier
+//        @contact.email        nmarsollier@gmail.com
+//
+//        @host                        localhost:3003
+//        @BasePath                /v1
+//
+// Main Method
+func main() <span class="cov0" title="0">{
+        // For logging
+        flag.Parse()
+        flag.Set("logtostderr", "true")
+        flag.Set("v", "2")
+
+        consume.Init()
+        routes.Start()
+}</span>
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package consume
+
+import (
+        "encoding/json"
+
+        "github.com/golang/glog"
+        "github.com/nmarsollier/cartgo/cart"
+        "github.com/nmarsollier/cartgo/tools/env"
+        "github.com/streadway/amqp"
+)
+
+//        @Summary                Mensage Rabbit order/article-exist
+//        @Description        Luego de solicitar validaciones de catalogo, las validaciones las recibimos en esta Queue, con el mensaje type article-data.
+//        @Tags                        Rabbit
+//        @Accept                        json
+//        @Produce                json
+//        @Param                        type        body        consumeArticleDataMessage        true        "Message para Type = article-exist"
+//        @Router                        /rabbit/article-exist [get]
+//
+// Validar Artículos
+func consumeOrders() error <span class="cov0" title="0">{
+        conn, err := amqp.Dial(env.Get().RabbitURL)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+        <span class="cov0" title="0">defer conn.Close()
+
+        chn, err := conn.Channel()
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+        <span class="cov0" title="0">defer chn.Close()
+
+        err = chn.ExchangeDeclare(
+                "cart",   // name
+                "direct", // type
+                false,    // durable
+                false,    // auto-deleted
+                false,    // internal
+                false,    // no-wait
+                nil,      // arguments
+        )
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+
+        <span class="cov0" title="0">queue, err := chn.QueueDeclare(
+                "cart", // name
+                false,  // durable
+                false,  // delete when unused
+                false,  // exclusive
+                false,  // no-wait
+                nil,    // arguments
+        )
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+
+        <span class="cov0" title="0">err = chn.QueueBind(
+                queue.Name, // queue name
+                "cart",     // routing key
+                "cart",     // exchange
+                false,
+                nil)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+
+        <span class="cov0" title="0">mgs, err := chn.Consume(
+                queue.Name, // queue
+                "",         // consumer
+                true,       // auto-ack
+                false,      // exclusive
+                false,      // no-local
+                false,      // no-wait
+                nil,        // args
+        )
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+
+        <span class="cov0" title="0">glog.Info("RabbitMQ consumeCart conectado")
+
+        go func() </span><span class="cov0" title="0">{
+                for d := range mgs </span><span class="cov0" title="0">{
+                        newMessage := &amp;consumeArticleDataMessage{}
+                        body := d.Body
+                        glog.Info(string(body))
+
+                        err = json.Unmarshal(body, newMessage)
+                        if err == nil </span><span class="cov0" title="0">{
+                                switch newMessage.Type </span>{
+                                case "article-exist":<span class="cov0" title="0">
+                                        processArticleData(newMessage)</span>
+                                }
+                        } else<span class="cov0" title="0"> {
+                                glog.Error(err)
+                        }</span>
+                }
+        }()
+
+        <span class="cov0" title="0">glog.Info("Closed connection: ", &lt;-conn.NotifyClose(make(chan *amqp.Error)))
+
+        return nil</span>
+}
+
+func processArticleData(newMessage *consumeArticleDataMessage, ctx ...interface{}) <span class="cov8" title="1">{
+        data := newMessage.Message
+
+        err := cart.ProcessArticleData(data, ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return
+        }</span>
+
+        <span class="cov8" title="1">glog.Info("Article exist completed : ", data)</span>
+}
+
+type consumeArticleDataMessage struct {
+        Type     string `json:"type" example:"article-exist"`
+        Queue    string `json:"queue" example:""`
+        Exchange string `json:"exchange" example:""`
+        Message  *cart.ValidationEvent
+}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package consume
+
+import (
+        "encoding/json"
+
+        "github.com/golang/glog"
+        "github.com/nmarsollier/cartgo/security"
+        "github.com/nmarsollier/cartgo/tools/env"
+        "github.com/streadway/amqp"
+)
+
+//        @Summary                Mensage Rabbit
+//        @Description        Escucha de mensajes logout desde auth.
+//        @Tags                        Rabbit
+//        @Accept                        json
+//        @Produce                json
+//        @Param                        body        body        logoutMessage        true        "Estructura general del mensage"
+//        @Router                        /rabbit/logout [get]
+//
+// Escucha de mensajes logout desde auth.
+func consumeLogout() error <span class="cov0" title="0">{
+        conn, err := amqp.Dial(env.Get().RabbitURL)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+        <span class="cov0" title="0">defer conn.Close()
+
+        chn, err := conn.Channel()
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+        <span class="cov0" title="0">defer chn.Close()
+
+        err = chn.ExchangeDeclare(
+                "auth",   // name
+                "fanout", // type
+                false,    // durable
+                false,    // auto-deleted
+                false,    // internal
+                false,    // no-wait
+                nil,      // arguments
+        )
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+
+        <span class="cov0" title="0">queue, err := chn.QueueDeclare(
+                "",    // name
+                false, // durable
+                false, // delete when unused
+                false, // exclusive
+                false, // no-wait
+                nil,   // arguments
+        )
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+
+        <span class="cov0" title="0">err = chn.QueueBind(
+                queue.Name, // queue name
+                "",         // routing key
+                "auth",     // exchange
+                false,
+                nil)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+
+        <span class="cov0" title="0">mgs, err := chn.Consume(
+                queue.Name, // queue
+                "",         // consumer
+                true,       // auto-ack
+                false,      // exclusive
+                false,      // no-local
+                false,      // no-wait
+                nil,        // args
+        )
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+
+        <span class="cov0" title="0">glog.Info("RabbitMQ listenLogout conectado")
+
+        go func() </span><span class="cov0" title="0">{
+                for d := range mgs </span><span class="cov0" title="0">{
+                        newMessage := &amp;logoutMessage{}
+                        body := d.Body
+                        glog.Info(string(body))
+
+                        err = json.Unmarshal(body, newMessage)
+                        if err == nil </span><span class="cov0" title="0">{
+                                if newMessage.Type == "logout" </span><span class="cov0" title="0">{
+                                        security.Invalidate(newMessage.Message)
+                                }</span>
+                        } else<span class="cov0" title="0"> {
+                                glog.Error(err)
+                        }</span>
+                }
+        }()
+
+        <span class="cov0" title="0">glog.Info("Closed connection: ", &lt;-conn.NotifyClose(make(chan *amqp.Error)))
+
+        return nil</span>
+}
+
+type logoutMessage struct {
+        Type    string `json:"type" example:"logout"`
+        Message string `json:"message" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg"`
+}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package consume
+
+import (
+        "encoding/json"
+        "log"
+
+        "github.com/golang/glog"
+        "github.com/nmarsollier/cartgo/cart"
+        "github.com/nmarsollier/cartgo/tools/env"
+        "github.com/streadway/amqp"
+)
+
+//        @Summary                Mensage Rabbit order/order-placed
+//        @Description        Cuando se recibe order-placed se actualiza el order id del carrito. No se respode a este evento.
+//        @Tags                        Rabbit
+//        @Accept                        json
+//        @Produce                json
+//        @Param                        type        body        consumeOrderPlacedMessage        true        "Message para Type = order-placed"
+//        @Router                        /rabbit/order-placed [get]
+//
+// Consume Order Placed
+func consumeOrderPlaced() error <span class="cov0" title="0">{
+        conn, err := amqp.Dial(env.Get().RabbitURL)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+        <span class="cov0" title="0">defer conn.Close()
+
+        chn, err := conn.Channel()
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+        <span class="cov0" title="0">defer chn.Close()
+
+        err = chn.ExchangeDeclare(
+                "order_placed", // name
+                "fanout",       // type
+                false,          // durable
+                false,          // auto-deleted
+                false,          // internal
+                false,          // no-wait
+                nil,            // arguments
+        )
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+
+        <span class="cov0" title="0">queue, err := chn.QueueDeclare(
+                "cart_order_placed", // name
+                false,               // durable
+                false,               // delete when unused
+                false,               // exclusive
+                false,               // no-wait
+                nil,                 // arguments
+        )
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+
+        <span class="cov0" title="0">err = chn.QueueBind(
+                queue.Name,     // queue name
+                "",             // routing key
+                "order_placed", // exchange
+                false,
+                nil)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+
+        <span class="cov0" title="0">mgs, err := chn.Consume(
+                queue.Name, // queue
+                "",         // consumer
+                true,       // auto-ack
+                false,      // exclusive
+                false,      // no-local
+                false,      // no-wait
+                nil,        // args
+        )
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+
+        <span class="cov0" title="0">glog.Info("RabbitMQ consumeOrderPlaced conectado")
+
+        go func() </span><span class="cov0" title="0">{
+                for d := range mgs </span><span class="cov0" title="0">{
+                        newMessage := &amp;consumeOrderPlacedMessage{}
+                        body := d.Body
+
+                        glog.Info("Rabbit Consume: ", string(body))
+                        err = json.Unmarshal(body, newMessage)
+                        if err == nil </span><span class="cov0" title="0">{
+                                switch newMessage.Type </span>{
+                                case "order-placed":<span class="cov0" title="0">
+                                        processOrderPlaced(newMessage)</span>
+                                }
+                        } else<span class="cov0" title="0"> {
+                                glog.Error(err)
+                        }</span>
+                }
+        }()
+
+        <span class="cov0" title="0">glog.Info("Closed connection: ", &lt;-conn.NotifyClose(make(chan *amqp.Error)))
+
+        return nil</span>
+}
+
+func processOrderPlaced(newMessage *consumeOrderPlacedMessage, ctx ...interface{}) <span class="cov8" title="1">{
+        data := newMessage.Message
+
+        err := cart.ProcessOrderPlaced(data, ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return
+        }</span>
+
+        <span class="cov8" title="1">log.Print("Order Placed processed : " + data.CartId)</span>
+}
+
+type consumeOrderPlacedMessage struct {
+        Type     string `json:"type" example:"order-placed" `
+        Queue    string `json:"queue" example:"" `
+        Exchange string `json:"exchange" example:"" `
+        Message  *cart.OrderPlacedEvent
+}
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">package consume
+
+import (
+        "time"
+
+        "github.com/golang/glog"
+)
+
+func Init() <span class="cov0" title="0">{
+        go func() </span><span class="cov0" title="0">{
+                for </span><span class="cov0" title="0">{
+                        err := consumeLogout()
+                        if err != nil </span><span class="cov0" title="0">{
+                                glog.Error(err)
+                        }</span>
+                        <span class="cov0" title="0">glog.Info("RabbitMQ listenLogout conectando en 5 segundos.")
+                        time.Sleep(5 * time.Second)</span>
+                }
+        }()
+
+        <span class="cov0" title="0">go func() </span><span class="cov0" title="0">{
+                for </span><span class="cov0" title="0">{
+                        err := consumeOrders()
+                        if err != nil </span><span class="cov0" title="0">{
+                                glog.Error(err)
+                        }</span>
+                        <span class="cov0" title="0">glog.Info("RabbitMQ consumeCart conectando en 5 segundos.")
+                        time.Sleep(5 * time.Second)</span>
+                }
+        }()
+
+        <span class="cov0" title="0">go func() </span><span class="cov0" title="0">{
+                for </span><span class="cov0" title="0">{
+                        err := consumeOrderPlaced()
+                        if err != nil </span><span class="cov0" title="0">{
+                                glog.Error(err)
+                        }</span>
+                        <span class="cov0" title="0">glog.Info("RabbitMQ consumeOrderPlaced conectando en 5 segundos.")
+                        time.Sleep(5 * time.Second)</span>
+                }
+        }()
+
+}
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package emit
+
+import (
+        "errors"
+
+        "github.com/golang/glog"
+        "github.com/nmarsollier/cartgo/tools/env"
+        "github.com/streadway/amqp"
+)
+
+// ErrChannelNotInitialized Rabbit channel could not be initialized
+var ErrChannelNotInitialized = errors.New("channel not initialized")
+
+func getChannel(ctx ...interface{}) (RabbitChannel, error) <span class="cov8" title="1">{
+        for _, o := range ctx </span><span class="cov8" title="1">{
+                if ti, ok := o.(RabbitChannel); ok </span><span class="cov8" title="1">{
+                        return ti, nil
+                }</span>
+        }
+
+        <span class="cov8" title="1">conn, err := amqp.Dial(env.Get().RabbitURL)
+        if err != nil </span><span class="cov8" title="1">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">channel, err := conn.Channel()
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return rabbitChannel{ch: channel}, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">package emit
+
+import "github.com/streadway/amqp"
+
+type RabbitChannel interface {
+        ExchangeDeclare(name string, chType string) error
+        Publish(exchange string, routingKey string, body []byte) error
+}
+
+type rabbitChannel struct {
+        ch *amqp.Channel
+}
+
+func (c rabbitChannel) ExchangeDeclare(
+        name string,
+        chType string,
+) error <span class="cov0" title="0">{
+        return c.ch.ExchangeDeclare(
+                name,   // name
+                chType, // type
+                false,  // durable
+                false,  // auto-deleted
+                false,  // internal
+                false,  // no-wait
+                nil,    // arguments
+        )
+}</span>
+func (c rabbitChannel) Publish(
+        exchange string,
+        routingKey string,
+        body []byte,
+) error <span class="cov0" title="0">{
+        return c.ch.Publish(
+                exchange,   // exchange
+                routingKey, // routing key
+                false,      // mandatory
+                false,      // immediate
+                amqp.Publishing{
+                        Body: body,
+                })
+}</span>
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+// Source: ./rabbit/emit/rabbit_channel.go
+
+// Package emit is a generated GoMock package.
+package emit
+
+import (
+        reflect "reflect"
+
+        gomock "github.com/golang/mock/gomock"
+)
+
+// MockRabbitChannel is a mock of RabbitChannel interface.
+type MockRabbitChannel struct {
+        ctrl     *gomock.Controller
+        recorder *MockRabbitChannelMockRecorder
+}
+
+// MockRabbitChannelMockRecorder is the mock recorder for MockRabbitChannel.
+type MockRabbitChannelMockRecorder struct {
+        mock *MockRabbitChannel
+}
+
+// NewMockRabbitChannel creates a new mock instance.
+func NewMockRabbitChannel(ctrl *gomock.Controller) *MockRabbitChannel <span class="cov8" title="1">{
+        mock := &amp;MockRabbitChannel{ctrl: ctrl}
+        mock.recorder = &amp;MockRabbitChannelMockRecorder{mock}
+        return mock
+}</span>
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockRabbitChannel) EXPECT() *MockRabbitChannelMockRecorder <span class="cov8" title="1">{
+        return m.recorder
+}</span>
+
+// ExchangeDeclare mocks base method.
+func (m *MockRabbitChannel) ExchangeDeclare(name, chType string) error <span class="cov8" title="1">{
+        m.ctrl.T.Helper()
+        ret := m.ctrl.Call(m, "ExchangeDeclare", name, chType)
+        ret0, _ := ret[0].(error)
+        return ret0
+}</span>
+
+// ExchangeDeclare indicates an expected call of ExchangeDeclare.
+func (mr *MockRabbitChannelMockRecorder) ExchangeDeclare(name, chType interface{}) *gomock.Call <span class="cov8" title="1">{
+        mr.mock.ctrl.T.Helper()
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ExchangeDeclare", reflect.TypeOf((*MockRabbitChannel)(nil).ExchangeDeclare), name, chType)
+}</span>
+
+// Publish mocks base method.
+func (m *MockRabbitChannel) Publish(exchange, routingKey string, body []byte) error <span class="cov8" title="1">{
+        m.ctrl.T.Helper()
+        ret := m.ctrl.Call(m, "Publish", exchange, routingKey, body)
+        ret0, _ := ret[0].(error)
+        return ret0
+}</span>
+
+// Publish indicates an expected call of Publish.
+func (mr *MockRabbitChannelMockRecorder) Publish(exchange, routingKey, body interface{}) *gomock.Call <span class="cov8" title="1">{
+        mr.mock.ctrl.T.Helper()
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Publish", reflect.TypeOf((*MockRabbitChannel)(nil).Publish), exchange, routingKey, body)
+}</span>
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">package emit
+
+import (
+        "encoding/json"
+
+        "github.com/golang/glog"
+)
+
+//        @Summary                Emite Validar Artículos a Cart cart/article-exist
+//        @Description        Solicitamos las validaciones ar articulos a catalogo. Queue y Exchange es donde nos reponde.
+//        @Tags                        Rabbit
+//        @Accept                        json
+//        @Produce                json
+//        @Param                        body        body        SendValidationMessage        true        "Mensage de validacion"
+//        @Router                        /rabbit/cart/article-exist [put]
+//
+// Emite Validar Artículos a Cart
+func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error <span class="cov8" title="1">{
+
+        send := SendValidationMessage{
+                Type:     "article-exist",
+                Exchange: "cart",
+                Queue:    "cart",
+                Message:  data,
+        }
+
+        chn, err := getChannel(ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                glog.Error(err)
+                chn = nil
+                return err
+        }</span>
+
+        <span class="cov0" title="0">err = chn.ExchangeDeclare(
+                "catalog", // name
+                "direct",  // type
+        )
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                chn = nil
+                return err
+        }</span>
+
+        <span class="cov0" title="0">body, err := json.Marshal(send)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+
+        <span class="cov0" title="0">err = chn.Publish(
+                "catalog", // exchange
+                "catalog", // routing key
+                body,
+        )
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                chn = nil
+                return err
+        }</span>
+
+        <span class="cov0" title="0">glog.Info("Rabbit article validation enviado ", string(body))
+
+        return nil</span>
+}
+
+type ArticleValidationData struct {
+        ReferenceId string `json:"referenceId" example:"UserId"`
+
+        ArticleId string `json:"articleId" example:"ArticleId"`
+}
+
+type SendValidationMessage struct {
+        Type     string                `json:"type" example:"article-exist"`
+        Exchange string                `json:"exchange" example:"cart"`
+        Queue    string                `json:"queue" example:"cart"`
+        Message  ArticleValidationData `json:"message"`
+}
+</pre>
+		
+		<pre class="file" id="file14" style="display: none">package emit
+
+import (
+        "encoding/json"
+
+        "github.com/golang/glog"
+        "github.com/nmarsollier/cartgo/cart"
+)
+
+//        @Summary                Emite Placed Order desde Cart
+//        @Description        Cuando se hace checkout enviamos un comando a orders para que inicie el proceso de la orden.
+//        @Tags                        Rabbit
+//        @Accept                        json
+//        @Produce                json
+//        @Param                        body        body        SendPlacedMessage        true        "Place order"
+//        @Router                        /rabbit/cart/place-order [put]
+//
+// Emite Placed Order desde Cart
+func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error <span class="cov8" title="1">{
+        articles := []PlaceArticlesData{}
+        for _, a := range cart.Articles </span><span class="cov8" title="1">{
+                articles = append(articles, PlaceArticlesData{
+                        a.ArticleId,
+                        a.Quantity,
+                })
+        }</span>
+
+        <span class="cov8" title="1">data := PlacedData{
+                CartId:   cart.ID.Hex(),
+                UserId:   cart.UserId,
+                Articles: articles,
+        }
+
+        send := SendPlacedMessage{
+                Type:     "place-order",
+                Exchange: "cart",
+                Queue:    "cart",
+                Message:  data,
+        }
+
+        chn, err := getChannel(ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                chn = nil
+                return err
+        }</span>
+
+        <span class="cov8" title="1">err = chn.ExchangeDeclare(
+                "order",  // name
+                "direct", // type
+        )
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                chn = nil
+                return err
+        }</span>
+
+        <span class="cov8" title="1">body, err := json.Marshal(send)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return err
+        }</span>
+
+        <span class="cov8" title="1">err = chn.Publish(
+                "order", // exchange
+                "order", // routing key
+                body,
+        )
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                chn = nil
+                return err
+        }</span>
+
+        <span class="cov8" title="1">glog.Info("Rabbit place order enviado ", string(body))
+        return nil</span>
+}
+
+type PlacedData struct {
+        CartId   string              `json:"cartId" example:"CartId"`
+        UserId   string              `json:"userId" example:"UserId"`
+        Articles []PlaceArticlesData `json:"articles"`
+}
+
+type PlaceArticlesData struct {
+        Id       string `json:"id" example:"ArticleId"`
+        Quantity int    `json:"quantity" example:"10"`
+}
+
+type SendPlacedMessage struct {
+        Type     string     `json:"type" example:"place-order"`
+        Exchange string     `json:"exchange" example:"order"`
+        Queue    string     `json:"queue" example:"order"`
+        Message  PlacedData `json:"message" example:"order"`
+}
+</pre>
+		
+		<pre class="file" id="file15" style="display: none">package emit
+
+import (
+        "github.com/golang/mock/gomock"
+)
+
+func DefaultRabbitChannel(ctrl *gomock.Controller, times int) *MockRabbitChannel <span class="cov8" title="1">{
+        channel := NewMockRabbitChannel(ctrl)
+        channel.EXPECT().ExchangeDeclare(gomock.Any(), gomock.Any()).Return(nil).Times(times)
+        return channel
+}</span>
+</pre>
+		
+		<pre class="file" id="file16" style="display: none">package rest
+
+import (
+        "github.com/gin-gonic/gin"
+        "github.com/nmarsollier/cartgo/cart"
+        "github.com/nmarsollier/cartgo/rest/server"
+        "github.com/nmarsollier/cartgo/security"
+)
+
+//        @Summary                Eliminar Articulo
+//        @Description        Elimina un articulo del carrito actual.
+//        @Tags                        Cart
+//        @Accept                        json
+//        @Produce                json
+//        @Param                        articleId                path        string        true        "ID de articlo"
+//        @Param                        Authorization        header        string        true        "bearer {token}"
+//        @Success                200                                "No Content"
+//        @Failure                400                                {object}        errs.ValidationErr        "Bad Request"
+//        @Failure                401                                {object}        server.ErrorData        "Unauthorized"
+//        @Failure                404                                {object}        server.ErrorData        "Not Found"
+//        @Failure                500                                {object}        server.ErrorData        "Internal Server Error"
+//        @Router                        /v1/cart/article/:articleId [delete]
+//
+// Elimina un articulo del carrito actual.
+func initDeleteCart() <span class="cov8" title="1">{
+        server.Router().DELETE(
+                "/v1/cart/article/:articleId",
+                server.ValidateAuthentication,
+                deleteArticle,
+        )
+}</span>
+
+func deleteArticle(c *gin.Context) <span class="cov8" title="1">{
+        user := c.MustGet("user").(security.User)
+        articleId := c.Param("articleId")
+
+        ctx := server.TestCtx(c)
+        _, err := cart.RemoveArticle(user.ID, articleId, ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                server.AbortWithError(c, err)
+                return
+        }</span>
+
+        <span class="cov8" title="1">c.JSON(200, "")</span>
+}
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">package rest
+
+import (
+        "github.com/gin-gonic/gin"
+        "github.com/nmarsollier/cartgo/rest/server"
+        "github.com/nmarsollier/cartgo/security"
+        "github.com/nmarsollier/cartgo/service"
+)
+
+//        @Summary                Obtener carrito.
+//        @Description        Obtiene el carrito actual.
+//        @Tags                        Cart
+//        @Accept                        json
+//        @Produce                json
+//        @Param                        Authorization        header                string                                true        "bearer {token}"
+//        @Success                200                                {object}        cart.Cart                        "Cart"
+//        @Failure                400                                {object}        errs.ValidationErr        "Bad Request"
+//        @Failure                401                                {object}        server.ErrorData        "Unauthorized"
+//        @Failure                404                                {object}        server.ErrorData        "Not Found"
+//        @Failure                500                                {object}        server.ErrorData        "Internal Server Error"
+//        @Router                        /v1/cart [get]
+//
+// Obtiene el carrito actual del usuario.
+func initGetCart() <span class="cov8" title="1">{
+        server.Router().GET(
+                "/v1/cart",
+                server.ValidateAuthentication,
+                currentCart,
+        )
+}</span>
+
+func currentCart(c *gin.Context) <span class="cov8" title="1">{
+        user := c.MustGet("user").(security.User)
+
+        ctx := server.TestCtx(c)
+        cart, err := service.GetCurrentCart(user.ID, ctx...)
+
+        if err != nil </span><span class="cov8" title="1">{
+                server.AbortWithError(c, err)
+                return
+        }</span>
+
+        <span class="cov8" title="1">c.JSON(200, cart)</span>
+}
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">package rest
+
+import (
+        "github.com/gin-gonic/gin"
+        "github.com/nmarsollier/cartgo/cart"
+        "github.com/nmarsollier/cartgo/rest/server"
+        "github.com/nmarsollier/cartgo/security"
+        "github.com/nmarsollier/cartgo/service"
+)
+
+//        @Summary                Validar Carrito
+//        @Description        Valida el carrito para checkout
+//        @Tags                        Cart
+//        @Accept                        json
+//        @Produce                json
+//        @Param                        Authorization        header        string        true        "bearer {token}"
+//        @Success                200                                "No Content"
+//        @Failure                400                                {object}        errs.ValidationErr        "Bad Request"
+//        @Failure                401                                {object}        server.ErrorData        "Unauthorized"
+//        @Failure                404                                {object}        server.ErrorData        "Not Found"
+//        @Failure                500                                {object}        server.ErrorData        "Internal Server Error"
+//        @Router                        /v1/cart/validate [get]
+//
+// Valida el carrito para checkout.
+func initGetCartValidate() <span class="cov8" title="1">{
+        server.Router().GET(
+                "/v1/cart/validate",
+                server.ValidateAuthentication,
+                validate,
+        )
+}</span>
+
+func validate(c *gin.Context) <span class="cov8" title="1">{
+        user := c.MustGet("user").(security.User)
+        token := c.MustGet("tokenString").(string)
+
+        ctx := server.TestCtx(c)
+        currentCart, err := cart.CurrentCart(user.ID, ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                server.AbortWithError(c, err)
+                return
+        }</span>
+
+        <span class="cov8" title="1">err = service.ValidateCheckout(currentCart, token, ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                server.AbortWithError(c, err)
+                return
+        }</span>
+
+        <span class="cov8" title="1">c.JSON(200, "")</span>
+}
+</pre>
+		
+		<pre class="file" id="file19" style="display: none">package rest
+
+import (
+        "github.com/gin-gonic/gin"
+        "github.com/nmarsollier/cartgo/cart"
+        "github.com/nmarsollier/cartgo/rest/server"
+        "github.com/nmarsollier/cartgo/security"
+        "github.com/nmarsollier/cartgo/service"
+)
+
+//        @Summary                Agregar Articulo
+//        @Description        Agrega un articulo del carrito actual.
+//        @Tags                        Cart
+//        @Accept                        json
+//        @Produce                json
+//        @Param                        articleId                path                string                                true        "ID de articlo"
+//        @Param                        Authorization        header                string                                true        "bearer {token}"
+//        @Success                200                                {object}        cart.Cart                        "Cart"
+//        @Param                        body                        body                cart.AddArticleData        true        "Articulo a Agregar"
+//        @Failure                400                                {object}        errs.ValidationErr        "Bad Request"
+//        @Failure                401                                {object}        server.ErrorData        "Unauthorized"
+//        @Failure                404                                {object}        server.ErrorData        "Not Found"
+//        @Failure                500                                {object}        server.ErrorData        "Internal Server Error"
+//        @Router                        /v1/cart/article [post]
+//
+// Agrega un articulo del carrito actual.
+func initPostCartArticle() <span class="cov8" title="1">{
+        server.Router().POST(
+                "/v1/cart/article",
+                server.ValidateAuthentication,
+                addArticle,
+        )
+}</span>
+
+func addArticle(c *gin.Context) <span class="cov8" title="1">{
+        user := c.MustGet("user").(security.User)
+        body := cart.AddArticleData{}
+        if err := c.ShouldBindJSON(&amp;body); err != nil </span><span class="cov0" title="0">{
+                server.AbortWithError(c, err)
+                return
+        }</span>
+
+        <span class="cov8" title="1">ctx := server.TestCtx(c)
+        _, err := service.AddArticle(user.ID, body, ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                server.AbortWithError(c, err)
+                return
+        }</span>
+
+        <span class="cov8" title="1">c.JSON(200, "")</span>
+}
+</pre>
+		
+		<pre class="file" id="file20" style="display: none">package rest
+
+import (
+        "github.com/gin-gonic/gin"
+        "github.com/nmarsollier/cartgo/cart"
+        "github.com/nmarsollier/cartgo/rest/server"
+        "github.com/nmarsollier/cartgo/security"
+        "github.com/nmarsollier/cartgo/service"
+)
+
+//        @Summary                Agregar 1 Articulo
+//        @Description        Eliminar 1 al articulo actual.
+//        @Tags                        Cart
+//        @Accept                        json
+//        @Produce                json
+//        @Param                        articleId                path                string                                true        "ID de articlo"
+//        @Param                        Authorization        header                string                                true        "bearer {token}"
+//        @Success                200                                {object}        cart.Cart                        "Cart"
+//        @Failure                400                                {object}        errs.ValidationErr        "Bad Request"
+//        @Failure                401                                {object}        server.ErrorData        "Unauthorized"
+//        @Failure                404                                {object}        server.ErrorData        "Not Found"
+//        @Failure                500                                {object}        server.ErrorData        "Internal Server Error"
+//        @Router                        /v1/cart/article/:articleId/decrement [post]
+//
+// Eliminar 1 al articulo actual.
+func initPostCartArticleDecrement() <span class="cov8" title="1">{
+        server.Router().POST(
+                "/v1/cart/article/:articleId/decrement",
+                server.ValidateAuthentication,
+                decrementArticle,
+        )
+}</span>
+
+func decrementArticle(c *gin.Context) <span class="cov8" title="1">{
+        user := c.MustGet("user").(security.User)
+        articleId := c.Param("articleId")
+
+        article := cart.AddArticleData{
+                ArticleId: articleId,
+                Quantity:  -1,
+        }
+
+        ctx := server.TestCtx(c)
+        _, err := service.AddArticle(user.ID, article, ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                server.AbortWithError(c, err)
+                return
+        }</span>
+
+        <span class="cov8" title="1">c.JSON(200, "")</span>
+}
+</pre>
+		
+		<pre class="file" id="file21" style="display: none">package rest
+
+import (
+        "github.com/gin-gonic/gin"
+        "github.com/nmarsollier/cartgo/cart"
+        "github.com/nmarsollier/cartgo/rest/server"
+        "github.com/nmarsollier/cartgo/security"
+        "github.com/nmarsollier/cartgo/service"
+)
+
+//        @Summary                Agregar 1 Articulo
+//        @Description        Agregar 1 al articulo actual.
+//        @Tags                        Cart
+//        @Accept                        json
+//        @Produce                json
+//        @Param                        articleId                path                string                                true        "ID de articlo"
+//        @Param                        Authorization        header                string                                true        "bearer {token}"
+//        @Success                200                                {object}        cart.Cart                        "Cart"
+//        @Failure                400                                {object}        errs.ValidationErr        "Bad Request"
+//        @Failure                401                                {object}        server.ErrorData        "Unauthorized"
+//        @Failure                404                                {object}        server.ErrorData        "Not Found"
+//        @Failure                500                                {object}        server.ErrorData        "Internal Server Error"
+//        @Router                        /v1/cart/article/:articleId/increment [post]
+//
+// Agregar 1 al articulo actual.
+func initPostCartArticleIncrement() <span class="cov8" title="1">{
+        server.Router().POST(
+                "/v1/cart/article/:articleId/increment",
+                server.ValidateAuthentication,
+                incrementArticle,
+        )
+}</span>
+
+func incrementArticle(c *gin.Context) <span class="cov8" title="1">{
+
+        user := c.MustGet("user").(security.User)
+        articleId := c.Param("articleId")
+
+        article := cart.AddArticleData{
+                ArticleId: articleId,
+                Quantity:  1,
+        }
+
+        ctx := server.TestCtx(c)
+        _, err := service.AddArticle(user.ID, article, ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                server.AbortWithError(c, err)
+                return
+        }</span>
+
+        <span class="cov8" title="1">c.JSON(200, "")</span>
+}
+</pre>
+		
+		<pre class="file" id="file22" style="display: none">package rest
+
+import (
+        "github.com/gin-gonic/gin"
+        "github.com/nmarsollier/cartgo/rest/server"
+        "github.com/nmarsollier/cartgo/security"
+        "github.com/nmarsollier/cartgo/service"
+)
+
+//        @Summary                Checkout Articulo
+//        @Description        Hace checkout del carrito actual
+//        @Tags                        Cart
+//        @Accept                        json
+//        @Produce                json
+//        @Param                        articleId                path        string        true        "ID de articlo"
+//        @Param                        Authorization        header        string        true        "bearer {token}"
+//        @Success                200                                "No Content"
+//        @Failure                400                                {object}        errs.ValidationErr        "Bad Request"
+//        @Failure                401                                {object}        server.ErrorData        "Unauthorized"
+//        @Failure                404                                {object}        server.ErrorData        "Not Found"
+//        @Failure                500                                {object}        server.ErrorData        "Internal Server Error"
+//        @Router                        /v1/cart/checkouts [post]
+//
+// Hace checkout del carrito actual.
+func initPostCartCheckout() <span class="cov8" title="1">{
+        server.Router().POST(
+                "/v1/cart/checkout",
+                server.ValidateAuthentication,
+                checkout,
+        )
+}</span>
+
+func checkout(c *gin.Context) <span class="cov8" title="1">{
+        user := c.MustGet("user").(security.User)
+        token := c.MustGet("tokenString").(string)
+
+        ctx := server.TestCtx(c)
+        _, err := service.Checkout(user.ID, token, ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                server.AbortWithError(c, err)
+                return
+        }</span>
+
+        <span class="cov8" title="1">c.JSON(200, "")</span>
+}
+</pre>
+		
+		<pre class="file" id="file23" style="display: none">package rest
+
+import (
+        "fmt"
+
+        "github.com/nmarsollier/cartgo/rest/server"
+        "github.com/nmarsollier/cartgo/tools/env"
+)
+
+// Start this server
+func Start() <span class="cov0" title="0">{
+        InitRoutes()
+        server.Router().Run(fmt.Sprintf(":%d", env.Get().Port))
+}</span>
+
+func InitRoutes() <span class="cov8" title="1">{
+        initDeleteCart()
+        initGetCartValidate()
+        initGetCart()
+        initPostCartArticleDecrement()
+        initPostCartArticleIncrement()
+        initPostCartArticle()
+        initPostCartCheckout()
+}</span>
+</pre>
+		
+		<pre class="file" id="file24" style="display: none">package server
+
+import (
+        "strings"
+
+        "github.com/gin-gonic/gin"
+        "github.com/golang/glog"
+        "github.com/nmarsollier/cartgo/security"
+        "github.com/nmarsollier/cartgo/tools/errs"
+)
+
+/**
+ * @apiDefine AuthHeader
+ *
+ * @apiExample {String} Header Autorización
+ *    Authorization=bearer {token}
+ *
+ * @apiErrorExample 401 Unauthorized
+ *    HTTP/1.1 401 Unauthorized
+ */
+
+// ValidateAuthentication validate gets and check variable body to create new variable
+// puts model.Variable in context as body if everything is correct
+func ValidateAuthentication(c *gin.Context) <span class="cov8" title="1">{
+        if err := validateToken(c); err != nil </span><span class="cov8" title="1">{
+                c.Error(err)
+                c.Abort()
+                return
+        }</span>
+}
+
+// get token from Authorization header
+func HeaderToken(c *gin.Context) (string, error) <span class="cov8" title="1">{
+        tokenString := c.GetHeader("Authorization")
+        if strings.Index(tokenString, "bearer ") != 0 </span><span class="cov0" title="0">{
+                return "", errs.Unauthorized
+        }</span>
+        <span class="cov8" title="1">return tokenString[7:], nil</span>
+}
+
+func validateToken(c *gin.Context) error <span class="cov8" title="1">{
+        tokenString, err := HeaderToken(c)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return errs.Unauthorized
+        }</span>
+
+        <span class="cov8" title="1">ctx := TestCtx(c)
+        user, err := security.Validate(tokenString, ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                glog.Error(err)
+                return errs.Unauthorized
+        }</span>
+
+        <span class="cov8" title="1">c.Set("tokenString", tokenString)
+        c.Set("user", *user)
+
+        return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file25" style="display: none">package server
+
+import (
+        "time"
+
+        "github.com/gin-contrib/gzip"
+        "github.com/gin-gonic/gin"
+        cors "github.com/itsjamie/gin-cors"
+        _ "github.com/nmarsollier/cartgo/docs"
+        swaggerFiles "github.com/swaggo/files"
+        ginSwagger "github.com/swaggo/gin-swagger"
+)
+
+var server *gin.Engine = nil
+
+func Router() *gin.Engine <span class="cov8" title="1">{
+        if server == nil </span><span class="cov8" title="1">{
+
+                server = gin.Default()
+
+                server.Use(gzip.Gzip(gzip.DefaultCompression))
+
+                server.Use(cors.Middleware(cors.Config{
+                        Origins:         "*",
+                        Methods:         "GET, PUT, POST, DELETE",
+                        RequestHeaders:  "Origin, Authorization, Content-Type",
+                        ExposedHeaders:  "",
+                        MaxAge:          50 * time.Second,
+                        Credentials:     false,
+                        ValidateHeaders: false,
+                }))
+
+                server.Use(ErrorHandler)
+
+                server.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+        }</span>
+
+        <span class="cov8" title="1">return server</span>
+}
+</pre>
+		
+		<pre class="file" id="file26" style="display: none">package server
+
+import (
+        "strings"
+
+        "github.com/gin-gonic/gin"
+        "github.com/go-playground/validator/v10"
+        "github.com/nmarsollier/cartgo/tools/errs"
+)
+
+// ErrorHandler a middleware to handle errors
+func ErrorHandler(c *gin.Context) <span class="cov8" title="1">{
+        c.Next()
+
+        handleErrorIfNeeded(c)
+}</span>
+
+func AbortWithError(c *gin.Context, err error) <span class="cov8" title="1">{
+        c.Error(err)
+        c.Abort()
+}</span>
+
+func handleErrorIfNeeded(c *gin.Context) <span class="cov8" title="1">{
+        lastErr := c.Errors.Last()
+        if lastErr == nil </span><span class="cov8" title="1">{
+                return
+        }</span>
+
+        <span class="cov8" title="1">err := lastErr.Err
+        if err == nil </span><span class="cov0" title="0">{
+                return
+        }</span>
+
+        <span class="cov8" title="1">handleError(c, err)</span>
+}
+
+// handleError maneja cualquier error para serializarlo como JSON al cliente
+func handleError(c *gin.Context, err interface{}) <span class="cov8" title="1">{
+        // Compruebo tipos de errores conocidos
+        switch value := err.(type) </span>{
+        case errs.RestError:<span class="cov8" title="1">
+                // Son validaciones hechas con NewCustom
+                handleCustom(c, value)</span>
+        case errs.Validation:<span class="cov8" title="1">
+                // Son validaciones hechas con NewValidation
+                c.JSON(400, err)</span>
+        case validator.ValidationErrors:<span class="cov0" title="0">
+                // Son las validaciones de validator usadas en validaciones de estructuras
+                handleValidationError(c, value)</span>
+        case error:<span class="cov0" title="0">
+                // Otros errores
+                c.JSON(500, ErrorData{
+                        Error: value.Error(),
+                })</span>
+        default:<span class="cov0" title="0">
+                // No se sabe que es, devolvemos internal
+                handleCustom(c, errs.Internal)</span>
+        }
+}
+
+/**
+ * @apiDefine ParamValidationErrors
+ *
+ * @apiErrorExample 400 Bad Request
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *        "messages" : [
+ *          {
+ *            "path" : "{Nombre de la propiedad}",
+ *            "message" : "{Motivo del error}"
+ *          },
+ *          ...
+ *       ]
+ *     }
+ */
+func handleValidationError(c *gin.Context, validationErrors validator.ValidationErrors) <span class="cov0" title="0">{
+        err := errs.NewValidation()
+
+        for _, e := range validationErrors </span><span class="cov0" title="0">{
+                err.Add(strings.ToLower(e.Field()), e.Tag())
+        }</span>
+
+        <span class="cov0" title="0">c.JSON(400, err)</span>
+}
+
+/**
+ * @apiDefine OtherErrors
+ *
+ * @apiErrorExample 500 Server Error
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *        "error" : "Not Found"
+ *     }
+ *
+ */
+func handleCustom(c *gin.Context, err errs.RestError) <span class="cov8" title="1">{
+        c.JSON(err.Status(), err)
+}</span>
+
+type ErrorData struct {
+        Error string `json:"error"`
+}
+</pre>
+		
+		<pre class="file" id="file27" style="display: none">package server
+
+import (
+        "bytes"
+        "encoding/json"
+        "net/http"
+        "net/http/httptest"
+        "testing"
+
+        "github.com/gin-gonic/gin"
+
+        "gopkg.in/go-playground/assert.v1"
+)
+
+// Obtiene Router server con el contexto de testing adecuado
+// mockeando interfaces a serivcios externos
+func TestRouter(ctx ...interface{}) *gin.Engine <span class="cov8" title="1">{
+        server = nil
+        Router()
+        if len(ctx) &gt; 0 </span><span class="cov8" title="1">{
+                server.Use(func(c *gin.Context) </span><span class="cov8" title="1">{
+                        c.Set("mock_ctx", ctx)
+                        c.Next()
+                }</span>)
+        }
+        <span class="cov8" title="1">return server</span>
+}
+
+// Obtiene el contexto de interfaces mockeadas a serivcios externos
+// En prod este contexto esta vacio.
+func TestCtx(c *gin.Context) []interface{} <span class="cov8" title="1">{
+        var ctx []interface{}
+        if mocks, ok := c.Get("mock_ctx"); ok </span><span class="cov8" title="1">{
+                ctx = mocks.([]interface{})
+        }</span>
+        <span class="cov8" title="1">return ctx</span>
+}
+
+// Requests Test functions
+
+func TestGetRequest(url string, tokenString string) (*http.Request, *httptest.ResponseRecorder) <span class="cov8" title="1">{
+        req, _ := http.NewRequest("GET", url, bytes.NewBuffer([]byte{}))
+        if len(tokenString) &gt; 0 </span><span class="cov8" title="1">{
+                req.Header.Add("Authorization", "bearer "+tokenString)
+        }</span>
+        <span class="cov8" title="1">w := httptest.NewRecorder()
+        return req, w</span>
+}
+
+func TestDeleteRequest(url string, tokenString string) (*http.Request, *httptest.ResponseRecorder) <span class="cov8" title="1">{
+        req, _ := http.NewRequest("DELETE", url, bytes.NewBuffer([]byte{}))
+        if len(tokenString) &gt; 0 </span><span class="cov8" title="1">{
+                req.Header.Add("Authorization", "bearer "+tokenString)
+        }</span>
+        <span class="cov8" title="1">w := httptest.NewRecorder()
+        return req, w</span>
+}
+
+func TestPostRequest(url string, body interface{}, tokenString string) (*http.Request, *httptest.ResponseRecorder) <span class="cov8" title="1">{
+        jsonBody, _ := json.Marshal(body)
+
+        req, _ := http.NewRequest("POST", url, bytes.NewBuffer(jsonBody))
+        if len(tokenString) &gt; 0 </span><span class="cov8" title="1">{
+                req.Header.Add("Authorization", "bearer "+tokenString)
+        }</span>
+        <span class="cov8" title="1">w := httptest.NewRecorder()
+        return req, w</span>
+}
+
+// Assertion Functions
+func AssertUnauthorized(t *testing.T, w *httptest.ResponseRecorder) <span class="cov8" title="1">{
+        assert.Equal(t, http.StatusUnauthorized, w.Code)
+
+        var result map[string]interface{}
+        json.Unmarshal(w.Body.Bytes(), &amp;result)
+
+        assert.Equal(t, result["error"], "Unauthorized")
+}</span>
+
+func AssertDocumentNotFound(t *testing.T, w *httptest.ResponseRecorder) <span class="cov8" title="1">{
+        assert.Equal(t, http.StatusNotFound, w.Code)
+
+        var result map[string]interface{}
+        json.Unmarshal(w.Body.Bytes(), &amp;result)
+        assert.Equal(t, "Document not found", result["error"])
+}</span>
+
+func AssertInternalServerError(t *testing.T, w *httptest.ResponseRecorder) <span class="cov8" title="1">{
+        assert.Equal(t, http.StatusInternalServerError, w.Code)
+}</span>
+
+func AssertBadRequestError(t *testing.T, w *httptest.ResponseRecorder) <span class="cov8" title="1">{
+        assert.Equal(t, http.StatusBadRequest, w.Code)
+}</span>
+</pre>
+		
+		<pre class="file" id="file28" style="display: none">package security
+
+import (
+        "encoding/json"
+        "net/http"
+
+        "github.com/go-playground/validator/v10"
+        "github.com/golang/glog"
+        "github.com/nmarsollier/cartgo/tools/env"
+        "github.com/nmarsollier/cartgo/tools/errs"
+        "github.com/nmarsollier/cartgo/tools/httpx"
+)
+
+func getRemoteToken(token string, ctx ...interface{}) (*User, error) <span class="cov8" title="1">{
+        // Buscamos el usuario remoto
+        req, err := http.NewRequest("GET", env.Get().SecurityServerURL+"/v1/users/current", nil)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return nil, errs.Unauthorized
+        }</span>
+        <span class="cov8" title="1">req.Header.Add("Authorization", "bearer "+token)
+        resp, err := httpx.Get(ctx...).Do(req)
+        if err != nil || resp.StatusCode != 200 </span><span class="cov8" title="1">{
+                glog.Error(err)
+                return nil, errs.Unauthorized
+        }</span>
+        <span class="cov8" title="1">defer resp.Body.Close()
+
+        user := &amp;User{}
+        err = json.NewDecoder(resp.Body).Decode(user)
+        if err != nil </span><span class="cov8" title="1">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">validate := validator.New()
+        if err := validate.Struct(user); err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">return user, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file29" style="display: none">package security
+
+import (
+        "time"
+
+        "github.com/golang/glog"
+        "github.com/nmarsollier/cartgo/tools/errs"
+        gocache "github.com/patrickmn/go-cache"
+)
+
+var cache = gocache.New(60*time.Minute, 10*time.Minute)
+
+// Validate valida si el token es valido
+func Validate(token string, ctx ...interface{}) (*User, error) <span class="cov8" title="1">{
+        // Si esta en cache, retornamos el cache
+        if found, ok := cache.Get(token); ok </span><span class="cov0" title="0">{
+                if user, ok := found.(*User); ok </span><span class="cov0" title="0">{
+                        return user, nil
+                }</span>
+        }
+
+        <span class="cov8" title="1">user, err := getRemoteToken(token, ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                glog.Error(err)
+                return nil, errs.Unauthorized
+        }</span>
+
+        // Todo bien, se agrega al cache y se retorna
+        <span class="cov8" title="1">cache.Set(token, user, gocache.DefaultExpiration)
+
+        return user, nil</span>
+}
+
+// Invalidate invalida un token del cache
+func Invalidate(token string) <span class="cov8" title="1">{
+        if len(token) &lt;= 7 </span><span class="cov0" title="0">{
+                glog.Info("Token no valido: ", token)
+                return
+        }</span>
+
+        <span class="cov8" title="1">cache.Delete(token)
+        glog.Info("Token invalidado: ", token)</span>
+}
+</pre>
+		
+		<pre class="file" id="file30" style="display: none">package security
+
+import (
+        "bytes"
+        "io"
+        "net/http"
+
+        "github.com/golang/mock/gomock"
+        "github.com/nmarsollier/cartgo/tools/httpx"
+        "github.com/nmarsollier/cartgo/tools/strs"
+        "go.mongodb.org/mongo-driver/bson/primitive"
+)
+
+// Mock Data
+func TestUser() *User <span class="cov8" title="1">{
+        return &amp;User{
+                ID:          primitive.NewObjectID().Hex(),
+                Login:       "Login",
+                Name:        "Name",
+                Permissions: []string{"user"},
+        }
+}</span>
+
+// Http Mocks
+func ExpectHttpToken(mock *httpx.MockHTTPClient, user *User) <span class="cov8" title="1">{
+        response := &amp;http.Response{
+                StatusCode: http.StatusOK,
+                Body:       io.NopCloser(bytes.NewBufferString(strs.ToJson(user))),
+        }
+        mock.EXPECT().Do(gomock.Any()).Return(response, nil).Times(1)
+}</span>
+
+func ExpectHttpUnauthorized(mock *httpx.MockHTTPClient) <span class="cov8" title="1">{
+        response := &amp;http.Response{
+                StatusCode: http.StatusUnauthorized,
+                Body:       io.NopCloser(bytes.NewBufferString("")),
+        }
+        mock.EXPECT().Do(gomock.Any()).Return(response, nil).Times(1)
+}</span>
+</pre>
+		
+		<pre class="file" id="file31" style="display: none">package service
+
+import (
+        "github.com/nmarsollier/cartgo/cart"
+        "github.com/nmarsollier/cartgo/rabbit/emit"
+)
+
+func AddArticle(userId string, article cart.AddArticleData, ctx ...interface{}) (*cart.Cart, error) <span class="cov8" title="1">{
+        cart, err := cart.AddArticle(userId, article, ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">for _, a := range cart.Articles </span><span class="cov8" title="1">{
+                if !a.Validated </span><span class="cov8" title="1">{
+                        emit.SendArticleValidation(emit.ArticleValidationData{
+                                ReferenceId: cart.UserId,
+                                ArticleId:   a.ArticleId,
+                        }, ctx...)
+                }</span>
+        }
+
+        <span class="cov8" title="1">return cart, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file32" style="display: none">package service
+
+import (
+        "github.com/golang/glog"
+        "github.com/nmarsollier/cartgo/cart"
+        "github.com/nmarsollier/cartgo/rabbit/emit"
+)
+
+func Checkout(userId string, token string, ctx ...interface{}) (*cart.Cart, error) <span class="cov8" title="1">{
+        currentCart, err := cart.CurrentCart(userId, ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">err = ValidateCheckout(currentCart, token, ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">currentCart, err = cart.InvalidateCurrentCart(currentCart, ctx...)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">emit.SendPlaceOrder(currentCart, ctx...)
+
+        return currentCart, nil</span>
+}
+
+func ValidateCheckout(cart *cart.Cart, token string, ctx ...interface{}) error <span class="cov8" title="1">{
+        for _, a := range cart.Articles </span><span class="cov8" title="1">{
+                err := callValidate(a, token, ctx...)
+                if err != nil </span><span class="cov8" title="1">{
+                        glog.Error(err)
+                        return err
+                }</span>
+        }
+
+        <span class="cov8" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file33" style="display: none">package service
+
+import (
+        "github.com/nmarsollier/cartgo/cart"
+        "github.com/nmarsollier/cartgo/rabbit/emit"
+)
+
+func GetCurrentCart(userId string, ctx ...interface{}) (*cart.Cart, error) <span class="cov8" title="1">{
+        cart, err := cart.CurrentCart(userId, ctx...)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">for _, a := range cart.Articles </span><span class="cov8" title="1">{
+                if !a.Validated </span><span class="cov8" title="1">{
+                        emit.SendArticleValidation(emit.ArticleValidationData{
+                                ReferenceId: cart.UserId,
+                                ArticleId:   a.ArticleId,
+                        }, ctx...)
+                }</span>
+        }
+
+        <span class="cov8" title="1">return cart, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file34" style="display: none">package service
+
+import (
+        "net/http"
+
+        "github.com/golang/glog"
+        "github.com/nmarsollier/cartgo/cart"
+        "github.com/nmarsollier/cartgo/tools/env"
+        "github.com/nmarsollier/cartgo/tools/errs"
+        "github.com/nmarsollier/cartgo/tools/httpx"
+)
+
+func callValidate(article *cart.Article, token string, ctx ...interface{}) error <span class="cov8" title="1">{
+        // Buscamos el usuario remoto
+        req, err := http.NewRequest("GET", env.Get().CatalogServerURL+"/v1/articles/"+article.ArticleId, nil)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return errs.Invalid
+        }</span>
+        <span class="cov8" title="1">req.Header.Add("Authorization", "bearer "+token)
+        resp, err := httpx.Get(ctx...).Do(req)
+        if err != nil || resp.StatusCode != 200 </span><span class="cov8" title="1">{
+                glog.Error(err)
+                return errs.Invalid
+        }</span>
+        <span class="cov8" title="1">defer resp.Body.Close()
+
+        return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file35" style="display: none">package db
+
+import (
+        "context"
+        "log"
+
+        "github.com/nmarsollier/cartgo/tools/env"
+        "go.mongodb.org/mongo-driver/mongo"
+        "go.mongodb.org/mongo-driver/mongo/options"
+        "go.mongodb.org/mongo-driver/x/mongo/driver/topology"
+)
+
+var database *mongo.Database
+
+// Get the mongo database
+func Get() (*mongo.Database, error) <span class="cov0" title="0">{
+        if database == nil </span><span class="cov0" title="0">{
+                clientOptions := options.Client().ApplyURI(env.Get().MongoURL)
+
+                client, err := mongo.Connect(context.TODO(), clientOptions)
+                if err != nil </span><span class="cov0" title="0">{
+                        log.Fatal(err)
+                        return nil, err
+                }</span>
+
+                <span class="cov0" title="0">database = client.Database("cart_go")</span>
+        }
+        <span class="cov0" title="0">return database, nil</span>
+}
+
+// CheckError función a llamar cuando se produce un error de db
+func CheckError(err interface{}) <span class="cov0" title="0">{
+        if err == topology.ErrServerSelectionTimeout </span><span class="cov0" title="0">{
+                database = nil
+        }</span>
+}
+
+// IsUniqueKeyError retorna true si el error es de indice único
+func IsUniqueKeyError(err error) bool <span class="cov0" title="0">{
+        if wErr, ok := err.(mongo.WriteException); ok </span><span class="cov0" title="0">{
+                for i := 0; i &lt; len(wErr.WriteErrors); i++ </span><span class="cov0" title="0">{
+                        if wErr.WriteErrors[i].Code == 11000 </span><span class="cov0" title="0">{
+                                return true
+                        }</span>
+                }
+        }
+        <span class="cov0" title="0">return false</span>
+}
+</pre>
+		
+		<pre class="file" id="file36" style="display: none">package db
+
+import (
+        "context"
+
+        "go.mongodb.org/mongo-driver/mongo"
+)
+
+type MongoCollection interface {
+        FindOne(ctx context.Context, filter interface{}, v interface{}) error
+
+        InsertOne(ctx context.Context, document interface{}) (id interface{}, error error)
+
+        UpdateOne(ctx context.Context, filter interface{}, update interface{}) (modified int64, error error)
+
+        ReplaceOne(ctx context.Context, filter interface{}, replacement interface{}) (modified int64, error error)
+}
+
+func NewMongoCollection(collection *mongo.Collection) MongoCollection <span class="cov0" title="0">{
+        return &amp;mongoCollection{
+                collection: collection,
+        }
+}</span>
+
+type mongoCollection struct {
+        collection *mongo.Collection
+}
+
+func (m *mongoCollection) FindOne(ctx context.Context, filter interface{}, v interface{}) error <span class="cov0" title="0">{
+        if err := m.collection.FindOne(context.Background(), filter).Decode(v); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (m *mongoCollection) InsertOne(ctx context.Context, document interface{}) (id interface{}, error error) <span class="cov0" title="0">{
+        insertedId, err := m.collection.InsertOne(context.Background(), document)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return insertedId.InsertedID, nil</span>
+}
+
+func (m *mongoCollection) UpdateOne(ctx context.Context, filter interface{}, update interface{}) (modified int64, error error) <span class="cov0" title="0">{
+        insertedId, err := m.collection.UpdateOne(context.Background(), filter, update)
+        if err != nil </span><span class="cov0" title="0">{
+                return 0, err
+        }</span>
+        <span class="cov0" title="0">return insertedId.ModifiedCount, nil</span>
+}
+
+func (m *mongoCollection) ReplaceOne(ctx context.Context, filter interface{}, replacement interface{}) (modified int64, error error) <span class="cov0" title="0">{
+        insertedId, err := m.collection.ReplaceOne(context.Background(), filter, replacement)
+        if err != nil </span><span class="cov0" title="0">{
+                return 0, err
+        }</span>
+        <span class="cov0" title="0">return insertedId.ModifiedCount, nil</span>
+}
+
+func (m *mongoCollection) Find(ctx context.Context, filter interface{}) (cur Cursor, err error) <span class="cov0" title="0">{
+        cursor, err := m.collection.Find(context.Background(), filter)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return NewMongoCursor(cursor), nil</span>
+}
+
+type Cursor interface {
+        Close(ctx context.Context) error
+        Next(ctx context.Context) bool
+        Decode(val interface{}) error
+}
+
+func NewMongoCursor(cursor *mongo.Cursor) Cursor <span class="cov0" title="0">{
+        return &amp;mongoCursor{
+                cursor: cursor,
+        }
+}</span>
+
+type mongoCursor struct {
+        cursor *mongo.Cursor
+}
+
+func (c *mongoCursor) Close(ctx context.Context) error <span class="cov0" title="0">{
+        return c.cursor.Close(ctx)
+}</span>
+
+func (c *mongoCursor) Next(ctx context.Context) bool <span class="cov0" title="0">{
+        return c.cursor.Next(ctx)
+}</span>
+func (c *mongoCursor) Decode(val interface{}) error <span class="cov0" title="0">{
+        return c.cursor.Decode(val)
+}</span>
+</pre>
+		
+		<pre class="file" id="file37" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+// Source: ./tools/db/mongo_collection.go
+
+// Package db is a generated GoMock package.
+package db
+
+import (
+        context "context"
+        reflect "reflect"
+
+        gomock "github.com/golang/mock/gomock"
+)
+
+// MockMongoCollection is a mock of MongoCollection interface.
+type MockMongoCollection struct {
+        ctrl     *gomock.Controller
+        recorder *MockMongoCollectionMockRecorder
+}
+
+// MockMongoCollectionMockRecorder is the mock recorder for MockMongoCollection.
+type MockMongoCollectionMockRecorder struct {
+        mock *MockMongoCollection
+}
+
+// NewMockMongoCollection creates a new mock instance.
+func NewMockMongoCollection(ctrl *gomock.Controller) *MockMongoCollection <span class="cov8" title="1">{
+        mock := &amp;MockMongoCollection{ctrl: ctrl}
+        mock.recorder = &amp;MockMongoCollectionMockRecorder{mock}
+        return mock
+}</span>
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMongoCollection) EXPECT() *MockMongoCollectionMockRecorder <span class="cov8" title="1">{
+        return m.recorder
+}</span>
+
+// FindOne mocks base method.
+func (m *MockMongoCollection) FindOne(ctx context.Context, filter, v interface{}) error <span class="cov8" title="1">{
+        m.ctrl.T.Helper()
+        ret := m.ctrl.Call(m, "FindOne", ctx, filter, v)
+        ret0, _ := ret[0].(error)
+        return ret0
+}</span>
+
+// FindOne indicates an expected call of FindOne.
+func (mr *MockMongoCollectionMockRecorder) FindOne(ctx, filter, v interface{}) *gomock.Call <span class="cov8" title="1">{
+        mr.mock.ctrl.T.Helper()
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindOne", reflect.TypeOf((*MockMongoCollection)(nil).FindOne), ctx, filter, v)
+}</span>
+
+// InsertOne mocks base method.
+func (m *MockMongoCollection) InsertOne(ctx context.Context, document interface{}) (interface{}, error) <span class="cov8" title="1">{
+        m.ctrl.T.Helper()
+        ret := m.ctrl.Call(m, "InsertOne", ctx, document)
+        ret0, _ := ret[0].(interface{})
+        ret1, _ := ret[1].(error)
+        return ret0, ret1
+}</span>
+
+// InsertOne indicates an expected call of InsertOne.
+func (mr *MockMongoCollectionMockRecorder) InsertOne(ctx, document interface{}) *gomock.Call <span class="cov8" title="1">{
+        mr.mock.ctrl.T.Helper()
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InsertOne", reflect.TypeOf((*MockMongoCollection)(nil).InsertOne), ctx, document)
+}</span>
+
+// ReplaceOne mocks base method.
+func (m *MockMongoCollection) ReplaceOne(ctx context.Context, filter, replacement interface{}) (int64, error) <span class="cov8" title="1">{
+        m.ctrl.T.Helper()
+        ret := m.ctrl.Call(m, "ReplaceOne", ctx, filter, replacement)
+        ret0, _ := ret[0].(int64)
+        ret1, _ := ret[1].(error)
+        return ret0, ret1
+}</span>
+
+// ReplaceOne indicates an expected call of ReplaceOne.
+func (mr *MockMongoCollectionMockRecorder) ReplaceOne(ctx, filter, replacement interface{}) *gomock.Call <span class="cov8" title="1">{
+        mr.mock.ctrl.T.Helper()
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReplaceOne", reflect.TypeOf((*MockMongoCollection)(nil).ReplaceOne), ctx, filter, replacement)
+}</span>
+
+// UpdateOne mocks base method.
+func (m *MockMongoCollection) UpdateOne(ctx context.Context, filter, update interface{}) (int64, error) <span class="cov8" title="1">{
+        m.ctrl.T.Helper()
+        ret := m.ctrl.Call(m, "UpdateOne", ctx, filter, update)
+        ret0, _ := ret[0].(int64)
+        ret1, _ := ret[1].(error)
+        return ret0, ret1
+}</span>
+
+// UpdateOne indicates an expected call of UpdateOne.
+func (mr *MockMongoCollectionMockRecorder) UpdateOne(ctx, filter, update interface{}) *gomock.Call <span class="cov8" title="1">{
+        mr.mock.ctrl.T.Helper()
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateOne", reflect.TypeOf((*MockMongoCollection)(nil).UpdateOne), ctx, filter, update)
+}</span>
+
+// MockCursor is a mock of Cursor interface.
+type MockCursor struct {
+        ctrl     *gomock.Controller
+        recorder *MockCursorMockRecorder
+}
+
+// MockCursorMockRecorder is the mock recorder for MockCursor.
+type MockCursorMockRecorder struct {
+        mock *MockCursor
+}
+
+// NewMockCursor creates a new mock instance.
+func NewMockCursor(ctrl *gomock.Controller) *MockCursor <span class="cov0" title="0">{
+        mock := &amp;MockCursor{ctrl: ctrl}
+        mock.recorder = &amp;MockCursorMockRecorder{mock}
+        return mock
+}</span>
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockCursor) EXPECT() *MockCursorMockRecorder <span class="cov0" title="0">{
+        return m.recorder
+}</span>
+
+// Close mocks base method.
+func (m *MockCursor) Close(ctx context.Context) error <span class="cov0" title="0">{
+        m.ctrl.T.Helper()
+        ret := m.ctrl.Call(m, "Close", ctx)
+        ret0, _ := ret[0].(error)
+        return ret0
+}</span>
+
+// Close indicates an expected call of Close.
+func (mr *MockCursorMockRecorder) Close(ctx interface{}) *gomock.Call <span class="cov0" title="0">{
+        mr.mock.ctrl.T.Helper()
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockCursor)(nil).Close), ctx)
+}</span>
+
+// Decode mocks base method.
+func (m *MockCursor) Decode(val interface{}) error <span class="cov0" title="0">{
+        m.ctrl.T.Helper()
+        ret := m.ctrl.Call(m, "Decode", val)
+        ret0, _ := ret[0].(error)
+        return ret0
+}</span>
+
+// Decode indicates an expected call of Decode.
+func (mr *MockCursorMockRecorder) Decode(val interface{}) *gomock.Call <span class="cov0" title="0">{
+        mr.mock.ctrl.T.Helper()
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Decode", reflect.TypeOf((*MockCursor)(nil).Decode), val)
+}</span>
+
+// Next mocks base method.
+func (m *MockCursor) Next(ctx context.Context) bool <span class="cov0" title="0">{
+        m.ctrl.T.Helper()
+        ret := m.ctrl.Call(m, "Next", ctx)
+        ret0, _ := ret[0].(bool)
+        return ret0
+}</span>
+
+// Next indicates an expected call of Next.
+func (mr *MockCursorMockRecorder) Next(ctx interface{}) *gomock.Call <span class="cov0" title="0">{
+        mr.mock.ctrl.T.Helper()
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Next", reflect.TypeOf((*MockCursor)(nil).Next), ctx)
+}</span>
+</pre>
+		
+		<pre class="file" id="file38" style="display: none">package db
+
+import (
+        "github.com/golang/mock/gomock"
+        "go.mongodb.org/mongo-driver/mongo"
+)
+
+// Mock Data
+var TestIsUniqueError = mongo.WriteException{
+        WriteErrors: []mongo.WriteError{
+                {
+                        Code: 11000,
+                },
+        },
+}
+
+func ExpectFindOneError(collection *MockMongoCollection, err error, times int) <span class="cov8" title="1">{
+        collection.EXPECT().FindOne(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
+                func(arg1 interface{}, params interface{}, update interface{}) error </span><span class="cov8" title="1">{
+                        return err
+                }</span>,
+        ).Times(times)
+}
+
+func ExpectReplaceOneError(collection *MockMongoCollection, err error, times int) <span class="cov8" title="1">{
+        collection.EXPECT().ReplaceOne(gomock.Any(), gomock.Any(), gomock.Any()).Return(int64(0), err).Times(times)
+}</span>
+
+func ExpectInsertOneError(collection *MockMongoCollection, err error, times int) <span class="cov8" title="1">{
+        collection.EXPECT().InsertOne(gomock.Any(), gomock.Any()).Return("", err).Times(times)
+}</span>
+
+func ExpectUserInsertOne(collection *MockMongoCollection, times int) <span class="cov0" title="0">{
+        collection.EXPECT().InsertOne(gomock.Any(), gomock.Any()).Return("123", nil).Times(times)
+}</span>
+</pre>
+		
+		<pre class="file" id="file39" style="display: none">package env
+
+import (
+        "os"
+        "strconv"
+)
+
+// Configuration properties
+type Configuration struct {
+        Port              int    `json:"port"`
+        RabbitURL         string `json:"rabbitUrl"`
+        MongoURL          string `json:"mongoUrl"`
+        SecurityServerURL string `json:"securityServerUrl"`
+        CatalogServerURL  string `json:"securityServerUrl"`
+}
+
+var config *Configuration
+
+func new() *Configuration <span class="cov8" title="1">{
+        return &amp;Configuration{
+                Port:              3003,
+                RabbitURL:         "amqp://localhost",
+                MongoURL:          "mongodb://localhost:27017",
+                SecurityServerURL: "http://localhost:3000",
+                CatalogServerURL:  "http://localhost:3002",
+        }
+}</span>
+
+// Get Obtiene las variables de entorno del sistema
+func Get() *Configuration <span class="cov8" title="1">{
+        if config == nil </span><span class="cov8" title="1">{
+                config = load()
+        }</span>
+
+        <span class="cov8" title="1">return config</span>
+}
+
+// Load file properties
+func load() *Configuration <span class="cov8" title="1">{
+        result := new()
+
+        if value := os.Getenv("RABBIT_URL"); len(value) &gt; 0 </span><span class="cov0" title="0">{
+                result.RabbitURL = value
+        }</span>
+
+        <span class="cov8" title="1">if value := os.Getenv("MONGO_URL"); len(value) &gt; 0 </span><span class="cov0" title="0">{
+                result.MongoURL = value
+        }</span>
+
+        <span class="cov8" title="1">if value := os.Getenv("PORT"); len(value) &gt; 0 </span><span class="cov0" title="0">{
+                if intVal, err := strconv.Atoi(value); err != nil </span><span class="cov0" title="0">{
+                        result.Port = intVal
+                }</span>
+        }
+
+        <span class="cov8" title="1">if value := os.Getenv("AUTH_SERVICE_URL"); len(value) &gt; 0 </span><span class="cov0" title="0">{
+                result.SecurityServerURL = value
+        }</span>
+
+        <span class="cov8" title="1">if value := os.Getenv("CATALOG_SERVICE_URL"); len(value) &gt; 0 </span><span class="cov0" title="0">{
+                result.CatalogServerURL = value
+        }</span>
+
+        <span class="cov8" title="1">return result</span>
+}
+</pre>
+		
+		<pre class="file" id="file40" style="display: none">package errs
+
+// Unauthorized el usuario no esta autorizado al recurso
+var Unauthorized = NewRestError(401, "Unauthorized")
+
+// NotFound cuando un registro no se encuentra en la db
+var NotFound = NewRestError(404, "Document not found")
+
+// AlreadyExist cuando no se puede ingresar un registro a la db
+var AlreadyExist = NewRestError(400, "Already exist")
+
+// Internal esta aplicación no sabe como manejar el error
+var Internal = NewRestError(500, "Internal server error")
+
+var Invalid = NewRestError(400, "Invalid Document")
+
+// - Creación de errors -
+// NewRestError creates a new errCustom
+func NewRestError(status int, message string) RestError <span class="cov8" title="1">{
+        return &amp;restError{
+                status:  status,
+                Message: message,
+        }
+}</span>
+
+//  - Algunas definiciones necesarias -
+
+// RestError es una interfaz para definir errores custom
+type RestError interface {
+        Status() int
+        Error() string
+}
+
+// restError es un error personalizado para http
+type restError struct {
+        status  int
+        Message string `json:"error"`
+}
+
+func (e *restError) Error() string <span class="cov8" title="1">{
+        return e.Message
+}</span>
+
+// Status http status code
+func (e *restError) Status() int <span class="cov8" title="1">{
+        return e.status
+}</span>
+</pre>
+		
+		<pre class="file" id="file41" style="display: none">package errs
+
+import (
+        "encoding/json"
+
+        "github.com/golang/glog"
+)
+
+// Validation es una interfaz para definir errores custom
+// Validation es un error de validaciones de parameteros o de campos
+type Validation interface {
+        Add(path string, message string) Validation
+        Error() string
+}
+
+func NewValidation() Validation <span class="cov8" title="1">{
+        return &amp;ValidationErr{
+                Messages: []errField{},
+        }
+}</span>
+
+type ValidationErr struct {
+        Messages []errField `json:"messages"`
+}
+
+func (e *ValidationErr) Error() string <span class="cov8" title="1">{
+        body, err := json.Marshal(e)
+        if err != nil </span><span class="cov0" title="0">{
+                glog.Error(err)
+                return "ErrValidation invalid."
+        }</span>
+        <span class="cov8" title="1">return string(body)</span>
+}
+
+// Add agrega errores a un validation error
+func (e *ValidationErr) Add(path string, message string) Validation <span class="cov8" title="1">{
+        err := errField{
+                Path:    path,
+                Message: message,
+        }
+        e.Messages = append(e.Messages, err)
+        return e
+}</span>
+
+// errField define un campo inválido. path y mensaje de error
+type errField struct {
+        Path    string `json:"path"`
+        Message string `json:"message"`
+}
+</pre>
+		
+		<pre class="file" id="file42" style="display: none">package httpx
+
+import "net/http"
+
+type HTTPClient interface {
+        Do(req *http.Request) (*http.Response, error)
+}
+
+func Get(ctx ...interface{}) HTTPClient <span class="cov8" title="1">{
+        for _, o := range ctx </span><span class="cov8" title="1">{
+                if client, ok := o.(HTTPClient); ok </span><span class="cov8" title="1">{
+                        return client
+                }</span>
+        }
+
+        <span class="cov0" title="0">return http.DefaultClient</span>
+}
+</pre>
+		
+		<pre class="file" id="file43" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+// Source: ./tools/httpx/client.go
+
+// Package httpx is a generated GoMock package.
+package httpx
+
+import (
+        http "net/http"
+        reflect "reflect"
+
+        gomock "github.com/golang/mock/gomock"
+)
+
+// MockHTTPClient is a mock of HTTPClient interface.
+type MockHTTPClient struct {
+        ctrl     *gomock.Controller
+        recorder *MockHTTPClientMockRecorder
+}
+
+// MockHTTPClientMockRecorder is the mock recorder for MockHTTPClient.
+type MockHTTPClientMockRecorder struct {
+        mock *MockHTTPClient
+}
+
+// NewMockHTTPClient creates a new mock instance.
+func NewMockHTTPClient(ctrl *gomock.Controller) *MockHTTPClient <span class="cov8" title="1">{
+        mock := &amp;MockHTTPClient{ctrl: ctrl}
+        mock.recorder = &amp;MockHTTPClientMockRecorder{mock}
+        return mock
+}</span>
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockHTTPClient) EXPECT() *MockHTTPClientMockRecorder <span class="cov8" title="1">{
+        return m.recorder
+}</span>
+
+// Do mocks base method.
+func (m *MockHTTPClient) Do(req *http.Request) (*http.Response, error) <span class="cov8" title="1">{
+        m.ctrl.T.Helper()
+        ret := m.ctrl.Call(m, "Do", req)
+        ret0, _ := ret[0].(*http.Response)
+        ret1, _ := ret[1].(error)
+        return ret0, ret1
+}</span>
+
+// Do indicates an expected call of Do.
+func (mr *MockHTTPClientMockRecorder) Do(req interface{}) *gomock.Call <span class="cov8" title="1">{
+        mr.mock.ctrl.T.Helper()
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Do", reflect.TypeOf((*MockHTTPClient)(nil).Do), req)
+}</span>
+</pre>
+		
+		<pre class="file" id="file44" style="display: none">package strs
+
+import "encoding/json"
+
+func ToJson(obj interface{}) string <span class="cov8" title="1">{
+        jsonData, _ := json.Marshal(obj)
+        return string(jsonData)
+}</span>
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
