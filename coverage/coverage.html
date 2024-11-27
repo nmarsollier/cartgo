@@ -221,8 +221,8 @@
 		
 		<pre class="file" id="file0" style="display: none">package cart
 
-func AddArticle(userId string, articleId string, quantity int, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
-        cart, err := CurrentCart(userId, ctx...)
+func AddArticle(userId string, articleId string, quantity int, deps ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+        cart, err := CurrentCart(userId, deps...)
         if err != nil </span><span class="cov8" title="1">{
                 return nil, err
         }</span>
@@ -255,7 +255,7 @@ func AddArticle(userId string, articleId string, quantity int, ctx ...interface{
         }
         <span class="cov8" title="1">cart.Articles = newArticles
 
-        cart, err = replace(cart, ctx...)
+        cart, err = replace(cart, deps...)
         if err != nil </span><span class="cov8" title="1">{
                 return nil, err
         }</span>
@@ -272,8 +272,8 @@ type ValidationEvent struct {
         Valid       bool   `json:"valid" example:"true"`
 }
 
-func ProcessArticleData(data *ValidationEvent, ctx ...interface{}) error <span class="cov8" title="1">{
-        cart, err := findByUserId(data.ReferenceId, ctx...)
+func ProcessArticleData(data *ValidationEvent, deps ...interface{}) error <span class="cov8" title="1">{
+        cart, err := findByUserId(data.ReferenceId, deps...)
         if err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
@@ -285,7 +285,7 @@ func ProcessArticleData(data *ValidationEvent, ctx ...interface{}) error <span c
                 }</span>
         }
 
-        <span class="cov8" title="1">_, err = replace(cart, ctx...)
+        <span class="cov8" title="1">_, err = replace(cart, deps...)
         if err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
@@ -296,8 +296,8 @@ func ProcessArticleData(data *ValidationEvent, ctx ...interface{}) error <span c
 		
 		<pre class="file" id="file2" style="display: none">package cart
 
-func CurrentCart(userId string, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
-        cart, err := findByUserId(userId, ctx...)
+func CurrentCart(userId string, deps ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+        cart, err := findByUserId(userId, deps...)
         if err != nil </span><span class="cov8" title="1">{
                 if err.Error() != "mongo: no documents in result" </span><span class="cov8" title="1">{
                         return nil, err
@@ -305,7 +305,7 @@ func CurrentCart(userId string, ctx ...interface{}) (*Cart, error) <span class="
                 }</span>
 
                 <span class="cov8" title="1">cart = newCart(userId)
-                cart, err = insert(cart, ctx...)
+                cart, err = insert(cart, deps...)
                 if err != nil </span><span class="cov8" title="1">{
                         return nil, err
                 }</span>
@@ -317,8 +317,8 @@ func CurrentCart(userId string, ctx ...interface{}) (*Cart, error) <span class="
 		
 		<pre class="file" id="file3" style="display: none">package cart
 
-func FindCartById(cartId string, ctx ...interface{}) (*Cart, error) <span class="cov0" title="0">{
-        cart, err := findById(cartId, ctx...)
+func FindCartById(cartId string, deps ...interface{}) (*Cart, error) <span class="cov0" title="0">{
+        cart, err := findById(cartId, deps...)
         if err != nil </span><span class="cov0" title="0">{
                 if err.Error() != "mongo: no documents in result" </span><span class="cov0" title="0">{
                         return nil, err
@@ -331,8 +331,8 @@ func FindCartById(cartId string, ctx ...interface{}) (*Cart, error) <span class=
 		
 		<pre class="file" id="file4" style="display: none">package cart
 
-func InvalidateCurrentCart(cart *Cart, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
-        cart, err := invalidate(cart, ctx...)
+func InvalidateCurrentCart(cart *Cart, deps ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+        cart, err := invalidate(cart, deps...)
         if err != nil </span><span class="cov0" title="0">{
                 return nil, err
         }</span>
@@ -349,14 +349,14 @@ type OrderPlacedEvent struct {
         Valid   bool   `json:"valid" example:"true"`
 }
 
-func ProcessOrderPlaced(data *OrderPlacedEvent, ctx ...interface{}) error <span class="cov8" title="1">{
-        cart, err := findById(data.CartId, ctx...)
+func ProcessOrderPlaced(data *OrderPlacedEvent, deps ...interface{}) error <span class="cov8" title="1">{
+        cart, err := findById(data.CartId, deps...)
         if err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
 
         <span class="cov8" title="1">cart.OrderId = data.OrderId
-        _, err = replace(cart, ctx...)
+        _, err = replace(cart, deps...)
         if err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
@@ -367,8 +367,8 @@ func ProcessOrderPlaced(data *OrderPlacedEvent, ctx ...interface{}) error <span 
 		
 		<pre class="file" id="file6" style="display: none">package cart
 
-func RemoveArticle(userId string, articleId string, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
-        cart, err := CurrentCart(userId, ctx...)
+func RemoveArticle(userId string, articleId string, deps ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+        cart, err := CurrentCart(userId, deps...)
         if err != nil </span><span class="cov8" title="1">{
                 return nil, err
         }</span>
@@ -381,7 +381,7 @@ func RemoveArticle(userId string, articleId string, ctx ...interface{}) (*Cart, 
         }
         <span class="cov8" title="1">cart.Articles = newArticles
 
-        cart, err = replace(cart, ctx...)
+        cart, err = replace(cart, deps...)
         if err != nil </span><span class="cov8" title="1">{
                 return nil, err
         }</span>
@@ -407,8 +407,8 @@ var ErrID = errs.NewValidation().Add("id", "Invalid")
 // Define mongo Collection
 var collection db.MongoCollection
 
-func dbCollection(ctx ...interface{}) (db.MongoCollection, error) <span class="cov8" title="1">{
-        for _, o := range ctx </span><span class="cov8" title="1">{
+func dbCollection(deps ...interface{}) (db.MongoCollection, error) <span class="cov8" title="1">{
+        for _, o := range deps </span><span class="cov8" title="1">{
                 if coll, ok := o.(db.MongoCollection); ok </span><span class="cov8" title="1">{
                         return coll, nil
                 }</span>
@@ -420,7 +420,7 @@ func dbCollection(ctx ...interface{}) (db.MongoCollection, error) <span class="c
 
         <span class="cov0" title="0">database, err := db.Get()
         if err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
@@ -451,10 +451,10 @@ type DbIdFilter struct {
 }
 
 // findByCartId lee un usuario desde la db
-func findByUserId(userId string, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
-        var collection, err = dbCollection(ctx...)
+func findByUserId(userId string, deps ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+        var collection, err = dbCollection(deps...)
         if err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
@@ -472,16 +472,16 @@ func findByUserId(userId string, ctx ...interface{}) (*Cart, error) <span class=
 }
 
 // findByCartId lee un usuario desde la db
-func findById(cartId string, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+func findById(cartId string, deps ...interface{}) (*Cart, error) <span class="cov8" title="1">{
         _id, err := primitive.ObjectIDFromHex(cartId)
         if err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, ErrID
         }</span>
 
-        <span class="cov8" title="1">collection, err := dbCollection(ctx...)
+        <span class="cov8" title="1">collection, err := dbCollection(deps...)
         if err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
@@ -489,63 +489,63 @@ func findById(cartId string, ctx ...interface{}) (*Cart, error) <span class="cov
         filter := DbIdFilter{ID: _id}
 
         if err = collection.FindOne(context.Background(), filter, cart); err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
         <span class="cov8" title="1">return cart, nil</span>
 }
 
-func insert(cart *Cart, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+func insert(cart *Cart, deps ...interface{}) (*Cart, error) <span class="cov8" title="1">{
         if err := cart.validateSchema(); err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
-        <span class="cov8" title="1">var collection, err = dbCollection(ctx...)
+        <span class="cov8" title="1">var collection, err = dbCollection(deps...)
         if err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
         <span class="cov8" title="1">if _, err := collection.InsertOne(context.Background(), cart); err != nil </span><span class="cov8" title="1">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
         <span class="cov8" title="1">return cart, nil</span>
 }
 
-func replace(cart *Cart, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+func replace(cart *Cart, deps ...interface{}) (*Cart, error) <span class="cov8" title="1">{
         if err := cart.validateSchema(); err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
-        <span class="cov8" title="1">var collection, err = dbCollection(ctx...)
+        <span class="cov8" title="1">var collection, err = dbCollection(deps...)
         if err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
         <span class="cov8" title="1">_, err = collection.ReplaceOne(context.Background(), DbIdFilter{ID: cart.ID}, cart)
         if err != nil </span><span class="cov8" title="1">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
         <span class="cov8" title="1">return cart, nil</span>
 }
 
-func invalidate(cart *Cart, ctx ...interface{}) (*Cart, error) <span class="cov8" title="1">{
+func invalidate(cart *Cart, deps ...interface{}) (*Cart, error) <span class="cov8" title="1">{
         if err := cart.validateSchema(); err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
-        <span class="cov8" title="1">var collection, err = dbCollection(ctx...)
+        <span class="cov8" title="1">var collection, err = dbCollection(deps...)
         if err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
@@ -7810,10 +7810,10 @@ import (
         uuid "github.com/satori/go.uuid"
 )
 
-func newLogger(ctx context.Context, env ...interface{}) log.LogRusEntry <span class="cov0" title="0">{
+func newLogger(ctx context.Context, deps ...interface{}) log.LogRusEntry <span class="cov0" title="0">{
         operationContext := graphql.GetOperationContext(ctx)
 
-        return log.Get(env...).
+        return log.Get(deps...).
                 WithField(log.LOG_FIELD_CORRELATION_ID, getCorrelationId(ctx)).
                 WithField(log.LOG_FIELD_CONTROLLER, "Rest").
                 WithField(log.LOG_FIELD_HTTP_METHOD, operationContext.OperationName).
@@ -7991,12 +7991,12 @@ func consumeArticleExist() error <span class="cov0" title="0">{
         return nil</span>
 }
 
-func processArticleExist(newMessage *consumeArticleExistMessage, ctx ...interface{}) <span class="cov8" title="1">{
+func processArticleExist(newMessage *consumeArticleExistMessage, deps ...interface{}) <span class="cov8" title="1">{
         data := newMessage.Message
 
-        err := cart.ProcessArticleData(data, ctx...)
+        err := cart.ProcessArticleData(data, deps...)
         if err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return
         }</span>
 }
@@ -8275,12 +8275,12 @@ func consumeOrderPlaced() error <span class="cov0" title="0">{
         return nil</span>
 }
 
-func processOrderPlaced(newMessage *consumeOrderPlacedMessage, ctx ...interface{}) <span class="cov8" title="1">{
+func processOrderPlaced(newMessage *consumeOrderPlacedMessage, deps ...interface{}) <span class="cov8" title="1">{
         data := newMessage.Message
 
-        err := cart.ProcessOrderPlaced(data, ctx...)
+        err := cart.ProcessOrderPlaced(data, deps...)
         if err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return
         }</span>
 }
@@ -8363,8 +8363,8 @@ import (
 // ErrChannelNotInitialized Rabbit channel could not be initialized
 var ErrChannelNotInitialized = errors.New("channel not initialized")
 
-func getChannel(ctx ...interface{}) (RabbitChannel, error) <span class="cov8" title="1">{
-        for _, o := range ctx </span><span class="cov8" title="1">{
+func getChannel(deps ...interface{}) (RabbitChannel, error) <span class="cov8" title="1">{
+        for _, o := range deps </span><span class="cov8" title="1">{
                 if ti, ok := o.(RabbitChannel); ok </span><span class="cov8" title="1">{
                         return ti, nil
                 }</span>
@@ -8372,13 +8372,13 @@ func getChannel(ctx ...interface{}) (RabbitChannel, error) <span class="cov8" ti
 
         <span class="cov0" title="0">conn, err := amqp.Dial(env.Get().RabbitURL)
         if err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
         <span class="cov0" title="0">channel, err := conn.Channel()
         if err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
@@ -8510,8 +8510,8 @@ import (
 //        @Router                        /rabbit/article_exist [put]
 //
 // Emite Validar Artículos a Cart
-func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error <span class="cov8" title="1">{
-        logger := log.Get(ctx...).
+func SendArticleValidation(data ArticleValidationData, deps ...interface{}) error <span class="cov8" title="1">{
+        logger := log.Get(deps...).
                 WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
                 WithField(log.LOG_FIELD_RABBIT_ACTION, "Emit").
                 WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "article_exist").
@@ -8524,7 +8524,7 @@ func SendArticleValidation(data ArticleValidationData, ctx ...interface{}) error
                 RoutingKey:    "cart_article_exist",
                 Message:       data,
         }
-        chn, err := getChannel(ctx...)
+        chn, err := getChannel(deps...)
         if err != nil </span><span class="cov0" title="0">{
                 logger.Error(err)
                 chn = nil
@@ -8595,8 +8595,8 @@ import (
 //        @Router                        /rabbit/place_order [put]
 //
 // Emite Placed Order desde Cart
-func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error <span class="cov8" title="1">{
-        logger := log.Get(ctx...).
+func SendPlaceOrder(cart *cart.Cart, deps ...interface{}) error <span class="cov8" title="1">{
+        logger := log.Get(deps...).
                 WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
                 WithField(log.LOG_FIELD_RABBIT_ACTION, "Emit").
                 WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "place_order").
@@ -8622,7 +8622,7 @@ func SendPlaceOrder(cart *cart.Cart, ctx ...interface{}) error <span class="cov8
                 Message:       data,
         }
 
-        chn, err := getChannel(ctx...)
+        chn, err := getChannel(deps...)
         if err != nil </span><span class="cov0" title="0">{
                 logger.Error(err)
                 chn = nil
@@ -8726,8 +8726,8 @@ func deleteArticle(c *gin.Context) <span class="cov8" title="1">{
         user := c.MustGet("user").(security.User)
         articleId := c.Param("articleId")
 
-        ctx := server.GinCtx(c)
-        _, err := cart.RemoveArticle(user.ID, articleId, ctx...)
+        deps := server.GinDeps(c)
+        _, err := cart.RemoveArticle(user.ID, articleId, deps...)
         if err != nil </span><span class="cov8" title="1">{
                 server.AbortWithError(c, err)
                 return
@@ -8771,8 +8771,8 @@ func initGetCart() <span class="cov8" title="1">{
 func currentCart(c *gin.Context) <span class="cov8" title="1">{
         user := c.MustGet("user").(security.User)
 
-        ctx := server.GinCtx(c)
-        cart, err := services.GetCurrentCart(user.ID, ctx...)
+        deps := server.GinDeps(c)
+        cart, err := services.GetCurrentCart(user.ID, deps...)
 
         if err != nil </span><span class="cov8" title="1">{
                 server.AbortWithError(c, err)
@@ -8819,14 +8819,14 @@ func validate(c *gin.Context) <span class="cov8" title="1">{
         user := c.MustGet("user").(security.User)
         token := c.MustGet("tokenString").(string)
 
-        ctx := server.GinCtx(c)
-        currentCart, err := cart.CurrentCart(user.ID, ctx...)
+        deps := server.GinDeps(c)
+        currentCart, err := cart.CurrentCart(user.ID, deps...)
         if err != nil </span><span class="cov8" title="1">{
                 server.AbortWithError(c, err)
                 return
         }</span>
 
-        <span class="cov8" title="1">err = services.ValidateCheckout(currentCart, token, ctx...)
+        <span class="cov8" title="1">err = services.ValidateCheckout(currentCart, token, deps...)
         if err != nil </span><span class="cov8" title="1">{
                 server.AbortWithError(c, err)
                 return
@@ -8882,8 +8882,8 @@ func addArticle(c *gin.Context) <span class="cov8" title="1">{
                 return
         }</span>
 
-        <span class="cov8" title="1">ctx := server.GinCtx(c)
-        _, err := services.AddArticle(user.ID, body.ArticleId, body.Quantity, ctx...)
+        <span class="cov8" title="1">deps := server.GinDeps(c)
+        _, err := services.AddArticle(user.ID, body.ArticleId, body.Quantity, deps...)
         if err != nil </span><span class="cov8" title="1">{
                 server.AbortWithError(c, err)
                 return
@@ -8929,8 +8929,8 @@ func decrementArticle(c *gin.Context) <span class="cov8" title="1">{
         user := c.MustGet("user").(security.User)
         articleId := c.Param("articleId")
 
-        ctx := server.GinCtx(c)
-        _, err := services.AddArticle(user.ID, articleId, -1, ctx...)
+        deps := server.GinDeps(c)
+        _, err := services.AddArticle(user.ID, articleId, -1, deps...)
         if err != nil </span><span class="cov8" title="1">{
                 server.AbortWithError(c, err)
                 return
@@ -8977,8 +8977,8 @@ func incrementArticle(c *gin.Context) <span class="cov8" title="1">{
         user := c.MustGet("user").(security.User)
         articleId := c.Param("articleId")
 
-        ctx := server.GinCtx(c)
-        _, err := services.AddArticle(user.ID, articleId, 1, ctx...)
+        deps := server.GinDeps(c)
+        _, err := services.AddArticle(user.ID, articleId, 1, deps...)
         if err != nil </span><span class="cov8" title="1">{
                 server.AbortWithError(c, err)
                 return
@@ -9024,8 +9024,8 @@ func checkout(c *gin.Context) <span class="cov8" title="1">{
         user := c.MustGet("user").(security.User)
         token := c.MustGet("tokenString").(string)
 
-        ctx := server.GinCtx(c)
-        _, err := services.Checkout(user.ID, token, ctx...)
+        deps := server.GinDeps(c)
+        _, err := services.Checkout(user.ID, token, deps...)
         if err != nil </span><span class="cov0" title="0">{
                 server.AbortWithError(c, err)
                 return
@@ -9092,8 +9092,8 @@ func ValidateAuthentication(c *gin.Context) <span class="cov8" title="1">{
                 return
         }</span>
 
-        <span class="cov8" title="1">ctx := GinCtx(c)
-        c.Set("logger", log.Get(ctx...).WithField(log.LOG_FIELD_USER_ID, user.ID))</span>
+        <span class="cov8" title="1">deps := GinDeps(c)
+        c.Set("logger", log.Get(deps...).WithField(log.LOG_FIELD_USER_ID, user.ID))</span>
 }
 
 // get token from Authorization header
@@ -9111,8 +9111,8 @@ func validateToken(c *gin.Context) (*security.User, error) <span class="cov8" ti
                 return nil, errs.Unauthorized
         }</span>
 
-        <span class="cov8" title="1">ctx := GinCtx(c)
-        user, err := security.Validate(tokenString, ctx...)
+        <span class="cov8" title="1">deps := GinDeps(c)
+        user, err := security.Validate(tokenString, deps...)
         if err != nil </span><span class="cov8" title="1">{
                 return nil, errs.Unauthorized
         }</span>
@@ -9139,13 +9139,13 @@ import (
 
 var server *gin.Engine = nil
 
-func Router(ctx ...interface{}) *gin.Engine <span class="cov8" title="1">{
+func Router(deps ...interface{}) *gin.Engine <span class="cov8" title="1">{
         if server == nil </span><span class="cov8" title="1">{
 
                 server = gin.Default()
 
                 server.Use(gzip.Gzip(gzip.DefaultCompression))
-                server.Use(GinLoggerMiddleware(ctx...))
+                server.Use(GinLoggerMiddleware(deps...))
 
                 server.Use(cors.Middleware(cors.Config{
                         Origins:         "*",
@@ -9167,16 +9167,16 @@ func Router(ctx ...interface{}) *gin.Engine <span class="cov8" title="1">{
 
 // Obtiene el contexto a serivcios externos
 // En prod este contexto esta vacio.
-func GinCtx(c *gin.Context) []interface{} <span class="cov8" title="1">{
-        var ctx []interface{}
-        // mock_ctx solo es para mocks en testing
-        if mocks, ok := c.Get("mock_ctx"); ok </span><span class="cov8" title="1">{
-                ctx = mocks.([]interface{})
+func GinDeps(c *gin.Context) []interface{} <span class="cov8" title="1">{
+        var deps []interface{}
+        // mock_deps solo es para mocks en testing
+        if mocks, ok := c.Get("mock_deps"); ok </span><span class="cov8" title="1">{
+                deps = mocks.([]interface{})
         }</span>
 
-        <span class="cov8" title="1">ctx = append(ctx, ginLogger(c))
+        <span class="cov8" title="1">deps = append(deps, ginLogger(c))
 
-        return ctx</span>
+        return deps</span>
 }
 </pre>
 		
@@ -9292,24 +9292,24 @@ import (
         uuid "github.com/satori/go.uuid"
 )
 
-func newGinLogger(c *gin.Context, ctx ...interface{}) log.LogRusEntry <span class="cov8" title="1">{
-        return log.Get(ctx...).
+func newGinLogger(c *gin.Context, deps ...interface{}) log.LogRusEntry <span class="cov8" title="1">{
+        return log.Get(deps...).
                 WithField(log.LOG_FIELD_CORRELATION_ID, getCorrelationId(c)).
                 WithField(log.LOG_FIELD_CONTROLLER, "Rest").
                 WithField(log.LOG_FIELD_HTTP_METHOD, c.Request.Method).
                 WithField(log.LOG_FIELD_HTTP_PATH, c.Request.URL.Path)
 }</span>
 
-func GinLoggerMiddleware(ctx ...interface{}) gin.HandlerFunc <span class="cov8" title="1">{
+func GinLoggerMiddleware(deps ...interface{}) gin.HandlerFunc <span class="cov8" title="1">{
         return func(c *gin.Context) </span><span class="cov8" title="1">{
-                logger := newGinLogger(c, ctx...)
+                logger := newGinLogger(c, deps...)
                 c.Set("logger", logger)
 
                 c.Next()
 
                 if c.Request.Method != "OPTIONS" </span><span class="cov8" title="1">{
-                        ctx := GinCtx(c)
-                        log.Get(ctx...).WithField(log.LOG_FIELD_HTTP_STATUS, c.Writer.Status()).Info("Completed")
+                        deps := GinDeps(c)
+                        log.Get(deps...).WithField(log.LOG_FIELD_HTTP_STATUS, c.Writer.Status()).Info("Completed")
                 }</span>
         }
 }
@@ -9349,12 +9349,12 @@ import (
 
 // Obtiene Router server con el contexto de testing adecuado
 // mockeando interfaces a serivcios externos
-func TestRouter(ctx ...interface{}) *gin.Engine <span class="cov8" title="1">{
+func TestRouter(deps ...interface{}) *gin.Engine <span class="cov8" title="1">{
         server = nil
-        Router(ctx...)
-        if len(ctx) &gt; 0 </span><span class="cov8" title="1">{
+        Router(deps...)
+        if len(deps) &gt; 0 </span><span class="cov8" title="1">{
                 server.Use(func(c *gin.Context) </span><span class="cov8" title="1">{
-                        c.Set("mock_ctx", ctx)
+                        c.Set("mock_deps", deps)
                         c.Next()
                 }</span>)
         }
@@ -9426,14 +9426,14 @@ import (
 )
 
 // Invalidate invalida un token del cache
-func Invalidate(token string, ctx ...interface{}) <span class="cov8" title="1">{
+func Invalidate(token string, deps ...interface{}) <span class="cov8" title="1">{
         if len(token) &lt;= 7 </span><span class="cov0" title="0">{
-                log.Get(ctx...).Info("Token no valido: ", token)
+                log.Get(deps...).Info("Token no valido: ", token)
                 return
         }</span>
 
         <span class="cov8" title="1">cache.Delete(token)
-        log.Get(ctx...).Info("Token invalidado: ", token)</span>
+        log.Get(deps...).Info("Token invalidado: ", token)</span>
 }
 </pre>
 		
@@ -9454,21 +9454,21 @@ import (
 
 var cache = gocache.New(60*time.Minute, 10*time.Minute)
 
-func getRemoteToken(token string, ctx ...interface{}) (*User, error) <span class="cov8" title="1">{
+func getRemoteToken(token string, deps ...interface{}) (*User, error) <span class="cov8" title="1">{
         // Buscamos el usuario remoto
         req, err := http.NewRequest("GET", env.Get().SecurityServerURL+"/v1/users/current", nil)
         if err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, errs.Unauthorized
         }</span>
         <span class="cov8" title="1">req.Header.Add("Authorization", "Bearer "+token)
-        if corrId, ok := log.Get(ctx...).Data()[log.LOG_FIELD_CORRELATION_ID].(string); ok </span><span class="cov8" title="1">{
+        if corrId, ok := log.Get(deps...).Data()[log.LOG_FIELD_CORRELATION_ID].(string); ok </span><span class="cov8" title="1">{
                 req.Header.Add(log.LOG_FIELD_CORRELATION_ID, corrId)
         }</span>
 
-        <span class="cov8" title="1">resp, err := httpx.Get(ctx...).Do(req)
+        <span class="cov8" title="1">resp, err := httpx.Get(deps...).Do(req)
         if err != nil || resp.StatusCode != 200 </span><span class="cov8" title="1">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, errs.Unauthorized
         }</span>
         <span class="cov8" title="1">defer resp.Body.Close()
@@ -9476,13 +9476,13 @@ func getRemoteToken(token string, ctx ...interface{}) (*User, error) <span class
         user := &amp;User{}
         err = json.NewDecoder(resp.Body).Decode(user)
         if err != nil </span><span class="cov8" title="1">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
         <span class="cov8" title="1">validate := validator.New()
         if err := validate.Struct(user); err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, err
         }</span>
         <span class="cov8" title="1">return user, nil</span>
@@ -9539,7 +9539,7 @@ import (
 )
 
 // Validate valida si el token es valido
-func Validate(token string, ctx ...interface{}) (*User, error) <span class="cov8" title="1">{
+func Validate(token string, deps ...interface{}) (*User, error) <span class="cov8" title="1">{
         // Si esta en cache, retornamos el cache
         if found, ok := cache.Get(token); ok </span><span class="cov0" title="0">{
                 if user, ok := found.(*User); ok </span><span class="cov0" title="0">{
@@ -9547,9 +9547,9 @@ func Validate(token string, ctx ...interface{}) (*User, error) <span class="cov8
                 }</span>
         }
 
-        <span class="cov8" title="1">user, err := getRemoteToken(token, ctx...)
+        <span class="cov8" title="1">user, err := getRemoteToken(token, deps...)
         if err != nil </span><span class="cov8" title="1">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return nil, errs.Unauthorized
         }</span>
 
@@ -9567,8 +9567,8 @@ import (
         "github.com/nmarsollier/cartgo/rabbit/emit"
 )
 
-func AddArticle(userId string, articleID string, quantity int, ctx ...interface{}) (*cart.Cart, error) <span class="cov8" title="1">{
-        cart, err := cart.AddArticle(userId, articleID, quantity, ctx...)
+func AddArticle(userId string, articleID string, quantity int, deps ...interface{}) (*cart.Cart, error) <span class="cov8" title="1">{
+        cart, err := cart.AddArticle(userId, articleID, quantity, deps...)
         if err != nil </span><span class="cov8" title="1">{
                 return nil, err
         }</span>
@@ -9580,7 +9580,7 @@ func AddArticle(userId string, articleID string, quantity int, ctx ...interface{
                                         ReferenceId: cart.UserId,
                                         ArticleId:   a.ArticleId,
                                 },
-                                ctx...)
+                                deps...)
                 }</span>
         }
 
@@ -9602,42 +9602,42 @@ import (
         "github.com/nmarsollier/cartgo/tools/httpx"
 )
 
-func Checkout(userId string, token string, ctx ...interface{}) (*cart.Cart, error) <span class="cov8" title="1">{
-        currentCart, err := cart.CurrentCart(userId, ctx...)
+func Checkout(userId string, token string, deps ...interface{}) (*cart.Cart, error) <span class="cov8" title="1">{
+        currentCart, err := cart.CurrentCart(userId, deps...)
         if err != nil </span><span class="cov0" title="0">{
                 return nil, err
         }</span>
 
-        <span class="cov8" title="1">err = ValidateCheckout(currentCart, token, ctx...)
+        <span class="cov8" title="1">err = ValidateCheckout(currentCart, token, deps...)
         if err != nil </span><span class="cov0" title="0">{
                 return nil, err
         }</span>
 
-        <span class="cov8" title="1">currentCart, err = cart.InvalidateCurrentCart(currentCart, ctx...)
+        <span class="cov8" title="1">currentCart, err = cart.InvalidateCurrentCart(currentCart, deps...)
         if err != nil </span><span class="cov0" title="0">{
                 return nil, err
         }</span>
 
-        <span class="cov8" title="1">emit.SendPlaceOrder(currentCart, ctx...)
+        <span class="cov8" title="1">emit.SendPlaceOrder(currentCart, deps...)
 
         return currentCart, nil</span>
 }
 
-func callValidate(article *cart.Article, token string, ctx ...interface{}) error <span class="cov8" title="1">{
+func callValidate(article *cart.Article, token string, deps ...interface{}) error <span class="cov8" title="1">{
         // Buscamos el usuario remoto
         req, err := http.NewRequest("GET", env.Get().CatalogServerURL+"/v1/articles/"+article.ArticleId, nil)
-        if corrId, ok := log.Get(ctx...).Data()[log.LOG_FIELD_CORRELATION_ID].(string); ok </span><span class="cov8" title="1">{
+        if corrId, ok := log.Get(deps...).Data()[log.LOG_FIELD_CORRELATION_ID].(string); ok </span><span class="cov8" title="1">{
                 req.Header.Add(log.LOG_FIELD_CORRELATION_ID, corrId)
         }</span>
 
         <span class="cov8" title="1">if err != nil </span><span class="cov0" title="0">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return errs.Invalid
         }</span>
         <span class="cov8" title="1">req.Header.Add("Authorization", "Bearer "+token)
-        resp, err := httpx.Get(ctx...).Do(req)
+        resp, err := httpx.Get(deps...).Do(req)
         if err != nil || resp.StatusCode != 200 </span><span class="cov8" title="1">{
-                log.Get(ctx...).Error(err)
+                log.Get(deps...).Error(err)
                 return errs.Invalid
         }</span>
         <span class="cov8" title="1">defer resp.Body.Close()
@@ -9653,8 +9653,8 @@ import (
         "github.com/nmarsollier/cartgo/rabbit/emit"
 )
 
-func GetCurrentCart(userId string, ctx ...interface{}) (*cart.Cart, error) <span class="cov8" title="1">{
-        cart, err := cart.CurrentCart(userId, ctx...)
+func GetCurrentCart(userId string, deps ...interface{}) (*cart.Cart, error) <span class="cov8" title="1">{
+        cart, err := cart.CurrentCart(userId, deps...)
         if err != nil </span><span class="cov8" title="1">{
                 return nil, err
         }</span>
@@ -9666,7 +9666,7 @@ func GetCurrentCart(userId string, ctx ...interface{}) (*cart.Cart, error) <span
                                         ReferenceId: cart.UserId,
                                         ArticleId:   a.ArticleId,
                                 },
-                                ctx...,
+                                deps...,
                         )
                 }</span>
         }
@@ -9681,8 +9681,8 @@ import (
         "github.com/nmarsollier/cartgo/cart"
 )
 
-func FindCartById(cartId string, ctx ...interface{}) (*cart.Cart, error) <span class="cov0" title="0">{
-        cart, err := cart.FindCartById(cartId, ctx...)
+func FindCartById(cartId string, deps ...interface{}) (*cart.Cart, error) <span class="cov0" title="0">{
+        cart, err := cart.FindCartById(cartId, deps...)
         if err != nil </span><span class="cov0" title="0">{
                 if err.Error() != "mongo: no documents in result" </span><span class="cov0" title="0">{
                         return nil, err
@@ -9700,11 +9700,11 @@ import (
         "github.com/nmarsollier/cartgo/tools/log"
 )
 
-func ValidateCheckout(cart *cart.Cart, token string, ctx ...interface{}) error <span class="cov8" title="1">{
+func ValidateCheckout(cart *cart.Cart, token string, deps ...interface{}) error <span class="cov8" title="1">{
         for _, a := range cart.Articles </span><span class="cov8" title="1">{
-                err := callValidate(a, token, ctx...)
+                err := callValidate(a, token, deps...)
                 if err != nil </span><span class="cov8" title="1">{
-                        log.Get(ctx...).Error(err)
+                        log.Get(deps...).Error(err)
                         return err
                 }</span>
         }
@@ -10242,8 +10242,8 @@ type HTTPClient interface {
         Do(req *http.Request) (*http.Response, error)
 }
 
-func Get(ctx ...interface{}) HTTPClient <span class="cov8" title="1">{
-        for _, o := range ctx </span><span class="cov8" title="1">{
+func Get(deps ...interface{}) HTTPClient <span class="cov8" title="1">{
+        for _, o := range deps </span><span class="cov8" title="1">{
                 if client, ok := o.(HTTPClient); ok </span><span class="cov8" title="1">{
                         return client
                 }</span>
@@ -10328,8 +10328,8 @@ const LOG_FIELD_SERVER = "server"
 const LOG_FIELD_USER_ID = "user_id"
 const LOG_FIELD_THREAD = "thread"
 
-func Get(ctx ...interface{}) LogRusEntry <span class="cov8" title="1">{
-        for _, o := range ctx </span><span class="cov8" title="1">{
+func Get(deps ...interface{}) LogRusEntry <span class="cov8" title="1">{
+        for _, o := range deps </span><span class="cov8" title="1">{
                 if ti, ok := o.(LogRusEntry); ok </span><span class="cov8" title="1">{
                         return ti
                 }</span>

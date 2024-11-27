@@ -1,6 +1,6 @@
 mode: set
-github.com/nmarsollier/cartgo/rabbit/emit/common.go:14.60,15.24 1 0
-github.com/nmarsollier/cartgo/rabbit/emit/common.go:15.24,16.38 1 0
+github.com/nmarsollier/cartgo/rabbit/emit/common.go:14.61,15.25 1 0
+github.com/nmarsollier/cartgo/rabbit/emit/common.go:15.25,16.38 1 0
 github.com/nmarsollier/cartgo/rabbit/emit/common.go:16.38,18.4 1 0
 github.com/nmarsollier/cartgo/rabbit/emit/common.go:21.2,22.16 2 0
 github.com/nmarsollier/cartgo/rabbit/emit/common.go:22.16,25.3 2 0
@@ -15,7 +15,7 @@ github.com/nmarsollier/cartgo/rabbit/emit/rabbit_channel_mocks.go:37.72,42.2 4 0
 github.com/nmarsollier/cartgo/rabbit/emit/rabbit_channel_mocks.go:45.97,48.2 2 0
 github.com/nmarsollier/cartgo/rabbit/emit/rabbit_channel_mocks.go:51.85,56.2 4 0
 github.com/nmarsollier/cartgo/rabbit/emit/rabbit_channel_mocks.go:59.103,62.2 2 0
-github.com/nmarsollier/cartgo/rabbit/emit/send_article_validation.go:18.82,33.16 5 0
+github.com/nmarsollier/cartgo/rabbit/emit/send_article_validation.go:18.83,33.16 5 0
 github.com/nmarsollier/cartgo/rabbit/emit/send_article_validation.go:33.16,37.3 3 0
 github.com/nmarsollier/cartgo/rabbit/emit/send_article_validation.go:39.2,43.16 2 0
 github.com/nmarsollier/cartgo/rabbit/emit/send_article_validation.go:43.16,47.3 3 0
@@ -24,7 +24,7 @@ github.com/nmarsollier/cartgo/rabbit/emit/send_article_validation.go:50.16,53.3 
 github.com/nmarsollier/cartgo/rabbit/emit/send_article_validation.go:55.2,60.16 2 0
 github.com/nmarsollier/cartgo/rabbit/emit/send_article_validation.go:60.16,64.3 3 0
 github.com/nmarsollier/cartgo/rabbit/emit/send_article_validation.go:66.2,68.12 2 0
-github.com/nmarsollier/cartgo/rabbit/emit/send_place_order.go:19.64,27.34 3 0
+github.com/nmarsollier/cartgo/rabbit/emit/send_place_order.go:19.65,27.34 3 0
 github.com/nmarsollier/cartgo/rabbit/emit/send_place_order.go:27.34,32.3 1 0
 github.com/nmarsollier/cartgo/rabbit/emit/send_place_order.go:34.2,47.16 5 0
 github.com/nmarsollier/cartgo/rabbit/emit/send_place_order.go:47.16,51.3 3 0
