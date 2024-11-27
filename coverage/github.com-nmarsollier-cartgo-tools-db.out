@@ -2,7 +2,7 @@ mode: set
 github.com/nmarsollier/cartgo/tools/db/connection.go:16.37,17.21 1 0
 github.com/nmarsollier/cartgo/tools/db/connection.go:17.21,21.17 3 0
 github.com/nmarsollier/cartgo/tools/db/connection.go:21.17,24.4 2 0
-github.com/nmarsollier/cartgo/tools/db/connection.go:26.3,26.40 1 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:26.3,26.37 1 0
 github.com/nmarsollier/cartgo/tools/db/connection.go:28.2,28.22 1 0
 github.com/nmarsollier/cartgo/tools/db/connection.go:32.34,33.47 1 0
 github.com/nmarsollier/cartgo/tools/db/connection.go:33.47,35.3 1 0
