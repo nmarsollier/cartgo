@@ -8,7 +8,7 @@ import (
 
 // Estuctura basica de del evento
 type Cart struct {
-	ID            string     `dynamodbav:"id" json:"_id"`
+	ID            string     `dynamodbav:"id" json:"id"`
 	UserId        string     `dynamodbav:"userId"  json:"userId" validate:"required,min=1,max=100"`
 	UserIdEnabled string     `dynamodbav:"userId_enabled"`
 	OrderId       string     `dynamodbav:"orderId" json:"orderId"`

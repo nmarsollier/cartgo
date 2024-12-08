@@ -67,27 +67,21 @@ type cartDao struct {
 	client *dynamodb.Client
 }
 
-func (r *cartDao) FindById(id string) (*Cart, error) {
-	token := Cart{ID: id}
-	tokenId, err := attributevalue.Marshal(token.ID)
-	if err != nil {
-		return nil, err
-	}
-
+func (r *cartDao) FindById(id string) (cart *Cart, err error) {
 	response, err := r.client.GetItem(context.TODO(), &dynamodb.GetItemInput{
-		Key: map[string]types.AttributeValue{"id": tokenId}, TableName: &tableName,
+		Key: map[string]types.AttributeValue{
+			"id": &types.AttributeValueMemberS{
+				Value: id,
+			}},
+		TableName: &tableName,
 	})
 
 	if err != nil || response == nil || response.Item == nil {
 		return nil, err
 	}
 
-	err = attributevalue.UnmarshalMap(response.Item, &token)
-	if err != nil {
-		return nil, err
-	}
-
-	return &token, nil
+	err = attributevalue.UnmarshalMap(response.Item, &cart)
+	return
 }
 
 func (r *cartDao) FindByUserId(id string) (*Cart, error) {

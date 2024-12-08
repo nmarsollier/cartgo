@@ -612,7 +612,7 @@ const docTemplate = `{
                 "userId"
             ],
             "properties": {
-                "_id": {
+                "id": {
                     "type": "string"
                 },
                 "articles": {
