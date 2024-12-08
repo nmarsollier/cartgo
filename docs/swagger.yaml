@@ -20,8 +20,6 @@ definitions:
     type: object
   cart.Cart:
     properties:
-      _id:
-        type: string
       articles:
         items:
           $ref: '#/definitions/cart.Article'
@@ -30,6 +28,8 @@ definitions:
         type: string
       enabled:
         type: boolean
+      id:
+        type: string
       orderId:
         type: string
       updated:

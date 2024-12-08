@@ -328,10 +328,10 @@ Valida el carrito para checkout
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| _id | string |  | No |
 | articles | [ [cart.Article](#cartarticle) ] |  | Yes |
 | created | string |  | No |
 | enabled | boolean |  | No |
+| id | string |  | No |
 | orderId | string |  | No |
 | updated | string |  | No |
 | userId | string |  | Yes |

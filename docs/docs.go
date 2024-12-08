@@ -612,9 +612,6 @@ const docTemplate = `{
                 "userId"
             ],
             "properties": {
-                "id": {
-                    "type": "string"
-                },
                 "articles": {
                     "type": "array",
                     "items": {
@@ -626,6 +623,9 @@ const docTemplate = `{
                 },
                 "enabled": {
                     "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
                 },
                 "orderId": {
                     "type": "string"

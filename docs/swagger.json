@@ -606,9 +606,6 @@
                 "userId"
             ],
             "properties": {
-                "_id": {
-                    "type": "string"
-                },
                 "articles": {
                     "type": "array",
                     "items": {
@@ -620,6 +617,9 @@
                 },
                 "enabled": {
                     "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
                 },
                 "orderId": {
                     "type": "string"

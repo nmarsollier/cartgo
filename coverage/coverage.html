@@ -357,27 +357,21 @@ type cartDao struct {
         client *dynamodb.Client
 }
 
-func (r *cartDao) FindById(id string) (*Cart, error) <span class="cov0" title="0">{
-        token := Cart{ID: id}
-        tokenId, err := attributevalue.Marshal(token.ID)
-        if err != nil </span><span class="cov0" title="0">{
-                return nil, err
-        }</span>
-
-        <span class="cov0" title="0">response, err := r.client.GetItem(context.TODO(), &amp;dynamodb.GetItemInput{
-                Key: map[string]types.AttributeValue{"id": tokenId}, TableName: &amp;tableName,
+func (r *cartDao) FindById(id string) (cart *Cart, err error) <span class="cov0" title="0">{
+        response, err := r.client.GetItem(context.TODO(), &amp;dynamodb.GetItemInput{
+                Key: map[string]types.AttributeValue{
+                        "id": &amp;types.AttributeValueMemberS{
+                                Value: id,
+                        }},
+                TableName: &amp;tableName,
         })
 
         if err != nil || response == nil || response.Item == nil </span><span class="cov0" title="0">{
                 return nil, err
         }</span>
 
-        <span class="cov0" title="0">err = attributevalue.UnmarshalMap(response.Item, &amp;token)
-        if err != nil </span><span class="cov0" title="0">{
-                return nil, err
-        }</span>
-
-        <span class="cov0" title="0">return &amp;token, nil</span>
+        <span class="cov0" title="0">err = attributevalue.UnmarshalMap(response.Item, &amp;cart)
+        return</span>
 }
 
 func (r *cartDao) FindByUserId(id string) (*Cart, error) <span class="cov0" title="0">{
@@ -680,7 +674,7 @@ import (
 
 // Estuctura basica de del evento
 type Cart struct {
-        ID            string     `dynamodbav:"id" json:"_id"`
+        ID            string     `dynamodbav:"id" json:"id"`
         UserId        string     `dynamodbav:"userId"  json:"userId" validate:"required,min=1,max=100"`
         UserIdEnabled string     `dynamodbav:"userId_enabled"`
         OrderId       string     `dynamodbav:"orderId" json:"orderId"`
@@ -1351,9 +1345,6 @@ const docTemplate = `{
                 "userId"
             ],
             "properties": {
-                "_id": {
-                    "type": "string"
-                },
                 "articles": {
                     "type": "array",
                     "items": {
@@ -1365,6 +1356,9 @@ const docTemplate = `{
                 },
                 "enabled": {
                     "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
                 },
                 "orderId": {
                     "type": "string"
