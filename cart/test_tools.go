@@ -3,13 +3,13 @@ package cart
 import (
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	uuid "github.com/satori/go.uuid"
 )
 
 // Mock Data
 func TestCart() *Cart {
 	return &Cart{
-		ID:      primitive.NewObjectID(),
+		ID:      uuid.NewV4().String(),
 		UserId:  "123",
 		Enabled: true,
 		Created: time.Now(),

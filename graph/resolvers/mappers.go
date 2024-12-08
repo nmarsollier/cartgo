@@ -17,7 +17,7 @@ func cartToModel(cart *cart.Cart) *model.Cart {
 	}
 
 	return &model.Cart{
-		ID:       cart.ID.Hex(),
+		ID:       cart.ID,
 		UserID:   cart.UserId,
 		User:     User,
 		OrderID:  &cart.OrderId,

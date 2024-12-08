@@ -12,25 +12,25 @@ import (
 	"github.com/nmarsollier/cartgo/tools/httpx"
 )
 
-func Checkout(userId string, token string, deps ...interface{}) (*cart.Cart, error) {
+func Checkout(userId string, token string, deps ...interface{}) (err error) {
 	currentCart, err := cart.CurrentCart(userId, deps...)
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	err = ValidateCheckout(currentCart, token, deps...)
 	if err != nil {
-		return nil, err
+		return
 	}
 
-	currentCart, err = cart.InvalidateCurrentCart(currentCart, deps...)
+	err = cart.InvalidateCurrentCart(currentCart, deps...)
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	emit.SendPlaceOrder(currentCart, deps...)
 
-	return currentCart, nil
+	return
 }
 
 func callValidate(article *cart.Article, token string, deps ...interface{}) error {

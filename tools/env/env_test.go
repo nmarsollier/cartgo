@@ -31,7 +31,6 @@ func TestLoad(t *testing.T) {
 
 	// Assert values
 	assert.Equal(t, "amqp://test-rabbit-url", config.RabbitURL)
-	assert.Equal(t, "mongodb://test-mongo-url", config.MongoURL)
 	assert.Equal(t, 8080, config.Port)
 	assert.Equal(t, "http://test-auth-service-url", config.SecurityServerURL)
 	assert.Equal(t, "test-fluent-url", config.FluentUrl)

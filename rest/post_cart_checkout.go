@@ -35,7 +35,7 @@ func checkout(c *gin.Context) {
 	token := c.MustGet("tokenString").(string)
 
 	deps := server.GinDeps(c)
-	_, err := services.Checkout(user.ID, token, deps...)
+	err := services.Checkout(user.ID, token, deps...)
 	if err != nil {
 		server.AbortWithError(c, err)
 		return

@@ -14,7 +14,7 @@ func RemoveArticle(userId string, articleId string, deps ...interface{}) (*Cart,
 	}
 	cart.Articles = newArticles
 
-	cart, err = replace(cart, deps...)
+	err = replace(cart, deps...)
 	if err != nil {
 		return nil, err
 	}

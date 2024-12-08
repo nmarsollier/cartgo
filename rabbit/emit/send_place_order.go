@@ -32,7 +32,7 @@ func SendPlaceOrder(cart *cart.Cart, deps ...interface{}) error {
 	}
 
 	data := PlacedData{
-		CartId:   cart.ID.Hex(),
+		CartId:   cart.ID,
 		UserId:   cart.UserId,
 		Articles: articles,
 	}

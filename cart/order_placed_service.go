@@ -13,7 +13,7 @@ func ProcessOrderPlaced(data *OrderPlacedEvent, deps ...interface{}) error {
 	}
 
 	cart.OrderId = data.OrderId
-	_, err = replace(cart, deps...)
+	err = replace(cart, deps...)
 	if err != nil {
 		return err
 	}

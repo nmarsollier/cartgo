@@ -1,18 +1,21 @@
 package cart
 
+import (
+	"github.com/nmarsollier/cartgo/tools/errs"
+)
+
 func CurrentCart(userId string, deps ...interface{}) (*Cart, error) {
 	cart, err := findByUserId(userId, deps...)
-	if err != nil {
-		if err.Error() != "mongo: no documents in result" {
-			return nil, err
-
-		}
-
+	if err == errs.NotFound {
 		cart = newCart(userId)
-		cart, err = insert(cart, deps...)
+		err = insert(cart, deps...)
 		if err != nil {
 			return nil, err
 		}
+	}
+
+	if err != nil {
+		return nil, err
 	}
 
 	return cart, nil
