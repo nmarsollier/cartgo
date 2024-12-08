@@ -1,12 +1,23 @@
 package cart
 
 import (
+	"context"
+	"errors"
+	"strconv"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
+	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/expression"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+	"github.com/nmarsollier/cartgo/tools/db"
 	"github.com/nmarsollier/cartgo/tools/errs"
 	"github.com/nmarsollier/cartgo/tools/log"
 	uuid "github.com/satori/go.uuid"
 )
+
+var tableName = "cart"
 
 var ErrID = errs.NewValidation().Add("id", "Invalid")
 
@@ -23,68 +34,85 @@ func newCart(userId string) *Cart {
 
 // findByUserId lee el cart activo del usuario
 func findByUserId(cartId string, deps ...interface{}) (cart *Cart, err error) {
-	conn, err := GetCartDao(deps...)
+	expr, err := expression.NewBuilder().WithKeyCondition(
+		expression.Key("userId_enabled").Equal(expression.Value(cartId + "_" + strconv.FormatBool(true))),
+	).Build()
+
 	if err != nil {
-		log.Get(deps...).Error(err)
 		return
 	}
 
-	if cart, err = conn.FindByUserId(cartId); err != nil {
-		return nil, err
+	response, err := db.Get(deps...).Query(context.TODO(), &dynamodb.QueryInput{
+		TableName:                 &tableName,
+		IndexName:                 aws.String("userId_enabled-index"),
+		KeyConditionExpression:    expr.KeyCondition(),
+		ExpressionAttributeNames:  expr.Names(),
+		ExpressionAttributeValues: expr.Values(),
+	})
+
+	if temp := new(types.ResourceNotFoundException); err != nil && !errors.As(err, &temp) {
+		return nil, errs.NotFound
 	}
 
-	return cart, nil
-}
+	if err != nil || len(response.Items) == 0 {
+		return nil, errs.NotFound
+	}
 
-func findById(cartId string, deps ...interface{}) (cart *Cart, err error) {
-	conn, err := GetCartDao(deps...)
+	err = attributevalue.UnmarshalMap(response.Items[0], &cart)
 	if err != nil {
-		log.Get(deps...).Error(err)
-		return
-	}
-
-	if cart, err = conn.FindById(cartId); err != nil {
-		return nil, err
-	}
-
-	return cart, nil
-}
-
-func insert(cart *Cart, deps ...interface{}) (err error) {
-	if err = cart.validateSchema(); err != nil {
-		log.Get(deps...).Error(err)
-		return
-	}
-
-	collection, err := GetCartDao(deps...)
-	if err != nil {
-		log.Get(deps...).Error(err)
-		return
-	}
-
-	if err = collection.Save(cart); err != nil {
-		log.Get(deps...).Error(err)
 		return
 	}
 
 	return
 }
 
-func replace(cart *Cart, deps ...interface{}) (err error) {
+func findById(cartId string, deps ...interface{}) (cart *Cart, err error) {
+	response, err := db.Get(deps...).GetItem(context.TODO(), &dynamodb.GetItemInput{
+		Key: map[string]types.AttributeValue{
+			"id": &types.AttributeValueMemberS{
+				Value: cartId,
+			}},
+		TableName: &tableName,
+	})
+
+	if err != nil || response == nil || response.Item == nil {
+		log.Get(deps...).Error(err)
+
+		return
+	}
+
+	err = attributevalue.UnmarshalMap(response.Item, &cart)
+	if err != nil {
+		log.Get(deps...).Error(err)
+	}
+
+	return
+}
+
+func save(cart *Cart, deps ...interface{}) (err error) {
 	if err = cart.validateSchema(); err != nil {
 		log.Get(deps...).Error(err)
 		return
 	}
 
-	collection, err := GetCartDao(deps...)
+	cart.UserIdEnabled = cart.UserId + "_" + strconv.FormatBool(cart.Enabled)
+	articleToInsert, err := attributevalue.MarshalMap(cart)
 	if err != nil {
 		log.Get(deps...).Error(err)
+
 		return
 	}
 
-	if err = collection.Save(cart); err != nil {
+	_, err = db.Get(deps...).PutItem(
+		context.TODO(),
+		&dynamodb.PutItemInput{
+			TableName: &tableName,
+			Item:      articleToInsert,
+		},
+	)
+
+	if err != nil {
 		log.Get(deps...).Error(err)
-		return
 	}
 
 	return
@@ -96,18 +124,30 @@ func invalidate(cart *Cart, deps ...interface{}) (err error) {
 		return
 	}
 
-	conn, err := GetCartDao(deps...)
+	key, err := attributevalue.MarshalMap(map[string]interface{}{
+		"id": cart.ID,
+	})
 	if err != nil {
-		log.Get(deps...).Error(err)
 		return
 	}
 
-	cart.Enabled = false
-
-	err = conn.Disable(cart.ID, cart.UserId)
+	update, err := attributevalue.MarshalMap(map[string]interface{}{
+		":enabled":        false,
+		":userId_enabled": cart.UserId + "_" + strconv.FormatBool(false),
+	})
 	if err != nil {
-		log.Get(deps...).Error(err)
+		return
 	}
+
+	_, err = db.Get(deps...).UpdateItem(
+		context.TODO(),
+		&dynamodb.UpdateItemInput{
+			TableName:                 &tableName,
+			Key:                       key,
+			UpdateExpression:          aws.String("SET enabled = :enabled, userId_enabled = :userId_enabled"),
+			ExpressionAttributeValues: update,
+		},
+	)
 
 	return
 }

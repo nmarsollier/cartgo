@@ -34,7 +34,7 @@ func AddArticle(userId string, articleId string, quantity int, deps ...interface
 	}
 	cart.Articles = newArticles
 
-	err = replace(cart, deps...)
+	err = save(cart, deps...)
 	if err != nil {
 		return nil, err
 	}

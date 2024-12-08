@@ -19,7 +19,7 @@ func ProcessArticleData(data *ValidationEvent, deps ...interface{}) error {
 		}
 	}
 
-	err = replace(cart, deps...)
+	err = save(cart, deps...)
 	if err != nil {
 		return err
 	}

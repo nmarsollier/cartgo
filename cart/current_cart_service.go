@@ -8,7 +8,7 @@ func CurrentCart(userId string, deps ...interface{}) (*Cart, error) {
 	cart, err := findByUserId(userId, deps...)
 	if err == errs.NotFound {
 		cart = newCart(userId)
-		err = insert(cart, deps...)
+		err = save(cart, deps...)
 		if err != nil {
 			return nil, err
 		}
