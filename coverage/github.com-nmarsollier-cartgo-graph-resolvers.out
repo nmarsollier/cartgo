@@ -4,11 +4,11 @@ github.com/nmarsollier/cartgo/graph/resolvers/add_article.go:12.16,14.3 1 0
 github.com/nmarsollier/cartgo/graph/resolvers/add_article.go:16.2,19.16 3 0
 github.com/nmarsollier/cartgo/graph/resolvers/add_article.go:19.16,21.3 1 0
 github.com/nmarsollier/cartgo/graph/resolvers/add_article.go:23.2,23.18 1 0
-github.com/nmarsollier/cartgo/graph/resolvers/checkout.go:10.58,12.16 2 0
+github.com/nmarsollier/cartgo/graph/resolvers/checkout.go:10.69,12.16 2 0
 github.com/nmarsollier/cartgo/graph/resolvers/checkout.go:12.16,14.3 1 0
-github.com/nmarsollier/cartgo/graph/resolvers/checkout.go:15.2,20.16 4 0
-github.com/nmarsollier/cartgo/graph/resolvers/checkout.go:20.16,22.3 1 0
-github.com/nmarsollier/cartgo/graph/resolvers/checkout.go:23.2,23.18 1 0
+github.com/nmarsollier/cartgo/graph/resolvers/checkout.go:15.2,16.16 2 0
+github.com/nmarsollier/cartgo/graph/resolvers/checkout.go:16.16,18.3 1 0
+github.com/nmarsollier/cartgo/graph/resolvers/checkout.go:20.2,24.8 4 0
 github.com/nmarsollier/cartgo/graph/resolvers/current_cart.go:11.68,15.16 3 0
 github.com/nmarsollier/cartgo/graph/resolvers/current_cart.go:15.16,17.3 1 0
 github.com/nmarsollier/cartgo/graph/resolvers/current_cart.go:19.2,20.16 2 0

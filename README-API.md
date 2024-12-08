@@ -335,6 +335,7 @@ Valida el carrito para checkout
 | orderId | string |  | No |
 | updated | string |  | No |
 | userId | string |  | Yes |
+| userIdEnabled | string |  | No |
 
 #### cart.OrderPlacedEvent
 

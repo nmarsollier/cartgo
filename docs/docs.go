@@ -637,6 +637,9 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 1
+                },
+                "userIdEnabled": {
+                    "type": "string"
                 }
             }
         },
