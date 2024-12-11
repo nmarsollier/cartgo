@@ -179,9 +179,9 @@
 				
 				<option value="file61">github.com/nmarsollier/cartgo/services/validate_checkout_service.go (0.0%)</option>
 				
-				<option value="file62">github.com/nmarsollier/cartgo/tools/db/conn.go (0.0%)</option>
+				<option value="file62">github.com/nmarsollier/cartgo/tools/db/connection.go (0.0%)</option>
 				
-				<option value="file63">github.com/nmarsollier/cartgo/tools/env/env.go (92.3%)</option>
+				<option value="file63">github.com/nmarsollier/cartgo/tools/env/env.go (86.4%)</option>
 				
 				<option value="file64">github.com/nmarsollier/cartgo/tools/errs/rest_error.go (33.3%)</option>
 				
@@ -199,7 +199,7 @@
 				
 				<option value="file71">github.com/nmarsollier/cartgo/tools/log/test_tools.go (100.0%)</option>
 				
-				<option value="file72">github.com/nmarsollier/cartgo/tools/strs/json_tools.go (100.0%)</option>
+				<option value="file72">github.com/nmarsollier/cartgo/tools/strs/json_tools.go (66.7%)</option>
 				
 				</select>
 			</div>
@@ -386,22 +386,14 @@ func RemoveArticle(userId string, articleId string, deps ...interface{}) (*Cart,
 
 import (
         "context"
-        "errors"
-        "strconv"
         "time"
 
-        "github.com/aws/aws-sdk-go-v2/aws"
-        "github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
-        "github.com/aws/aws-sdk-go-v2/feature/dynamodb/expression"
-        "github.com/aws/aws-sdk-go-v2/service/dynamodb"
-        "github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
         "github.com/nmarsollier/cartgo/tools/db"
         "github.com/nmarsollier/cartgo/tools/errs"
         "github.com/nmarsollier/cartgo/tools/log"
+        "github.com/nmarsollier/cartgo/tools/strs"
         uuid "github.com/satori/go.uuid"
 )
-
-var tableName = "cart"
 
 var ErrID = errs.NewValidation().Add("id", "Invalid")
 
@@ -417,60 +409,74 @@ func newCart(userId string) *Cart <span class="cov0" title="0">{
 }</span>
 
 // findByUserId lee el cart activo del usuario
-func findByUserId(cartId string, deps ...interface{}) (cart *Cart, err error) <span class="cov0" title="0">{
-        expr, err := expression.NewBuilder().WithKeyCondition(
-                expression.Key("userId_enabled").Equal(expression.Value(cartId + "_" + strconv.FormatBool(true))),
-        ).Build()
-
+func findByUserId(userId string, deps ...interface{}) (*Cart, error) <span class="cov0" title="0">{
+        conn, err := db.GetPostgresClient(deps...)
         if err != nil </span><span class="cov0" title="0">{
-                return
+                log.Get(deps...).Error(err)
+                return nil, err
         }</span>
 
-        <span class="cov0" title="0">response, err := db.Get(deps...).Query(context.TODO(), &amp;dynamodb.QueryInput{
-                TableName:                 &amp;tableName,
-                IndexName:                 aws.String("userId_enabled-index"),
-                KeyConditionExpression:    expr.KeyCondition(),
-                ExpressionAttributeNames:  expr.Names(),
-                ExpressionAttributeValues: expr.Values(),
-        })
+        <span class="cov0" title="0">query := `
+        SELECT id, userId, orderId, articles, enabled, created, updated
+        FROM cartgo.carts
+        WHERE userId = $1 and enabled = true
+    `
+        row := conn.QueryRow(context.Background(), query, userId)
 
-        if temp := new(types.ResourceNotFoundException); err != nil &amp;&amp; !errors.As(err, &amp;temp) </span><span class="cov0" title="0">{
-                return nil, errs.NotFound
-        }</span>
-
-        <span class="cov0" title="0">if err != nil || len(response.Items) == 0 </span><span class="cov0" title="0">{
-                return nil, errs.NotFound
-        }</span>
-
-        <span class="cov0" title="0">err = attributevalue.UnmarshalMap(response.Items[0], &amp;cart)
+        var cart Cart
+        var articlesJSON []byte
+        err = row.Scan(&amp;cart.ID, &amp;cart.UserId, &amp;cart.OrderId, &amp;articlesJSON, &amp;cart.Enabled, &amp;cart.Created, &amp;cart.Updated)
         if err != nil </span><span class="cov0" title="0">{
-                return
+                if err.Error() == "no rows in result set" </span><span class="cov0" title="0">{
+                        return nil, errs.NotFound
+                }</span>
+
+                <span class="cov0" title="0">log.Get(deps...).Error(err)
+                return nil, err</span>
+        }
+
+        <span class="cov0" title="0">err = strs.FromJson(string(articlesJSON), &amp;cart.Articles)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Get(deps...).Error(err)
+                return nil, err
         }</span>
 
-        <span class="cov0" title="0">return</span>
+        <span class="cov0" title="0">return &amp;cart, nil</span>
 }
 
-func findById(cartId string, deps ...interface{}) (cart *Cart, err error) <span class="cov0" title="0">{
-        response, err := db.Get(deps...).GetItem(context.TODO(), &amp;dynamodb.GetItemInput{
-                Key: map[string]types.AttributeValue{
-                        "id": &amp;types.AttributeValueMemberS{
-                                Value: cartId,
-                        }},
-                TableName: &amp;tableName,
-        })
-
-        if err != nil || response == nil || response.Item == nil </span><span class="cov0" title="0">{
-                log.Get(deps...).Error(err)
-
-                return
-        }</span>
-
-        <span class="cov0" title="0">err = attributevalue.UnmarshalMap(response.Item, &amp;cart)
+func findById(cartId string, deps ...interface{}) (*Cart, error) <span class="cov0" title="0">{
+        conn, err := db.GetPostgresClient(deps...)
         if err != nil </span><span class="cov0" title="0">{
                 log.Get(deps...).Error(err)
+                return nil, err
         }</span>
 
-        <span class="cov0" title="0">return</span>
+        <span class="cov0" title="0">query := `
+        SELECT id, userId, orderId, articles, enabled, created, updated
+        FROM cartgo.carts
+        WHERE id = $1
+    `
+        row := conn.QueryRow(context.Background(), query, cartId)
+
+        var cart Cart
+        var articlesJSON []byte
+
+        err = row.Scan(&amp;cart.ID, &amp;cart.UserId, &amp;cart.OrderId, &amp;articlesJSON, &amp;cart.Enabled, &amp;cart.Created, &amp;cart.Updated)
+        if err != nil </span><span class="cov0" title="0">{
+                if err.Error() == "no rows in result set" </span><span class="cov0" title="0">{
+                        return nil, errs.NotFound
+                }</span>
+                <span class="cov0" title="0">log.Get(deps...).Error(err)
+                return nil, err</span>
+        }
+
+        <span class="cov0" title="0">err = strs.FromJson(string(articlesJSON), &amp;cart.Articles)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Get(deps...).Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return &amp;cart, nil</span>
 }
 
 func save(cart *Cart, deps ...interface{}) (err error) <span class="cov0" title="0">{
@@ -479,61 +485,57 @@ func save(cart *Cart, deps ...interface{}) (err error) <span class="cov0" title=
                 return
         }</span>
 
-        <span class="cov0" title="0">cart.UserIdEnabled = cart.UserId + "_" + strconv.FormatBool(cart.Enabled)
-        articleToInsert, err := attributevalue.MarshalMap(cart)
+        <span class="cov0" title="0">conn, err := db.GetPostgresClient(deps...)
         if err != nil </span><span class="cov0" title="0">{
                 log.Get(deps...).Error(err)
-
-                return
+                return err
         }</span>
 
-        <span class="cov0" title="0">_, err = db.Get(deps...).PutItem(
-                context.TODO(),
-                &amp;dynamodb.PutItemInput{
-                        TableName: &amp;tableName,
-                        Item:      articleToInsert,
-                },
-        )
+        <span class="cov0" title="0">articlesJSON := strs.ToJson(cart.Articles)
 
+        query := `
+        INSERT INTO cartgo.carts (id, userId, orderId, articles, enabled, created, updated)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        ON CONFLICT (id) DO UPDATE SET
+            articles = EXCLUDED.articles,
+            enabled = EXCLUDED.enabled,
+            updated = EXCLUDED.updated
+    `
+
+        _, err = conn.Exec(context.Background(), query, cart.ID, cart.UserId, cart.OrderId, articlesJSON, cart.Enabled, cart.Created, cart.Updated)
         if err != nil </span><span class="cov0" title="0">{
                 log.Get(deps...).Error(err)
+                return err
         }</span>
 
-        <span class="cov0" title="0">return</span>
+        <span class="cov0" title="0">return nil</span>
 }
 
 func invalidate(cart *Cart, deps ...interface{}) (err error) <span class="cov0" title="0">{
         if err = cart.validateSchema(); err != nil </span><span class="cov0" title="0">{
                 log.Get(deps...).Error(err)
-                return
+                return err
         }</span>
 
-        <span class="cov0" title="0">key, err := attributevalue.MarshalMap(map[string]interface{}{
-                "id": cart.ID,
-        })
+        <span class="cov0" title="0">conn, err := db.GetPostgresClient(deps...)
         if err != nil </span><span class="cov0" title="0">{
-                return
+                log.Get(deps...).Error(err)
+                return err
         }</span>
 
-        <span class="cov0" title="0">update, err := attributevalue.MarshalMap(map[string]interface{}{
-                ":enabled":        false,
-                ":userId_enabled": cart.UserId + "_" + strconv.FormatBool(false),
-        })
+        <span class="cov0" title="0">query := `
+        UPDATE cartgo.carts
+        SET enabled = $1, updated = $2
+        WHERE id = $3
+    `
+
+        _, err = conn.Exec(context.Background(), query, false, time.Now(), cart.ID)
         if err != nil </span><span class="cov0" title="0">{
-                return
+                log.Get(deps...).Error(err)
+                return err
         }</span>
 
-        <span class="cov0" title="0">_, err = db.Get(deps...).UpdateItem(
-                context.TODO(),
-                &amp;dynamodb.UpdateItemInput{
-                        TableName:                 &amp;tableName,
-                        Key:                       key,
-                        UpdateExpression:          aws.String("SET enabled = :enabled, userId_enabled = :userId_enabled"),
-                        ExpressionAttributeValues: update,
-                },
-        )
-
-        return</span>
+        <span class="cov0" title="0">return nil</span>
 }
 </pre>
 		
@@ -547,14 +549,13 @@ import (
 
 // Estuctura basica de del evento
 type Cart struct {
-        ID            string     `dynamodbav:"id" json:"id"`
-        UserId        string     `dynamodbav:"userId"  json:"userId" validate:"required,min=1,max=100"`
-        UserIdEnabled string     `dynamodbav:"userId_enabled"`
-        OrderId       string     `dynamodbav:"orderId" json:"orderId"`
-        Articles      []*Article `dynamodbav:"articles"  json:"articles" validate:"required"`
-        Enabled       bool       `dynamodbav:"enabled" json:"enabled"`
-        Created       time.Time  `dynamodbav:"created" json:"created"`
-        Updated       time.Time  `dynamodbav:"updated" json:"updated"`
+        ID       string     `json:"id"`
+        UserId   string     `json:"userId" validate:"required,min=1,max=100"`
+        OrderId  string     `json:"orderId"`
+        Articles []*Article `json:"articles" validate:"required"`
+        Enabled  bool       `json:"enabled"`
+        Created  time.Time  `json:"created"`
+        Updated  time.Time  `json:"updated"`
 }
 
 // validateSchema valida la estructura para ser insertada en la db
@@ -563,10 +564,10 @@ func (e *Cart) validateSchema() error <span class="cov0" title="0">{
 }</span>
 
 type Article struct {
-        ArticleId string `dynamodbav:"articleId" json:"articleId" validate:"required,min=1,max=100"`
-        Quantity  int    `dynamodbav:"quantity" json:"quantity" validate:"required,min=1,max=100"`
-        Valid     bool   `dynamodbav:"valid" json:"valid"`
-        Validated bool   `dynamodbav:"validated" json:"validated"`
+        ArticleId string `json:"articleId" validate:"required,min=1,max=100"`
+        Quantity  int    `json:"quantity" validate:"required,min=1,max=100"`
+        Valid     bool   `json:"valid"`
+        Validated bool   `json:"validated"`
 }
 </pre>
 		
@@ -1243,9 +1244,6 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 1
-                },
-                "userIdEnabled": {
-                    "type": "string"
                 }
             }
         },
@@ -9686,43 +9684,39 @@ func ValidateCheckout(cart *cart.Cart, token string, deps ...interface{}) error 
 
 import (
         "context"
-        "log"
-        "sync"
 
-        "github.com/aws/aws-sdk-go-v2/aws"
-        "github.com/aws/aws-sdk-go-v2/config"
-        "github.com/aws/aws-sdk-go-v2/credentials"
-        "github.com/aws/aws-sdk-go-v2/service/dynamodb"
+        "github.com/jackc/pgx/v5/pgxpool"
         "github.com/nmarsollier/cartgo/tools/env"
+        "github.com/nmarsollier/cartgo/tools/log"
 )
 
 var (
-        once     sync.Once
-        instance *dynamodb.Client
+        instance *pgxpool.Pool
 )
 
-func Get(deps ...interface{}) *dynamodb.Client <span class="cov0" title="0">{
-        once.Do(func() </span><span class="cov0" title="0">{
-                customCreds := aws.NewCredentialsCache(credentials.NewStaticCredentialsProvider(
-                        env.Get().AwsAccessKeyId,
-                        env.Get().AwsSecret,
-                        "",
-                ))
-
-                cfg, err := config.LoadDefaultConfig(context.TODO(),
-                        config.WithRegion(env.Get().AwsRegion),
-                        config.WithCredentialsProvider(customCreds),
-                )
+func GetPostgresClient(deps ...interface{}) (*pgxpool.Pool, error) <span class="cov0" title="0">{
+        if instance == nil </span><span class="cov0" title="0">{
+                config, err := pgxpool.ParseConfig(env.Get().PostgresURL)
                 if err != nil </span><span class="cov0" title="0">{
-                        log.Fatalf("Error cargando la configuración: %v", err)
+                        log.Get(deps...).Error(err)
+                        return nil, err
                 }</span>
 
-                <span class="cov0" title="0">client := dynamodb.NewFromConfig(cfg)
+                <span class="cov0" title="0">instance, err = pgxpool.NewWithConfig(context.Background(), config)
+                if err != nil </span><span class="cov0" title="0">{
+                        log.Get(deps...).Error(err)
+                        return nil, err
+                }</span>
 
-                instance = client</span>
-        })
+                <span class="cov0" title="0">_, err = instance.Exec(context.Background(), "SET search_path TO cartgo")
+                if err != nil </span><span class="cov0" title="0">{
+                        log.Get(deps...).Error(err)
+                }</span>
 
-        <span class="cov0" title="0">return instance</span>
+                <span class="cov0" title="0">log.Get(deps...).Info("Postgres Connected")</span>
+        }
+
+        <span class="cov0" title="0">return instance, nil</span>
 }
 </pre>
 		
@@ -9741,9 +9735,7 @@ type Configuration struct {
         SecurityServerURL string `json:"securityServerUrl"`
         CatalogServerURL  string `json:"catalogUrl"`
         FluentUrl         string `json:"fluentUrl"`
-        AwsAccessKeyId    string `json:"AwsAccessKeyId"`
-        AwsSecret         string `json:"AwsSecret"`
-        AwsRegion         string `json:"AwsRegion"`
+        PostgresURL       string `json:"postgresUrl"`
 }
 
 var config *Configuration
@@ -9756,9 +9748,7 @@ func new() *Configuration <span class="cov8" title="1">{
                 SecurityServerURL: "http://localhost:3000",
                 CatalogServerURL:  "http://localhost:3002",
                 FluentUrl:         "localhost:24224",
-                AwsAccessKeyId:    "placeholder_value",
-                AwsSecret:         "placeholder_value",
-                AwsRegion:         "placeholder_value",
+                PostgresURL:       "postgres://postgres@localhost:5432/postgres",
         }
 }</span>
 
@@ -9779,16 +9769,8 @@ func load() *Configuration <span class="cov8" title="1">{
                 result.RabbitURL = value
         }</span>
 
-        <span class="cov8" title="1">if value := os.Getenv("AWS_ACCESS_KEY_ID"); len(value) &gt; 0 </span><span class="cov8" title="1">{
-                result.AwsAccessKeyId = value
-        }</span>
-
-        <span class="cov8" title="1">if value := os.Getenv("AWS_SECRET_ACCESS_KEY"); len(value) &gt; 0 </span><span class="cov8" title="1">{
-                result.AwsSecret = value
-        }</span>
-
-        <span class="cov8" title="1">if value := os.Getenv("AWS_REGION"); len(value) &gt; 0 </span><span class="cov8" title="1">{
-                result.AwsRegion = value
+        <span class="cov8" title="1">if value := os.Getenv("POSTGRES_URL"); len(value) &gt; 0 </span><span class="cov0" title="0">{
+                result.PostgresURL = value
         }</span>
 
         <span class="cov8" title="1">if value := os.Getenv("PORT"); len(value) &gt; 0 </span><span class="cov8" title="1">{
@@ -10222,6 +10204,10 @@ import "encoding/json"
 func ToJson(obj interface{}) string <span class="cov8" title="1">{
         jsonData, _ := json.Marshal(obj)
         return string(jsonData)
+}</span>
+
+func FromJson(jsonStr string, obj interface{}) error <span class="cov0" title="0">{
+        return json.Unmarshal([]byte(jsonStr), obj)
 }</span>
 </pre>
 		
