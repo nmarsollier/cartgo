@@ -8,14 +8,13 @@ import (
 
 // Estuctura basica de del evento
 type Cart struct {
-	ID            string     `dynamodbav:"id" json:"id"`
-	UserId        string     `dynamodbav:"userId"  json:"userId" validate:"required,min=1,max=100"`
-	UserIdEnabled string     `dynamodbav:"userId_enabled"`
-	OrderId       string     `dynamodbav:"orderId" json:"orderId"`
-	Articles      []*Article `dynamodbav:"articles"  json:"articles" validate:"required"`
-	Enabled       bool       `dynamodbav:"enabled" json:"enabled"`
-	Created       time.Time  `dynamodbav:"created" json:"created"`
-	Updated       time.Time  `dynamodbav:"updated" json:"updated"`
+	ID       string     `json:"id"`
+	UserId   string     `json:"userId" validate:"required,min=1,max=100"`
+	OrderId  string     `json:"orderId"`
+	Articles []*Article `json:"articles" validate:"required"`
+	Enabled  bool       `json:"enabled"`
+	Created  time.Time  `json:"created"`
+	Updated  time.Time  `json:"updated"`
 }
 
 // validateSchema valida la estructura para ser insertada en la db
@@ -24,8 +23,8 @@ func (e *Cart) validateSchema() error {
 }
 
 type Article struct {
-	ArticleId string `dynamodbav:"articleId" json:"articleId" validate:"required,min=1,max=100"`
-	Quantity  int    `dynamodbav:"quantity" json:"quantity" validate:"required,min=1,max=100"`
-	Valid     bool   `dynamodbav:"valid" json:"valid"`
-	Validated bool   `dynamodbav:"validated" json:"validated"`
+	ArticleId string `json:"articleId" validate:"required,min=1,max=100"`
+	Quantity  int    `json:"quantity" validate:"required,min=1,max=100"`
+	Valid     bool   `json:"valid"`
+	Validated bool   `json:"validated"`
 }

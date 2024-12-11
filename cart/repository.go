@@ -2,22 +2,14 @@ package cart
 
 import (
 	"context"
-	"errors"
-	"strconv"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
-	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/expression"
-	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
-	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/nmarsollier/cartgo/tools/db"
 	"github.com/nmarsollier/cartgo/tools/errs"
 	"github.com/nmarsollier/cartgo/tools/log"
+	"github.com/nmarsollier/cartgo/tools/strs"
 	uuid "github.com/satori/go.uuid"
 )
-
-var tableName = "cart"
 
 var ErrID = errs.NewValidation().Add("id", "Invalid")
 
@@ -33,60 +25,74 @@ func newCart(userId string) *Cart {
 }
 
 // findByUserId lee el cart activo del usuario
-func findByUserId(cartId string, deps ...interface{}) (cart *Cart, err error) {
-	expr, err := expression.NewBuilder().WithKeyCondition(
-		expression.Key("userId_enabled").Equal(expression.Value(cartId + "_" + strconv.FormatBool(true))),
-	).Build()
-
+func findByUserId(userId string, deps ...interface{}) (*Cart, error) {
+	conn, err := db.GetPostgresClient(deps...)
 	if err != nil {
-		return
+		log.Get(deps...).Error(err)
+		return nil, err
 	}
 
-	response, err := db.Get(deps...).Query(context.TODO(), &dynamodb.QueryInput{
-		TableName:                 &tableName,
-		IndexName:                 aws.String("userId_enabled-index"),
-		KeyConditionExpression:    expr.KeyCondition(),
-		ExpressionAttributeNames:  expr.Names(),
-		ExpressionAttributeValues: expr.Values(),
-	})
+	query := `
+        SELECT id, userId, orderId, articles, enabled, created, updated
+        FROM cartgo.carts
+        WHERE userId = $1 and enabled = true
+    `
+	row := conn.QueryRow(context.Background(), query, userId)
 
-	if temp := new(types.ResourceNotFoundException); err != nil && !errors.As(err, &temp) {
-		return nil, errs.NotFound
-	}
-
-	if err != nil || len(response.Items) == 0 {
-		return nil, errs.NotFound
-	}
-
-	err = attributevalue.UnmarshalMap(response.Items[0], &cart)
+	var cart Cart
+	var articlesJSON []byte
+	err = row.Scan(&cart.ID, &cart.UserId, &cart.OrderId, &articlesJSON, &cart.Enabled, &cart.Created, &cart.Updated)
 	if err != nil {
-		return
+		if err.Error() == "no rows in result set" {
+			return nil, errs.NotFound
+		}
+
+		log.Get(deps...).Error(err)
+		return nil, err
 	}
 
-	return
+	err = strs.FromJson(string(articlesJSON), &cart.Articles)
+	if err != nil {
+		log.Get(deps...).Error(err)
+		return nil, err
+	}
+
+	return &cart, nil
 }
 
-func findById(cartId string, deps ...interface{}) (cart *Cart, err error) {
-	response, err := db.Get(deps...).GetItem(context.TODO(), &dynamodb.GetItemInput{
-		Key: map[string]types.AttributeValue{
-			"id": &types.AttributeValueMemberS{
-				Value: cartId,
-			}},
-		TableName: &tableName,
-	})
-
-	if err != nil || response == nil || response.Item == nil {
-		log.Get(deps...).Error(err)
-
-		return
-	}
-
-	err = attributevalue.UnmarshalMap(response.Item, &cart)
+func findById(cartId string, deps ...interface{}) (*Cart, error) {
+	conn, err := db.GetPostgresClient(deps...)
 	if err != nil {
 		log.Get(deps...).Error(err)
+		return nil, err
 	}
 
-	return
+	query := `
+        SELECT id, userId, orderId, articles, enabled, created, updated
+        FROM cartgo.carts
+        WHERE id = $1
+    `
+	row := conn.QueryRow(context.Background(), query, cartId)
+
+	var cart Cart
+	var articlesJSON []byte
+
+	err = row.Scan(&cart.ID, &cart.UserId, &cart.OrderId, &articlesJSON, &cart.Enabled, &cart.Created, &cart.Updated)
+	if err != nil {
+		if err.Error() == "no rows in result set" {
+			return nil, errs.NotFound
+		}
+		log.Get(deps...).Error(err)
+		return nil, err
+	}
+
+	err = strs.FromJson(string(articlesJSON), &cart.Articles)
+	if err != nil {
+		log.Get(deps...).Error(err)
+		return nil, err
+	}
+
+	return &cart, nil
 }
 
 func save(cart *Cart, deps ...interface{}) (err error) {
@@ -95,59 +101,55 @@ func save(cart *Cart, deps ...interface{}) (err error) {
 		return
 	}
 
-	cart.UserIdEnabled = cart.UserId + "_" + strconv.FormatBool(cart.Enabled)
-	articleToInsert, err := attributevalue.MarshalMap(cart)
+	conn, err := db.GetPostgresClient(deps...)
 	if err != nil {
 		log.Get(deps...).Error(err)
-
-		return
+		return err
 	}
 
-	_, err = db.Get(deps...).PutItem(
-		context.TODO(),
-		&dynamodb.PutItemInput{
-			TableName: &tableName,
-			Item:      articleToInsert,
-		},
-	)
+	articlesJSON := strs.ToJson(cart.Articles)
 
+	query := `
+        INSERT INTO cartgo.carts (id, userId, orderId, articles, enabled, created, updated)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        ON CONFLICT (id) DO UPDATE SET
+            articles = EXCLUDED.articles,
+            enabled = EXCLUDED.enabled,
+            updated = EXCLUDED.updated
+    `
+
+	_, err = conn.Exec(context.Background(), query, cart.ID, cart.UserId, cart.OrderId, articlesJSON, cart.Enabled, cart.Created, cart.Updated)
 	if err != nil {
 		log.Get(deps...).Error(err)
+		return err
 	}
 
-	return
+	return nil
 }
 
 func invalidate(cart *Cart, deps ...interface{}) (err error) {
 	if err = cart.validateSchema(); err != nil {
 		log.Get(deps...).Error(err)
-		return
+		return err
 	}
 
-	key, err := attributevalue.MarshalMap(map[string]interface{}{
-		"id": cart.ID,
-	})
+	conn, err := db.GetPostgresClient(deps...)
 	if err != nil {
-		return
+		log.Get(deps...).Error(err)
+		return err
 	}
 
-	update, err := attributevalue.MarshalMap(map[string]interface{}{
-		":enabled":        false,
-		":userId_enabled": cart.UserId + "_" + strconv.FormatBool(false),
-	})
+	query := `
+        UPDATE cartgo.carts
+        SET enabled = $1, updated = $2
+        WHERE id = $3
+    `
+
+	_, err = conn.Exec(context.Background(), query, false, time.Now(), cart.ID)
 	if err != nil {
-		return
+		log.Get(deps...).Error(err)
+		return err
 	}
 
-	_, err = db.Get(deps...).UpdateItem(
-		context.TODO(),
-		&dynamodb.UpdateItemInput{
-			TableName:                 &tableName,
-			Key:                       key,
-			UpdateExpression:          aws.String("SET enabled = :enabled, userId_enabled = :userId_enabled"),
-			ExpressionAttributeValues: update,
-		},
-	)
-
-	return
+	return nil
 }
