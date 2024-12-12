@@ -33,21 +33,21 @@ func (m *MockUpdate) EXPECT() *MockUpdateMockRecorder {
 	return m.recorder
 }
 
-// Update mocks base method.
-func (m *MockUpdate) Update(query string, args ...interface{}) error {
+// Exec mocks base method.
+func (m *MockUpdate) Exec(query string, args ...interface{}) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{query}
 	for _, a := range args {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "Update", varargs...)
+	ret := m.ctrl.Call(m, "Exec", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// Update indicates an expected call of Update.
-func (mr *MockUpdateMockRecorder) Update(query interface{}, args ...interface{}) *gomock.Call {
+// Exec indicates an expected call of Exec.
+func (mr *MockUpdateMockRecorder) Exec(query interface{}, args ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{query}, args...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockUpdate)(nil).Update), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Exec", reflect.TypeOf((*MockUpdate)(nil).Exec), varargs...)
 }

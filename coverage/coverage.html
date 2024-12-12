@@ -181,25 +181,35 @@
 				
 				<option value="file62">github.com/nmarsollier/cartgo/tools/db/connection.go (0.0%)</option>
 				
-				<option value="file63">github.com/nmarsollier/cartgo/tools/env/env.go (86.4%)</option>
+				<option value="file63">github.com/nmarsollier/cartgo/tools/db/connection_mocks.go (50.0%)</option>
 				
-				<option value="file64">github.com/nmarsollier/cartgo/tools/errs/rest_error.go (33.3%)</option>
+				<option value="file64">github.com/nmarsollier/cartgo/tools/db/query.go (0.0%)</option>
 				
-				<option value="file65">github.com/nmarsollier/cartgo/tools/errs/validation.go (0.0%)</option>
+				<option value="file65">github.com/nmarsollier/cartgo/tools/db/query_mocks.go (0.0%)</option>
 				
-				<option value="file66">github.com/nmarsollier/cartgo/tools/httpx/client.go (75.0%)</option>
+				<option value="file66">github.com/nmarsollier/cartgo/tools/db/update.go (20.0%)</option>
 				
-				<option value="file67">github.com/nmarsollier/cartgo/tools/httpx/client_mocks.go (100.0%)</option>
+				<option value="file67">github.com/nmarsollier/cartgo/tools/db/update_mocks.go (0.0%)</option>
 				
-				<option value="file68">github.com/nmarsollier/cartgo/tools/log/logger.go (15.0%)</option>
+				<option value="file68">github.com/nmarsollier/cartgo/tools/env/env.go (86.4%)</option>
 				
-				<option value="file69">github.com/nmarsollier/cartgo/tools/log/logrus_logger.go (0.0%)</option>
+				<option value="file69">github.com/nmarsollier/cartgo/tools/errs/rest_error.go (33.3%)</option>
 				
-				<option value="file70">github.com/nmarsollier/cartgo/tools/log/logrus_logger_mocks.go (86.7%)</option>
+				<option value="file70">github.com/nmarsollier/cartgo/tools/errs/validation.go (0.0%)</option>
 				
-				<option value="file71">github.com/nmarsollier/cartgo/tools/log/test_tools.go (100.0%)</option>
+				<option value="file71">github.com/nmarsollier/cartgo/tools/httpx/client.go (75.0%)</option>
 				
-				<option value="file72">github.com/nmarsollier/cartgo/tools/strs/json_tools.go (66.7%)</option>
+				<option value="file72">github.com/nmarsollier/cartgo/tools/httpx/client_mocks.go (100.0%)</option>
+				
+				<option value="file73">github.com/nmarsollier/cartgo/tools/log/logger.go (15.0%)</option>
+				
+				<option value="file74">github.com/nmarsollier/cartgo/tools/log/logrus_logger.go (0.0%)</option>
+				
+				<option value="file75">github.com/nmarsollier/cartgo/tools/log/logrus_logger_mocks.go (86.7%)</option>
+				
+				<option value="file76">github.com/nmarsollier/cartgo/tools/log/test_tools.go (100.0%)</option>
+				
+				<option value="file77">github.com/nmarsollier/cartgo/tools/strs/json_tools.go (66.7%)</option>
 				
 				</select>
 			</div>
@@ -385,7 +395,6 @@ func RemoveArticle(userId string, articleId string, deps ...interface{}) (*Cart,
 		<pre class="file" id="file7" style="display: none">package cart
 
 import (
-        "context"
         "database/sql"
         "errors"
         "time"
@@ -412,14 +421,13 @@ func newCart(userId string) *Cart <span class="cov0" title="0">{
 
 // findByUserId lee el cart activo del usuario
 func findByUserId(userId string, deps ...interface{}) (*Cart, error) <span class="cov0" title="0">{
-        cart, err := db.QueryRow[Cart](
+        cart, err := db.GetQuery[Cart](deps...).Row(
                 `
       SELECT id, userId, orderId, articles, enabled, created, updated
       FROM cartgo.carts
       WHERE userId = $1 and enabled = true
     `,
-                []interface{}{userId},
-                deps...,
+                userId,
         )
 
         if errors.Is(err, sql.ErrNoRows) </span><span class="cov0" title="0">{
@@ -435,14 +443,13 @@ func findByUserId(userId string, deps ...interface{}) (*Cart, error) <span class
 }
 
 func findById(cartId string, deps ...interface{}) (*Cart, error) <span class="cov0" title="0">{
-        cart, err := db.QueryRow[Cart](
+        cart, err := db.GetQuery[Cart](deps...).Row(
                 `
       SELECT id, userId, orderId, articles, enabled, created, updated
       FROM cartgo.carts
       WHERE id = $1
     `,
-                []interface{}{cartId},
-                deps...,
+                cartId,
         )
 
         if err != nil </span><span class="cov0" title="0">{
@@ -459,57 +466,53 @@ func save(cart *Cart, deps ...interface{}) (err error) <span class="cov0" title=
                 return
         }</span>
 
-        <span class="cov0" title="0">conn, err := db.GetPostgresClient(deps...)
-        if err != nil </span><span class="cov0" title="0">{
-                log.Get(deps...).Error(err)
-                return err
-        }</span>
-
-        <span class="cov0" title="0">articlesJSON := strs.ToJson(cart.Articles)
-
-        query := `
+        <span class="cov0" title="0">err = db.GetUpdate(deps...).Exec(
+                `
       INSERT INTO cartgo.carts (id, userId, orderId, articles, enabled, created, updated)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
       ON CONFLICT (id) DO UPDATE SET
           articles = EXCLUDED.articles,
           enabled = EXCLUDED.enabled,
           updated = EXCLUDED.updated
-    `
+    `,
+                cart.ID,
+                cart.UserId,
+                cart.OrderId,
+                strs.ToJson(cart.Articles),
+                cart.Enabled,
+                cart.Created,
+                cart.Updated,
+        )
 
-        _, err = conn.Exec(context.Background(), query, cart.ID, cart.UserId, cart.OrderId, articlesJSON, cart.Enabled, cart.Created, cart.Updated)
         if err != nil </span><span class="cov0" title="0">{
                 log.Get(deps...).Error(err)
-                return err
         }</span>
 
-        <span class="cov0" title="0">return nil</span>
+        <span class="cov0" title="0">return</span>
 }
 
 func invalidate(cart *Cart, deps ...interface{}) (err error) <span class="cov0" title="0">{
         if err = cart.validateSchema(); err != nil </span><span class="cov0" title="0">{
                 log.Get(deps...).Error(err)
-                return err
+                return
         }</span>
 
-        <span class="cov0" title="0">conn, err := db.GetPostgresClient(deps...)
-        if err != nil </span><span class="cov0" title="0">{
-                log.Get(deps...).Error(err)
-                return err
-        }</span>
-
-        <span class="cov0" title="0">query := `
+        <span class="cov0" title="0">err = db.GetUpdate(deps...).Exec(
+                `
         UPDATE cartgo.carts
         SET enabled = $1, updated = $2
         WHERE id = $3
-    `
+    `,
+                false,
+                time.Now(),
+                cart.ID,
+        )
 
-        _, err = conn.Exec(context.Background(), query, false, time.Now(), cart.ID)
         if err != nil </span><span class="cov0" title="0">{
                 log.Get(deps...).Error(err)
-                return err
         }</span>
 
-        <span class="cov0" title="0">return nil</span>
+        <span class="cov0" title="0">return</span>
 }
 </pre>
 		
@@ -9668,30 +9671,73 @@ func ValidateCheckout(cart *cart.Cart, token string, deps ...interface{}) error 
 import (
         "context"
         "errors"
-        "reflect"
 
-        "github.com/jackc/pgx"
+        "github.com/jackc/pgx/v5"
+        "github.com/jackc/pgx/v5/pgconn"
         "github.com/jackc/pgx/v5/pgxpool"
         "github.com/nmarsollier/cartgo/tools/env"
         "github.com/nmarsollier/cartgo/tools/log"
 )
 
 var (
-        instance *pgxpool.Pool
+        instance DBConn
 )
 
-func GetPostgresClient(deps ...interface{}) (*pgxpool.Pool, error) <span class="cov0" title="0">{
-        if instance != nil </span><span class="cov0" title="0">{
+type DBConn interface {
+        QueryRow(sql string, args ...any) pgx.Row
+        Exec(query string, args ...interface{}) (err error)
+        Reset()
+}
+
+func getDBConn(deps ...interface{}) (DBConn, error) <span class="cov0" title="0">{
+        for _, o := range deps </span><span class="cov0" title="0">{
+                if ti, ok := o.(DBConn); ok </span><span class="cov0" title="0">{
+                        return ti, nil
+                }</span>
+        }
+
+        <span class="cov0" title="0">if instance != nil </span><span class="cov0" title="0">{
                 return instance, nil
         }</span>
 
-        <span class="cov0" title="0">config, err := pgxpool.ParseConfig(env.Get().PostgresURL)
+        <span class="cov0" title="0">pool, err := postgresConn(deps...)
         if err != nil </span><span class="cov0" title="0">{
                 log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
-        <span class="cov0" title="0">instance, err = pgxpool.NewWithConfig(context.Background(), config)
+        <span class="cov0" title="0">instance = &amp;pgConn{
+                conn: pool,
+        }
+
+        return instance, nil</span>
+}
+
+type pgConn struct {
+        conn *pgxpool.Pool
+}
+
+func (c *pgConn) QueryRow(sql string, args ...any) pgx.Row <span class="cov0" title="0">{
+        return c.conn.QueryRow(context.Background(), sql, args...)
+}</span>
+
+func (c *pgConn) Exec(query string, arguments ...interface{}) (err error) <span class="cov0" title="0">{
+        _, err = c.conn.Exec(context.Background(), query, arguments...)
+        return
+}</span>
+
+func (c *pgConn) Reset() <span class="cov0" title="0">{
+        instance = nil
+}</span>
+
+func postgresConn(deps ...interface{}) (*pgxpool.Pool, error) <span class="cov0" title="0">{
+        config, err := pgxpool.ParseConfig(env.Get().PostgresURL)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Get(deps...).Error(err)
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">pool, err := pgxpool.NewWithConfig(context.Background(), config)
         if err != nil </span><span class="cov0" title="0">{
                 log.Get(deps...).Error(err)
                 return nil, err
@@ -9699,43 +9745,11 @@ func GetPostgresClient(deps ...interface{}) (*pgxpool.Pool, error) <span class="
 
         <span class="cov0" title="0">log.Get(deps...).Info("Postgres Connected")
 
-        return instance, nil</span>
-}
-
-func QueryRow[T any](query string, args []interface{}, deps ...interface{}) (result *T, err error) <span class="cov0" title="0">{
-        result = new(T)
-        destVal := reflect.ValueOf(result).Elem()
-
-        conn, err := GetPostgresClient(deps...)
-        if err != nil </span><span class="cov0" title="0">{
-                log.Get(deps...).Error(err)
-                return
-        }</span>
-
-        <span class="cov0" title="0">row := conn.QueryRow(context.Background(), query, args...)
-
-        if err = row.Scan(fieldAddrs(destVal)...); err != nil </span><span class="cov0" title="0">{
-                if isConnectionError(err) </span><span class="cov0" title="0">{
-                        instance = nil
-                }</span>
-
-                <span class="cov0" title="0">log.Get(deps...).Error(err)
-                return</span>
-        }
-
-        <span class="cov0" title="0">return</span>
-}
-
-func fieldAddrs(destVal reflect.Value) (addrs []interface{}) <span class="cov0" title="0">{
-        addrs = make([]interface{}, destVal.NumField())
-        for i := 0; i &lt; destVal.NumField(); i++ </span><span class="cov0" title="0">{
-                addrs[i] = destVal.Field(i).Addr().Interface()
-        }</span>
-        <span class="cov0" title="0">return</span>
+        return pool, nil</span>
 }
 
 func isConnectionError(err error) bool <span class="cov0" title="0">{
-        var pgErr *pgx.PgError
+        var pgErr *pgconn.PgError
         if errors.As(err, &amp;pgErr) </span><span class="cov0" title="0">{
                 switch pgErr.Code </span>{
                 case "08000", "08003", "08006", "08001", "08004", "08007", "08P01":<span class="cov0" title="0">
@@ -9751,7 +9765,313 @@ func isConnectionError(err error) bool <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file63" style="display: none">package env
+		<pre class="file" id="file63" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+// Source: ./tools/db/connection.go
+
+// Package db is a generated GoMock package.
+package db
+
+import (
+        reflect "reflect"
+
+        gomock "github.com/golang/mock/gomock"
+        pgx "github.com/jackc/pgx/v5"
+)
+
+// MockDBConn is a mock of DBConn interface.
+type MockDBConn struct {
+        ctrl     *gomock.Controller
+        recorder *MockDBConnMockRecorder
+}
+
+// MockDBConnMockRecorder is the mock recorder for MockDBConn.
+type MockDBConnMockRecorder struct {
+        mock *MockDBConn
+}
+
+// NewMockDBConn creates a new mock instance.
+func NewMockDBConn(ctrl *gomock.Controller) *MockDBConn <span class="cov8" title="1">{
+        mock := &amp;MockDBConn{ctrl: ctrl}
+        mock.recorder = &amp;MockDBConnMockRecorder{mock}
+        return mock
+}</span>
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockDBConn) EXPECT() *MockDBConnMockRecorder <span class="cov8" title="1">{
+        return m.recorder
+}</span>
+
+// Exec mocks base method.
+func (m *MockDBConn) Exec(query string, args ...interface{}) error <span class="cov8" title="1">{
+        m.ctrl.T.Helper()
+        varargs := []interface{}{query}
+        for _, a := range args </span><span class="cov8" title="1">{
+                varargs = append(varargs, a)
+        }</span>
+        <span class="cov8" title="1">ret := m.ctrl.Call(m, "Exec", varargs...)
+        ret0, _ := ret[0].(error)
+        return ret0</span>
+}
+
+// Exec indicates an expected call of Exec.
+func (mr *MockDBConnMockRecorder) Exec(query interface{}, args ...interface{}) *gomock.Call <span class="cov8" title="1">{
+        mr.mock.ctrl.T.Helper()
+        varargs := append([]interface{}{query}, args...)
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Exec", reflect.TypeOf((*MockDBConn)(nil).Exec), varargs...)
+}</span>
+
+// QueryRow mocks base method.
+func (m *MockDBConn) QueryRow(sql string, args ...any) pgx.Row <span class="cov0" title="0">{
+        m.ctrl.T.Helper()
+        varargs := []interface{}{sql}
+        for _, a := range args </span><span class="cov0" title="0">{
+                varargs = append(varargs, a)
+        }</span>
+        <span class="cov0" title="0">ret := m.ctrl.Call(m, "QueryRow", varargs...)
+        ret0, _ := ret[0].(pgx.Row)
+        return ret0</span>
+}
+
+// QueryRow indicates an expected call of QueryRow.
+func (mr *MockDBConnMockRecorder) QueryRow(sql interface{}, args ...interface{}) *gomock.Call <span class="cov0" title="0">{
+        mr.mock.ctrl.T.Helper()
+        varargs := append([]interface{}{sql}, args...)
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryRow", reflect.TypeOf((*MockDBConn)(nil).QueryRow), varargs...)
+}</span>
+
+// Reset mocks base method.
+func (m *MockDBConn) Reset() <span class="cov0" title="0">{
+        m.ctrl.T.Helper()
+        m.ctrl.Call(m, "Reset")
+}</span>
+
+// Reset indicates an expected call of Reset.
+func (mr *MockDBConnMockRecorder) Reset() *gomock.Call <span class="cov0" title="0">{
+        mr.mock.ctrl.T.Helper()
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Reset", reflect.TypeOf((*MockDBConn)(nil).Reset))
+}</span>
+</pre>
+		
+		<pre class="file" id="file64" style="display: none">package db
+
+import (
+        "reflect"
+
+        "github.com/nmarsollier/cartgo/tools/log"
+)
+
+func GetQuery[T any](deps ...interface{}) Query[T] <span class="cov0" title="0">{
+        for _, o := range deps </span><span class="cov0" title="0">{
+                if ti, ok := o.(Query[T]); ok </span><span class="cov0" title="0">{
+                        return ti
+                }</span>
+        }
+
+        <span class="cov0" title="0">return &amp;pgQuery[T]{
+                deps: deps,
+        }</span>
+}
+
+type Query[T any] interface {
+        Row(query string, args ...interface{}) (result *T, err error)
+}
+
+type pgQuery[T any] struct {
+        deps []interface{}
+}
+
+func (q *pgQuery[T]) Row(query string, args ...interface{}) (result *T, err error) <span class="cov0" title="0">{
+        result = new(T)
+        destVal := reflect.ValueOf(result).Elem()
+
+        conn, err := getDBConn(q.deps...)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Get(q.deps...).Error(err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">row := conn.QueryRow(query, args...)
+
+        if err = row.Scan(fieldAddrs(destVal)...); err != nil </span><span class="cov0" title="0">{
+                if isConnectionError(err) </span><span class="cov0" title="0">{
+                        instance = nil
+                }</span>
+
+                <span class="cov0" title="0">log.Get(q.deps...).Error(err)
+                return</span>
+        }
+
+        <span class="cov0" title="0">return</span>
+}
+
+func fieldAddrs(destVal reflect.Value) (addrs []interface{}) <span class="cov0" title="0">{
+        addrs = make([]interface{}, destVal.NumField())
+        for i := 0; i &lt; destVal.NumField(); i++ </span><span class="cov0" title="0">{
+                addrs[i] = destVal.Field(i).Addr().Interface()
+        }</span>
+        <span class="cov0" title="0">return</span>
+}
+</pre>
+		
+		<pre class="file" id="file65" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+// Source: ./tools/db/query.go
+
+// Package db is a generated GoMock package.
+package db
+
+import (
+        reflect "reflect"
+
+        gomock "github.com/golang/mock/gomock"
+)
+
+// MockQuery is a mock of Query interface.
+type MockQuery[T any] struct {
+        ctrl     *gomock.Controller
+        recorder *MockQueryMockRecorder[T]
+}
+
+// MockQueryMockRecorder is the mock recorder for MockQuery.
+type MockQueryMockRecorder[T any] struct {
+        mock *MockQuery[T]
+}
+
+// NewMockQuery creates a new mock instance.
+func NewMockQuery[T any](ctrl *gomock.Controller) *MockQuery[T] <span class="cov0" title="0">{
+        mock := &amp;MockQuery[T]{ctrl: ctrl}
+        mock.recorder = &amp;MockQueryMockRecorder[T]{mock}
+        return mock
+}</span>
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockQuery[T]) EXPECT() *MockQueryMockRecorder[T] <span class="cov0" title="0">{
+        return m.recorder
+}</span>
+
+// Row mocks base method.
+func (m *MockQuery[T]) Row(query string, args ...interface{}) (*T, error) <span class="cov0" title="0">{
+        m.ctrl.T.Helper()
+        varargs := []interface{}{query}
+        for _, a := range args </span><span class="cov0" title="0">{
+                varargs = append(varargs, a)
+        }</span>
+        <span class="cov0" title="0">ret := m.ctrl.Call(m, "Row", varargs...)
+        ret0, _ := ret[0].(*T)
+        ret1, _ := ret[1].(error)
+        return ret0, ret1</span>
+}
+
+// Row indicates an expected call of Row.
+func (mr *MockQueryMockRecorder[T]) Row(query interface{}, args ...interface{}) *gomock.Call <span class="cov0" title="0">{
+        mr.mock.ctrl.T.Helper()
+        varargs := append([]interface{}{query}, args...)
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Row", reflect.TypeOf((*MockQuery[T])(nil).Row), varargs...)
+}</span>
+</pre>
+		
+		<pre class="file" id="file66" style="display: none">package db
+
+import (
+        "github.com/nmarsollier/cartgo/tools/log"
+)
+
+func GetUpdate(deps ...interface{}) Update <span class="cov8" title="1">{
+        for _, o := range deps </span><span class="cov8" title="1">{
+                if ti, ok := o.(Update); ok </span><span class="cov8" title="1">{
+                        return ti
+                }</span>
+        }
+
+        <span class="cov0" title="0">return &amp;pgUpdate{
+                deps: deps,
+        }</span>
+}
+
+type Update interface {
+        Exec(query string, args ...interface{}) (err error)
+}
+
+type pgUpdate struct {
+        deps []interface{}
+}
+
+func (u *pgUpdate) Exec(query string, arguments ...any) (err error) <span class="cov0" title="0">{
+        conn, err := getDBConn(u.deps...)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Get(u.deps...).Error(err)
+                return err
+        }</span>
+
+        <span class="cov0" title="0">err = conn.Exec(query, arguments...)
+        if err != nil </span><span class="cov0" title="0">{
+                if isConnectionError(err) </span><span class="cov0" title="0">{
+                        instance = nil
+                }</span>
+
+                <span class="cov0" title="0">log.Get(u.deps...).Error(err)
+                return err</span>
+        }
+
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file67" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+// Source: ./tools/db/update.go
+
+// Package db is a generated GoMock package.
+package db
+
+import (
+        reflect "reflect"
+
+        gomock "github.com/golang/mock/gomock"
+)
+
+// MockUpdate is a mock of Update interface.
+type MockUpdate struct {
+        ctrl     *gomock.Controller
+        recorder *MockUpdateMockRecorder
+}
+
+// MockUpdateMockRecorder is the mock recorder for MockUpdate.
+type MockUpdateMockRecorder struct {
+        mock *MockUpdate
+}
+
+// NewMockUpdate creates a new mock instance.
+func NewMockUpdate(ctrl *gomock.Controller) *MockUpdate <span class="cov0" title="0">{
+        mock := &amp;MockUpdate{ctrl: ctrl}
+        mock.recorder = &amp;MockUpdateMockRecorder{mock}
+        return mock
+}</span>
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockUpdate) EXPECT() *MockUpdateMockRecorder <span class="cov0" title="0">{
+        return m.recorder
+}</span>
+
+// Exec mocks base method.
+func (m *MockUpdate) Exec(query string, args ...interface{}) error <span class="cov0" title="0">{
+        m.ctrl.T.Helper()
+        varargs := []interface{}{query}
+        for _, a := range args </span><span class="cov0" title="0">{
+                varargs = append(varargs, a)
+        }</span>
+        <span class="cov0" title="0">ret := m.ctrl.Call(m, "Exec", varargs...)
+        ret0, _ := ret[0].(error)
+        return ret0</span>
+}
+
+// Exec indicates an expected call of Exec.
+func (mr *MockUpdateMockRecorder) Exec(query interface{}, args ...interface{}) *gomock.Call <span class="cov0" title="0">{
+        mr.mock.ctrl.T.Helper()
+        varargs := append([]interface{}{query}, args...)
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Exec", reflect.TypeOf((*MockUpdate)(nil).Exec), varargs...)
+}</span>
+</pre>
+		
+		<pre class="file" id="file68" style="display: none">package env
 
 import (
         "os"
@@ -9832,7 +10152,7 @@ func load() *Configuration <span class="cov8" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file64" style="display: none">package errs
+		<pre class="file" id="file69" style="display: none">package errs
 
 // Unauthorized el usuario no esta autorizado al recurso
 var Unauthorized = NewRestError(401, "Unauthorized")
@@ -9881,7 +10201,7 @@ func (e *restError) Status() int <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file65" style="display: none">package errs
+		<pre class="file" id="file70" style="display: none">package errs
 
 import (
         "encoding/json"
@@ -9929,7 +10249,7 @@ type errField struct {
 }
 </pre>
 		
-		<pre class="file" id="file66" style="display: none">package httpx
+		<pre class="file" id="file71" style="display: none">package httpx
 
 import "net/http"
 
@@ -9948,7 +10268,7 @@ func Get(deps ...interface{}) HTTPClient <span class="cov8" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file67" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+		<pre class="file" id="file72" style="display: none">// Code generated by MockGen. DO NOT EDIT.
 // Source: ./tools/httpx/client.go
 
 // Package httpx is a generated GoMock package.
@@ -10000,7 +10320,7 @@ func (mr *MockHTTPClientMockRecorder) Do(req interface{}) *gomock.Call <span cla
 }</span>
 </pre>
 		
-		<pre class="file" id="file68" style="display: none">package log
+		<pre class="file" id="file73" style="display: none">package log
 
 import (
         "fmt"
@@ -10076,7 +10396,7 @@ func configureFluent(logger *logrus.Logger) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file69" style="display: none">package log
+		<pre class="file" id="file74" style="display: none">package log
 
 import "github.com/sirupsen/logrus"
 
@@ -10110,7 +10430,7 @@ func (l logRusEntry) Data() logrus.Fields <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file70" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+		<pre class="file" id="file75" style="display: none">// Code generated by MockGen. DO NOT EDIT.
 // Source: ./tools/log/logrus_logger.go
 
 // Package log is a generated GoMock package.
@@ -10207,7 +10527,7 @@ func (mr *MockLogRusEntryMockRecorder) WithField(key, value interface{}) *gomock
 }</span>
 </pre>
 		
-		<pre class="file" id="file71" style="display: none">package log
+		<pre class="file" id="file76" style="display: none">package log
 
 import (
         "github.com/golang/mock/gomock"
@@ -10228,7 +10548,7 @@ func NewTestLogger(ctrl *gomock.Controller, withFieldCount int, errorCount int, 
 }</span>
 </pre>
 		
-		<pre class="file" id="file72" style="display: none">package strs
+		<pre class="file" id="file77" style="display: none">package strs
 
 import "encoding/json"
 
