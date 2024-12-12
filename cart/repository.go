@@ -1,7 +1,6 @@
 package cart
 
 import (
-	"context"
 	"database/sql"
 	"errors"
 	"time"
@@ -28,14 +27,13 @@ func newCart(userId string) *Cart {
 
 // findByUserId lee el cart activo del usuario
 func findByUserId(userId string, deps ...interface{}) (*Cart, error) {
-	cart, err := db.QueryRow[Cart](
+	cart, err := db.GetQuery[Cart](deps...).Row(
 		`
       SELECT id, userId, orderId, articles, enabled, created, updated
       FROM cartgo.carts
       WHERE userId = $1 and enabled = true
     `,
-		[]interface{}{userId},
-		deps...,
+		userId,
 	)
 
 	if errors.Is(err, sql.ErrNoRows) {
@@ -51,14 +49,13 @@ func findByUserId(userId string, deps ...interface{}) (*Cart, error) {
 }
 
 func findById(cartId string, deps ...interface{}) (*Cart, error) {
-	cart, err := db.QueryRow[Cart](
+	cart, err := db.GetQuery[Cart](deps...).Row(
 		`
       SELECT id, userId, orderId, articles, enabled, created, updated
       FROM cartgo.carts
       WHERE id = $1
     `,
-		[]interface{}{cartId},
-		deps...,
+		cartId,
 	)
 
 	if err != nil {
@@ -75,55 +72,51 @@ func save(cart *Cart, deps ...interface{}) (err error) {
 		return
 	}
 
-	conn, err := db.GetPostgresClient(deps...)
-	if err != nil {
-		log.Get(deps...).Error(err)
-		return err
-	}
-
-	articlesJSON := strs.ToJson(cart.Articles)
-
-	query := `
+	err = db.GetUpdate(deps...).Exec(
+		`
       INSERT INTO cartgo.carts (id, userId, orderId, articles, enabled, created, updated)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
       ON CONFLICT (id) DO UPDATE SET
           articles = EXCLUDED.articles,
           enabled = EXCLUDED.enabled,
           updated = EXCLUDED.updated
-    `
+    `,
+		cart.ID,
+		cart.UserId,
+		cart.OrderId,
+		strs.ToJson(cart.Articles),
+		cart.Enabled,
+		cart.Created,
+		cart.Updated,
+	)
 
-	_, err = conn.Exec(context.Background(), query, cart.ID, cart.UserId, cart.OrderId, articlesJSON, cart.Enabled, cart.Created, cart.Updated)
 	if err != nil {
 		log.Get(deps...).Error(err)
-		return err
 	}
 
-	return nil
+	return
 }
 
 func invalidate(cart *Cart, deps ...interface{}) (err error) {
 	if err = cart.validateSchema(); err != nil {
 		log.Get(deps...).Error(err)
-		return err
+		return
 	}
 
-	conn, err := db.GetPostgresClient(deps...)
-	if err != nil {
-		log.Get(deps...).Error(err)
-		return err
-	}
-
-	query := `
+	err = db.GetUpdate(deps...).Exec(
+		`
         UPDATE cartgo.carts
         SET enabled = $1, updated = $2
         WHERE id = $3
-    `
+    `,
+		false,
+		time.Now(),
+		cart.ID,
+	)
 
-	_, err = conn.Exec(context.Background(), query, false, time.Now(), cart.ID)
 	if err != nil {
 		log.Get(deps...).Error(err)
-		return err
 	}
 
-	return nil
+	return
 }

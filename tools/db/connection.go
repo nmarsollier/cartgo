@@ -3,30 +3,73 @@ package db
 import (
 	"context"
 	"errors"
-	"reflect"
 
-	"github.com/jackc/pgx"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/nmarsollier/cartgo/tools/env"
 	"github.com/nmarsollier/cartgo/tools/log"
 )
 
 var (
-	instance *pgxpool.Pool
+	instance DBConn
 )
 
-func GetPostgresClient(deps ...interface{}) (*pgxpool.Pool, error) {
+type DBConn interface {
+	QueryRow(sql string, args ...any) pgx.Row
+	Exec(query string, args ...interface{}) (err error)
+	Reset()
+}
+
+func getDBConn(deps ...interface{}) (DBConn, error) {
+	for _, o := range deps {
+		if ti, ok := o.(DBConn); ok {
+			return ti, nil
+		}
+	}
+
 	if instance != nil {
 		return instance, nil
 	}
 
+	pool, err := postgresConn(deps...)
+	if err != nil {
+		log.Get(deps...).Error(err)
+		return nil, err
+	}
+
+	instance = &pgConn{
+		conn: pool,
+	}
+
+	return instance, nil
+}
+
+type pgConn struct {
+	conn *pgxpool.Pool
+}
+
+func (c *pgConn) QueryRow(sql string, args ...any) pgx.Row {
+	return c.conn.QueryRow(context.Background(), sql, args...)
+}
+
+func (c *pgConn) Exec(query string, arguments ...interface{}) (err error) {
+	_, err = c.conn.Exec(context.Background(), query, arguments...)
+	return
+}
+
+func (c *pgConn) Reset() {
+	instance = nil
+}
+
+func postgresConn(deps ...interface{}) (*pgxpool.Pool, error) {
 	config, err := pgxpool.ParseConfig(env.Get().PostgresURL)
 	if err != nil {
 		log.Get(deps...).Error(err)
 		return nil, err
 	}
 
-	instance, err = pgxpool.NewWithConfig(context.Background(), config)
+	pool, err := pgxpool.NewWithConfig(context.Background(), config)
 	if err != nil {
 		log.Get(deps...).Error(err)
 		return nil, err
@@ -34,43 +77,11 @@ func GetPostgresClient(deps ...interface{}) (*pgxpool.Pool, error) {
 
 	log.Get(deps...).Info("Postgres Connected")
 
-	return instance, nil
-}
-
-func QueryRow[T any](query string, args []interface{}, deps ...interface{}) (result *T, err error) {
-	result = new(T)
-	destVal := reflect.ValueOf(result).Elem()
-
-	conn, err := GetPostgresClient(deps...)
-	if err != nil {
-		log.Get(deps...).Error(err)
-		return
-	}
-
-	row := conn.QueryRow(context.Background(), query, args...)
-
-	if err = row.Scan(fieldAddrs(destVal)...); err != nil {
-		if isConnectionError(err) {
-			instance = nil
-		}
-
-		log.Get(deps...).Error(err)
-		return
-	}
-
-	return
-}
-
-func fieldAddrs(destVal reflect.Value) (addrs []interface{}) {
-	addrs = make([]interface{}, destVal.NumField())
-	for i := 0; i < destVal.NumField(); i++ {
-		addrs[i] = destVal.Field(i).Addr().Interface()
-	}
-	return
+	return pool, nil
 }
 
 func isConnectionError(err error) bool {
-	var pgErr *pgx.PgError
+	var pgErr *pgconn.PgError
 	if errors.As(err, &pgErr) {
 		switch pgErr.Code {
 		case "08000", "08003", "08006", "08001", "08004", "08007", "08P01":
