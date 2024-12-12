@@ -9708,11 +9708,6 @@ func GetPostgresClient(deps ...interface{}) (*pgxpool.Pool, error) <span class="
                         return nil, err
                 }</span>
 
-                <span class="cov0" title="0">_, err = instance.Exec(context.Background(), "SET search_path TO cartgo")
-                if err != nil </span><span class="cov0" title="0">{
-                        log.Get(deps...).Error(err)
-                }</span>
-
                 <span class="cov0" title="0">log.Get(deps...).Info("Postgres Connected")</span>
         }
 
