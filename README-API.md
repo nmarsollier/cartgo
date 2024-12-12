@@ -399,7 +399,8 @@ Valida el carrito para checkout
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| emit.SendPlacedMessage | object |  |  |
+| correlation_id | string | *Example:* `"123123"` | No |
+| message | [emit.PlacedData](#emitplaceddata) |  | No |
 
 #### emit.SendValidationMessage
 

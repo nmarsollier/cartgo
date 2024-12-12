@@ -94,5 +94,5 @@ type PlaceArticlesData struct {
 
 type SendPlacedMessage struct {
 	CorrelationId string     `json:"correlation_id" example:"123123" `
-	Message       PlacedData `json:"message" example:"order"`
+	Message       PlacedData `json:"message"`
 }

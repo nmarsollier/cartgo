@@ -123,6 +123,12 @@ definitions:
         type: string
     type: object
   emit.SendPlacedMessage:
+    properties:
+      correlation_id:
+        example: "123123"
+        type: string
+      message:
+        $ref: '#/definitions/emit.PlacedData'
     type: object
   emit.SendValidationMessage:
     properties:

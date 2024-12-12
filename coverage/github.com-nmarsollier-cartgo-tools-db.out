@@ -1,8 +1,16 @@
 mode: set
-github.com/nmarsollier/cartgo/tools/db/connection.go:15.68,16.21 1 0
-github.com/nmarsollier/cartgo/tools/db/connection.go:16.21,18.17 2 0
-github.com/nmarsollier/cartgo/tools/db/connection.go:18.17,21.4 2 0
-github.com/nmarsollier/cartgo/tools/db/connection.go:23.3,24.17 2 0
-github.com/nmarsollier/cartgo/tools/db/connection.go:24.17,27.4 2 0
-github.com/nmarsollier/cartgo/tools/db/connection.go:29.3,29.46 1 0
-github.com/nmarsollier/cartgo/tools/db/connection.go:32.2,32.22 1 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:16.68,17.21 1 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:17.21,19.17 2 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:19.17,22.4 2 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:24.3,25.17 2 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:25.17,28.4 2 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:30.3,30.46 1 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:33.2,33.22 1 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:36.100,41.16 4 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:41.16,44.3 2 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:46.2,48.56 2 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:48.56,51.3 2 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:53.2,53.8 1 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:56.62,58.42 2 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:58.42,60.3 1 0
+github.com/nmarsollier/cartgo/tools/db/connection.go:61.2,61.8 1 0

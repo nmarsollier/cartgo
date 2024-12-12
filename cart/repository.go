@@ -2,6 +2,8 @@ package cart
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 	"time"
 
 	"github.com/nmarsollier/cartgo/tools/db"
@@ -26,73 +28,38 @@ func newCart(userId string) *Cart {
 
 // findByUserId lee el cart activo del usuario
 func findByUserId(userId string, deps ...interface{}) (*Cart, error) {
-	conn, err := db.GetPostgresClient(deps...)
-	if err != nil {
-		log.Get(deps...).Error(err)
-		return nil, err
-	}
-
 	query := `
         SELECT id, userId, orderId, articles, enabled, created, updated
         FROM cartgo.carts
         WHERE userId = $1 and enabled = true
     `
-	row := conn.QueryRow(context.Background(), query, userId)
 
-	var cart Cart
-	var articlesJSON []byte
-	err = row.Scan(&cart.ID, &cart.UserId, &cart.OrderId, &articlesJSON, &cart.Enabled, &cart.Created, &cart.Updated)
-	if err != nil {
-		if err.Error() == "no rows in result set" {
-			return nil, errs.NotFound
-		}
-
-		log.Get(deps...).Error(err)
-		return nil, err
+	cart, err := db.QueryRow[Cart](query, []interface{}{userId}, deps...)
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, errs.NotFound
 	}
 
-	err = strs.FromJson(string(articlesJSON), &cart.Articles)
 	if err != nil {
 		log.Get(deps...).Error(err)
 		return nil, err
 	}
 
-	return &cart, nil
+	return cart, nil
 }
 
 func findById(cartId string, deps ...interface{}) (*Cart, error) {
-	conn, err := db.GetPostgresClient(deps...)
-	if err != nil {
-		log.Get(deps...).Error(err)
-		return nil, err
-	}
-
 	query := `
         SELECT id, userId, orderId, articles, enabled, created, updated
         FROM cartgo.carts
         WHERE id = $1
     `
-	row := conn.QueryRow(context.Background(), query, cartId)
-
-	var cart Cart
-	var articlesJSON []byte
-
-	err = row.Scan(&cart.ID, &cart.UserId, &cart.OrderId, &articlesJSON, &cart.Enabled, &cart.Created, &cart.Updated)
-	if err != nil {
-		if err.Error() == "no rows in result set" {
-			return nil, errs.NotFound
-		}
-		log.Get(deps...).Error(err)
-		return nil, err
-	}
-
-	err = strs.FromJson(string(articlesJSON), &cart.Articles)
+	cart, err := db.QueryRow[Cart](query, []interface{}{cartId}, deps...)
 	if err != nil {
 		log.Get(deps...).Error(err)
 		return nil, err
 	}
 
-	return &cart, nil
+	return cart, nil
 }
 
 func save(cart *Cart, deps ...interface{}) (err error) {

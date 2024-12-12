@@ -757,7 +757,16 @@ const docTemplate = `{
             }
         },
         "emit.SendPlacedMessage": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "correlation_id": {
+                    "type": "string",
+                    "example": "123123"
+                },
+                "message": {
+                    "$ref": "#/definitions/emit.PlacedData"
+                }
+            }
         },
         "emit.SendValidationMessage": {
             "type": "object",

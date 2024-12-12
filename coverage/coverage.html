@@ -386,6 +386,8 @@ func RemoveArticle(userId string, articleId string, deps ...interface{}) (*Cart,
 
 import (
         "context"
+        "database/sql"
+        "errors"
         "time"
 
         "github.com/nmarsollier/cartgo/tools/db"
@@ -410,73 +412,38 @@ func newCart(userId string) *Cart <span class="cov0" title="0">{
 
 // findByUserId lee el cart activo del usuario
 func findByUserId(userId string, deps ...interface{}) (*Cart, error) <span class="cov0" title="0">{
-        conn, err := db.GetPostgresClient(deps...)
-        if err != nil </span><span class="cov0" title="0">{
-                log.Get(deps...).Error(err)
-                return nil, err
-        }</span>
-
-        <span class="cov0" title="0">query := `
+        query := `
         SELECT id, userId, orderId, articles, enabled, created, updated
         FROM cartgo.carts
         WHERE userId = $1 and enabled = true
     `
-        row := conn.QueryRow(context.Background(), query, userId)
 
-        var cart Cart
-        var articlesJSON []byte
-        err = row.Scan(&amp;cart.ID, &amp;cart.UserId, &amp;cart.OrderId, &amp;articlesJSON, &amp;cart.Enabled, &amp;cart.Created, &amp;cart.Updated)
-        if err != nil </span><span class="cov0" title="0">{
-                if err.Error() == "no rows in result set" </span><span class="cov0" title="0">{
-                        return nil, errs.NotFound
-                }</span>
+        cart, err := db.QueryRow[Cart](query, []interface{}{userId}, deps...)
+        if errors.Is(err, sql.ErrNoRows) </span><span class="cov0" title="0">{
+                return nil, errs.NotFound
+        }</span>
 
-                <span class="cov0" title="0">log.Get(deps...).Error(err)
-                return nil, err</span>
-        }
-
-        <span class="cov0" title="0">err = strs.FromJson(string(articlesJSON), &amp;cart.Articles)
-        if err != nil </span><span class="cov0" title="0">{
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
                 log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
-        <span class="cov0" title="0">return &amp;cart, nil</span>
+        <span class="cov0" title="0">return cart, nil</span>
 }
 
 func findById(cartId string, deps ...interface{}) (*Cart, error) <span class="cov0" title="0">{
-        conn, err := db.GetPostgresClient(deps...)
-        if err != nil </span><span class="cov0" title="0">{
-                log.Get(deps...).Error(err)
-                return nil, err
-        }</span>
-
-        <span class="cov0" title="0">query := `
+        query := `
         SELECT id, userId, orderId, articles, enabled, created, updated
         FROM cartgo.carts
         WHERE id = $1
     `
-        row := conn.QueryRow(context.Background(), query, cartId)
-
-        var cart Cart
-        var articlesJSON []byte
-
-        err = row.Scan(&amp;cart.ID, &amp;cart.UserId, &amp;cart.OrderId, &amp;articlesJSON, &amp;cart.Enabled, &amp;cart.Created, &amp;cart.Updated)
-        if err != nil </span><span class="cov0" title="0">{
-                if err.Error() == "no rows in result set" </span><span class="cov0" title="0">{
-                        return nil, errs.NotFound
-                }</span>
-                <span class="cov0" title="0">log.Get(deps...).Error(err)
-                return nil, err</span>
-        }
-
-        <span class="cov0" title="0">err = strs.FromJson(string(articlesJSON), &amp;cart.Articles)
+        cart, err := db.QueryRow[Cart](query, []interface{}{cartId}, deps...)
         if err != nil </span><span class="cov0" title="0">{
                 log.Get(deps...).Error(err)
                 return nil, err
         }</span>
 
-        <span class="cov0" title="0">return &amp;cart, nil</span>
+        <span class="cov0" title="0">return cart, nil</span>
 }
 
 func save(cart *Cart, deps ...interface{}) (err error) <span class="cov0" title="0">{
@@ -1364,7 +1331,16 @@ const docTemplate = `{
             }
         },
         "emit.SendPlacedMessage": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "correlation_id": {
+                    "type": "string",
+                    "example": "123123"
+                },
+                "message": {
+                    "$ref": "#/definitions/emit.PlacedData"
+                }
+            }
         },
         "emit.SendValidationMessage": {
             "type": "object",
@@ -8640,7 +8616,7 @@ type PlaceArticlesData struct {
 
 type SendPlacedMessage struct {
         CorrelationId string     `json:"correlation_id" example:"123123" `
-        Message       PlacedData `json:"message" example:"order"`
+        Message       PlacedData `json:"message"`
 }
 </pre>
 		
@@ -9684,6 +9660,7 @@ func ValidateCheckout(cart *cart.Cart, token string, deps ...interface{}) error 
 
 import (
         "context"
+        "reflect"
 
         "github.com/jackc/pgx/v5/pgxpool"
         "github.com/nmarsollier/cartgo/tools/env"
@@ -9712,6 +9689,34 @@ func GetPostgresClient(deps ...interface{}) (*pgxpool.Pool, error) <span class="
         }
 
         <span class="cov0" title="0">return instance, nil</span>
+}
+
+func QueryRow[T any](query string, args []interface{}, deps ...interface{}) (result *T, err error) <span class="cov0" title="0">{
+        result = new(T)
+        destVal := reflect.ValueOf(result).Elem()
+
+        conn, err := GetPostgresClient(deps...)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Get(deps...).Error(err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">row := conn.QueryRow(context.Background(), query, args...)
+
+        if err = row.Scan(fieldAddrs(destVal)...); err != nil </span><span class="cov0" title="0">{
+                log.Get(deps...).Error(err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">return</span>
+}
+
+func fieldAddrs(destVal reflect.Value) (addrs []interface{}) <span class="cov0" title="0">{
+        addrs = make([]interface{}, destVal.NumField())
+        for i := 0; i &lt; destVal.NumField(); i++ </span><span class="cov0" title="0">{
+                addrs[i] = destVal.Field(i).Addr().Interface()
+        }</span>
+        <span class="cov0" title="0">return</span>
 }
 </pre>
 		
