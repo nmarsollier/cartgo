@@ -28,13 +28,16 @@ func newCart(userId string) *Cart {
 
 // findByUserId lee el cart activo del usuario
 func findByUserId(userId string, deps ...interface{}) (*Cart, error) {
-	query := `
-        SELECT id, userId, orderId, articles, enabled, created, updated
-        FROM cartgo.carts
-        WHERE userId = $1 and enabled = true
-    `
+	cart, err := db.QueryRow[Cart](
+		`
+      SELECT id, userId, orderId, articles, enabled, created, updated
+      FROM cartgo.carts
+      WHERE userId = $1 and enabled = true
+    `,
+		[]interface{}{userId},
+		deps...,
+	)
 
-	cart, err := db.QueryRow[Cart](query, []interface{}{userId}, deps...)
 	if errors.Is(err, sql.ErrNoRows) {
 		return nil, errs.NotFound
 	}
@@ -48,12 +51,16 @@ func findByUserId(userId string, deps ...interface{}) (*Cart, error) {
 }
 
 func findById(cartId string, deps ...interface{}) (*Cart, error) {
-	query := `
-        SELECT id, userId, orderId, articles, enabled, created, updated
-        FROM cartgo.carts
-        WHERE id = $1
-    `
-	cart, err := db.QueryRow[Cart](query, []interface{}{cartId}, deps...)
+	cart, err := db.QueryRow[Cart](
+		`
+      SELECT id, userId, orderId, articles, enabled, created, updated
+      FROM cartgo.carts
+      WHERE id = $1
+    `,
+		[]interface{}{cartId},
+		deps...,
+	)
+
 	if err != nil {
 		log.Get(deps...).Error(err)
 		return nil, err
@@ -77,12 +84,12 @@ func save(cart *Cart, deps ...interface{}) (err error) {
 	articlesJSON := strs.ToJson(cart.Articles)
 
 	query := `
-        INSERT INTO cartgo.carts (id, userId, orderId, articles, enabled, created, updated)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
-        ON CONFLICT (id) DO UPDATE SET
-            articles = EXCLUDED.articles,
-            enabled = EXCLUDED.enabled,
-            updated = EXCLUDED.updated
+      INSERT INTO cartgo.carts (id, userId, orderId, articles, enabled, created, updated)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      ON CONFLICT (id) DO UPDATE SET
+          articles = EXCLUDED.articles,
+          enabled = EXCLUDED.enabled,
+          updated = EXCLUDED.updated
     `
 
 	_, err = conn.Exec(context.Background(), query, cart.ID, cart.UserId, cart.OrderId, articlesJSON, cart.Enabled, cart.Created, cart.Updated)
