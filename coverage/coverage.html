@@ -9625,7 +9625,7 @@ func Checkout(userId string, token string, deps ...interface{}) (*cart.Cart, err
 
 func callValidate(article *cart.Article, token string, deps ...interface{}) error <span class="cov8" title="1">{
         // Buscamos el usuario remoto
-        req, err := http.NewRequest("GET", env.Get().CatalogServerURL+"/v1/articles/"+article.ArticleId, nil)
+        req, err := http.NewRequest("GET", env.Get().CatalogServerURL+"/articles/"+article.ArticleId, nil)
         if corrId, ok := log.Get(deps...).Data()[log.LOG_FIELD_CORRELATION_ID].(string); ok </span><span class="cov8" title="1">{
                 req.Header.Add(log.LOG_FIELD_CORRELATION_ID, corrId)
         }</span>
