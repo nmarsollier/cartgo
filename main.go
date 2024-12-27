@@ -1,9 +1,12 @@
 package main
 
 import (
-	"github.com/nmarsollier/cartgo/graph/server"
-	"github.com/nmarsollier/cartgo/rabbit/consume"
-	routes "github.com/nmarsollier/cartgo/rest"
+	"github.com/nmarsollier/cartgo/internal/engine/di"
+	"github.com/nmarsollier/cartgo/internal/engine/env"
+	"github.com/nmarsollier/cartgo/internal/engine/log"
+	server "github.com/nmarsollier/cartgo/internal/graph"
+	"github.com/nmarsollier/cartgo/internal/rabbit"
+	"github.com/nmarsollier/cartgo/internal/rest"
 )
 
 //	@title			CartGo
@@ -17,8 +20,11 @@ import (
 //
 // Main Method
 func main() {
-	go server.Start()
+	deps := di.NewInjector(log.Get(env.Get().FluentUrl))
 
-	consume.Init()
-	routes.Start()
+	go server.Start(deps.Logger())
+
+	rabbit.Init(deps)
+
+	rest.Start()
 }

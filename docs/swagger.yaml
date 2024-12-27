@@ -138,6 +138,11 @@ definitions:
         example: ""
         type: string
     type: object
+  engine.ErrorData:
+    properties:
+      error:
+        type: string
+    type: object
   errs.ValidationErr:
     properties:
       messages:
@@ -166,11 +171,6 @@ definitions:
     - articleId
     - quantity
     type: object
-  server.ErrorData:
-    properties:
-      error:
-        type: string
-    type: object
 host: localhost:3003
 info:
   contact:
@@ -180,6 +180,290 @@ info:
   title: CartGo
   version: "1.0"
 paths:
+  /cart:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene el carrito actual.
+      parameters:
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cart
+          schema:
+            $ref: '#/definitions/cart.Cart'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errs.ValidationErr'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+      summary: Obtener carrito.
+      tags:
+      - Cart
+  /cart/article:
+    post:
+      consumes:
+      - application/json
+      description: Agrega un articulo del carrito actual.
+      parameters:
+      - description: ID de articlo
+        in: path
+        name: articleId
+        required: true
+        type: string
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Articulo a Agregar
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/rest.AddArticleData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cart
+          schema:
+            $ref: '#/definitions/cart.Cart'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errs.ValidationErr'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+      summary: Agregar Articulo
+      tags:
+      - Cart
+  /cart/article/:articleId:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un articulo del carrito actual.
+      parameters:
+      - description: ID de articlo
+        in: path
+        name: articleId
+        required: true
+        type: string
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errs.ValidationErr'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+      summary: Eliminar Articulo
+      tags:
+      - Cart
+  /cart/article/:articleId/decrement:
+    post:
+      consumes:
+      - application/json
+      description: Eliminar 1 al articulo actual.
+      parameters:
+      - description: ID de articlo
+        in: path
+        name: articleId
+        required: true
+        type: string
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cart
+          schema:
+            $ref: '#/definitions/cart.Cart'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errs.ValidationErr'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+      summary: Agregar 1 Articulo
+      tags:
+      - Cart
+  /cart/article/:articleId/increment:
+    post:
+      consumes:
+      - application/json
+      description: Agregar 1 al articulo actual.
+      parameters:
+      - description: ID de articlo
+        in: path
+        name: articleId
+        required: true
+        type: string
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cart
+          schema:
+            $ref: '#/definitions/cart.Cart'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errs.ValidationErr'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+      summary: Agregar 1 Articulo
+      tags:
+      - Cart
+  /cart/checkouts:
+    post:
+      consumes:
+      - application/json
+      description: Hace checkout del carrito actual
+      parameters:
+      - description: ID de articlo
+        in: path
+        name: articleId
+        required: true
+        type: string
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errs.ValidationErr'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+      summary: Checkout Articulo
+      tags:
+      - Cart
+  /cart/validate:
+    get:
+      consumes:
+      - application/json
+      description: Valida el carrito para checkout
+      parameters:
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errs.ValidationErr'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/engine.ErrorData'
+      summary: Validar Carrito
+      tags:
+      - Cart
   /rabbit/article_exist:
     get:
       consumes:
@@ -272,288 +556,4 @@ paths:
       summary: Emite place_order/place_order
       tags:
       - Rabbit
-  /v1/cart:
-    get:
-      consumes:
-      - application/json
-      description: Obtiene el carrito actual.
-      parameters:
-      - description: Bearer {token}
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Cart
-          schema:
-            $ref: '#/definitions/cart.Cart'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/errs.ValidationErr'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-      summary: Obtener carrito.
-      tags:
-      - Cart
-  /v1/cart/article:
-    post:
-      consumes:
-      - application/json
-      description: Agrega un articulo del carrito actual.
-      parameters:
-      - description: ID de articlo
-        in: path
-        name: articleId
-        required: true
-        type: string
-      - description: Bearer {token}
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Articulo a Agregar
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/rest.AddArticleData'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Cart
-          schema:
-            $ref: '#/definitions/cart.Cart'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/errs.ValidationErr'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-      summary: Agregar Articulo
-      tags:
-      - Cart
-  /v1/cart/article/:articleId:
-    delete:
-      consumes:
-      - application/json
-      description: Elimina un articulo del carrito actual.
-      parameters:
-      - description: ID de articlo
-        in: path
-        name: articleId
-        required: true
-        type: string
-      - description: Bearer {token}
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: No Content
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/errs.ValidationErr'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-      summary: Eliminar Articulo
-      tags:
-      - Cart
-  /v1/cart/article/:articleId/decrement:
-    post:
-      consumes:
-      - application/json
-      description: Eliminar 1 al articulo actual.
-      parameters:
-      - description: ID de articlo
-        in: path
-        name: articleId
-        required: true
-        type: string
-      - description: Bearer {token}
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Cart
-          schema:
-            $ref: '#/definitions/cart.Cart'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/errs.ValidationErr'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-      summary: Agregar 1 Articulo
-      tags:
-      - Cart
-  /v1/cart/article/:articleId/increment:
-    post:
-      consumes:
-      - application/json
-      description: Agregar 1 al articulo actual.
-      parameters:
-      - description: ID de articlo
-        in: path
-        name: articleId
-        required: true
-        type: string
-      - description: Bearer {token}
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Cart
-          schema:
-            $ref: '#/definitions/cart.Cart'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/errs.ValidationErr'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-      summary: Agregar 1 Articulo
-      tags:
-      - Cart
-  /v1/cart/checkouts:
-    post:
-      consumes:
-      - application/json
-      description: Hace checkout del carrito actual
-      parameters:
-      - description: ID de articlo
-        in: path
-        name: articleId
-        required: true
-        type: string
-      - description: Bearer {token}
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: No Content
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/errs.ValidationErr'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-      summary: Checkout Articulo
-      tags:
-      - Cart
-  /v1/cart/validate:
-    get:
-      consumes:
-      - application/json
-      description: Valida el carrito para checkout
-      parameters:
-      - description: Bearer {token}
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: No Content
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/errs.ValidationErr'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorData'
-      summary: Validar Carrito
-      tags:
-      - Cart
 swagger: "2.0"

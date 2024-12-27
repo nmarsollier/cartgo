@@ -1,0 +1,25 @@
+mode: set
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_channel.go:21.26,23.16 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_channel.go:23.16,26.3 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_channel.go:28.2,29.16 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_channel.go:29.16,32.3 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_channel.go:34.2,34.40 1 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_channel.go:44.9,54.2 1 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_channel.go:59.9,68.2 1 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:15.82,20.2 1 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:36.89,54.16 5 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:54.16,57.3 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:59.2,60.16 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:60.16,63.3 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:65.2,70.16 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:70.16,73.3 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:75.2,77.12 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:102.71,110.34 3 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:110.34,115.3 1 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:117.2,133.16 5 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:133.16,136.3 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:138.2,139.16 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:139.16,142.3 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:144.2,149.16 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:149.16,152.3 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/emit/rabbit_emit.go:154.2,155.12 2 0

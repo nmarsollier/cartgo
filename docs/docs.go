@@ -18,6 +18,433 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/cart": {
+            "get": {
+                "description": "Obtiene el carrito actual.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Obtener carrito.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cart",
+                        "schema": {
+                            "$ref": "#/definitions/cart.Cart"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.ValidationErr"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/article": {
+            "post": {
+                "description": "Agrega un articulo del carrito actual.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Agregar Articulo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID de articlo",
+                        "name": "articleId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Articulo a Agregar",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/rest.AddArticleData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cart",
+                        "schema": {
+                            "$ref": "#/definitions/cart.Cart"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.ValidationErr"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/article/:articleId": {
+            "delete": {
+                "description": "Elimina un articulo del carrito actual.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Eliminar Articulo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID de articlo",
+                        "name": "articleId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.ValidationErr"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/article/:articleId/decrement": {
+            "post": {
+                "description": "Eliminar 1 al articulo actual.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Agregar 1 Articulo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID de articlo",
+                        "name": "articleId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cart",
+                        "schema": {
+                            "$ref": "#/definitions/cart.Cart"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.ValidationErr"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/article/:articleId/increment": {
+            "post": {
+                "description": "Agregar 1 al articulo actual.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Agregar 1 Articulo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID de articlo",
+                        "name": "articleId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cart",
+                        "schema": {
+                            "$ref": "#/definitions/cart.Cart"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.ValidationErr"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/checkouts": {
+            "post": {
+                "description": "Hace checkout del carrito actual",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Checkout Articulo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID de articlo",
+                        "name": "articleId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.ValidationErr"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/validate": {
+            "get": {
+                "description": "Valida el carrito para checkout",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Validar Carrito",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer {token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.ValidationErr"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/engine.ErrorData"
+                        }
+                    }
+                }
+            }
+        },
         "/rabbit/article_exist": {
             "get": {
                 "description": "Luego de solicitar validaciones de catalogo, Escucha article_exist/cart_article_exist.",
@@ -149,433 +576,6 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {}
-            }
-        },
-        "/v1/cart": {
-            "get": {
-                "description": "Obtiene el carrito actual.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Cart"
-                ],
-                "summary": "Obtener carrito.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Bearer {token}",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Cart",
-                        "schema": {
-                            "$ref": "#/definitions/cart.Cart"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/errs.ValidationErr"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/cart/article": {
-            "post": {
-                "description": "Agrega un articulo del carrito actual.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Cart"
-                ],
-                "summary": "Agregar Articulo",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "ID de articlo",
-                        "name": "articleId",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Bearer {token}",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "Articulo a Agregar",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/rest.AddArticleData"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Cart",
-                        "schema": {
-                            "$ref": "#/definitions/cart.Cart"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/errs.ValidationErr"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/cart/article/:articleId": {
-            "delete": {
-                "description": "Elimina un articulo del carrito actual.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Cart"
-                ],
-                "summary": "Eliminar Articulo",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "ID de articlo",
-                        "name": "articleId",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Bearer {token}",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/errs.ValidationErr"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/cart/article/:articleId/decrement": {
-            "post": {
-                "description": "Eliminar 1 al articulo actual.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Cart"
-                ],
-                "summary": "Agregar 1 Articulo",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "ID de articlo",
-                        "name": "articleId",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Bearer {token}",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Cart",
-                        "schema": {
-                            "$ref": "#/definitions/cart.Cart"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/errs.ValidationErr"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/cart/article/:articleId/increment": {
-            "post": {
-                "description": "Agregar 1 al articulo actual.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Cart"
-                ],
-                "summary": "Agregar 1 Articulo",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "ID de articlo",
-                        "name": "articleId",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Bearer {token}",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Cart",
-                        "schema": {
-                            "$ref": "#/definitions/cart.Cart"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/errs.ValidationErr"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/cart/checkouts": {
-            "post": {
-                "description": "Hace checkout del carrito actual",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Cart"
-                ],
-                "summary": "Checkout Articulo",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "ID de articlo",
-                        "name": "articleId",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Bearer {token}",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/errs.ValidationErr"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/cart/validate": {
-            "get": {
-                "description": "Valida el carrito para checkout",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Cart"
-                ],
-                "summary": "Validar Carrito",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Bearer {token}",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/errs.ValidationErr"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/server.ErrorData"
-                        }
-                    }
-                }
             }
         }
     },
@@ -779,6 +779,14 @@ const docTemplate = `{
                 }
             }
         },
+        "engine.ErrorData": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
         "errs.ValidationErr": {
             "type": "object",
             "properties": {
@@ -817,14 +825,6 @@ const docTemplate = `{
                     "type": "integer",
                     "maximum": 100,
                     "minimum": 1
-                }
-            }
-        },
-        "server.ErrorData": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string"
                 }
             }
         }

@@ -8,6 +8,202 @@ Nestor Marsollier
 nmarsollier@gmail.com  
 
 ---
+### /cart
+
+#### GET
+##### Summary
+
+Obtener carrito.
+
+##### Description
+
+Obtiene el carrito actual.
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ------ |
+| Authorization | header | Bearer {token} | Yes | string |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Cart | [cart.Cart](#cartcart) |
+| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
+| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
+| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
+| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+
+### /cart/article
+
+#### POST
+##### Summary
+
+Agregar Articulo
+
+##### Description
+
+Agrega un articulo del carrito actual.
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ------ |
+| articleId | path | ID de articlo | Yes | string |
+| Authorization | header | Bearer {token} | Yes | string |
+| body | body | Articulo a Agregar | Yes | [rest.AddArticleData](#restaddarticledata) |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Cart | [cart.Cart](#cartcart) |
+| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
+| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
+| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
+| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+
+### /cart/article/:articleId
+
+#### DELETE
+##### Summary
+
+Eliminar Articulo
+
+##### Description
+
+Elimina un articulo del carrito actual.
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ------ |
+| articleId | path | ID de articlo | Yes | string |
+| Authorization | header | Bearer {token} | Yes | string |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | No Content |  |
+| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
+| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
+| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
+| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+
+### /cart/article/:articleId/decrement
+
+#### POST
+##### Summary
+
+Agregar 1 Articulo
+
+##### Description
+
+Eliminar 1 al articulo actual.
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ------ |
+| articleId | path | ID de articlo | Yes | string |
+| Authorization | header | Bearer {token} | Yes | string |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Cart | [cart.Cart](#cartcart) |
+| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
+| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
+| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
+| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+
+### /cart/article/:articleId/increment
+
+#### POST
+##### Summary
+
+Agregar 1 Articulo
+
+##### Description
+
+Agregar 1 al articulo actual.
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ------ |
+| articleId | path | ID de articlo | Yes | string |
+| Authorization | header | Bearer {token} | Yes | string |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Cart | [cart.Cart](#cartcart) |
+| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
+| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
+| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
+| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+
+### /cart/checkouts
+
+#### POST
+##### Summary
+
+Checkout Articulo
+
+##### Description
+
+Hace checkout del carrito actual
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ------ |
+| articleId | path | ID de articlo | Yes | string |
+| Authorization | header | Bearer {token} | Yes | string |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | No Content |  |
+| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
+| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
+| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
+| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+
+### /cart/validate
+
+#### GET
+##### Summary
+
+Validar Carrito
+
+##### Description
+
+Valida el carrito para checkout
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ------ |
+| Authorization | header | Bearer {token} | Yes | string |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | No Content |  |
+| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
+| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
+| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
+| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+
+---
 ### /rabbit/article_exist
 
 #### GET
@@ -117,202 +313,6 @@ Cuando se hace checkout enviamos un comando a orders para que inicie el proceso 
 | ---- | ----------- |
 
 ---
-### /v1/cart
-
-#### GET
-##### Summary
-
-Obtener carrito.
-
-##### Description
-
-Obtiene el carrito actual.
-
-##### Parameters
-
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ------ |
-| Authorization | header | Bearer {token} | Yes | string |
-
-##### Responses
-
-| Code | Description | Schema |
-| ---- | ----------- | ------ |
-| 200 | Cart | [cart.Cart](#cartcart) |
-| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [server.ErrorData](#servererrordata) |
-| 404 | Not Found | [server.ErrorData](#servererrordata) |
-| 500 | Internal Server Error | [server.ErrorData](#servererrordata) |
-
-### /v1/cart/article
-
-#### POST
-##### Summary
-
-Agregar Articulo
-
-##### Description
-
-Agrega un articulo del carrito actual.
-
-##### Parameters
-
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ------ |
-| articleId | path | ID de articlo | Yes | string |
-| Authorization | header | Bearer {token} | Yes | string |
-| body | body | Articulo a Agregar | Yes | [rest.AddArticleData](#restaddarticledata) |
-
-##### Responses
-
-| Code | Description | Schema |
-| ---- | ----------- | ------ |
-| 200 | Cart | [cart.Cart](#cartcart) |
-| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [server.ErrorData](#servererrordata) |
-| 404 | Not Found | [server.ErrorData](#servererrordata) |
-| 500 | Internal Server Error | [server.ErrorData](#servererrordata) |
-
-### /v1/cart/article/:articleId
-
-#### DELETE
-##### Summary
-
-Eliminar Articulo
-
-##### Description
-
-Elimina un articulo del carrito actual.
-
-##### Parameters
-
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ------ |
-| articleId | path | ID de articlo | Yes | string |
-| Authorization | header | Bearer {token} | Yes | string |
-
-##### Responses
-
-| Code | Description | Schema |
-| ---- | ----------- | ------ |
-| 200 | No Content |  |
-| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [server.ErrorData](#servererrordata) |
-| 404 | Not Found | [server.ErrorData](#servererrordata) |
-| 500 | Internal Server Error | [server.ErrorData](#servererrordata) |
-
-### /v1/cart/article/:articleId/decrement
-
-#### POST
-##### Summary
-
-Agregar 1 Articulo
-
-##### Description
-
-Eliminar 1 al articulo actual.
-
-##### Parameters
-
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ------ |
-| articleId | path | ID de articlo | Yes | string |
-| Authorization | header | Bearer {token} | Yes | string |
-
-##### Responses
-
-| Code | Description | Schema |
-| ---- | ----------- | ------ |
-| 200 | Cart | [cart.Cart](#cartcart) |
-| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [server.ErrorData](#servererrordata) |
-| 404 | Not Found | [server.ErrorData](#servererrordata) |
-| 500 | Internal Server Error | [server.ErrorData](#servererrordata) |
-
-### /v1/cart/article/:articleId/increment
-
-#### POST
-##### Summary
-
-Agregar 1 Articulo
-
-##### Description
-
-Agregar 1 al articulo actual.
-
-##### Parameters
-
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ------ |
-| articleId | path | ID de articlo | Yes | string |
-| Authorization | header | Bearer {token} | Yes | string |
-
-##### Responses
-
-| Code | Description | Schema |
-| ---- | ----------- | ------ |
-| 200 | Cart | [cart.Cart](#cartcart) |
-| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [server.ErrorData](#servererrordata) |
-| 404 | Not Found | [server.ErrorData](#servererrordata) |
-| 500 | Internal Server Error | [server.ErrorData](#servererrordata) |
-
-### /v1/cart/checkouts
-
-#### POST
-##### Summary
-
-Checkout Articulo
-
-##### Description
-
-Hace checkout del carrito actual
-
-##### Parameters
-
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ------ |
-| articleId | path | ID de articlo | Yes | string |
-| Authorization | header | Bearer {token} | Yes | string |
-
-##### Responses
-
-| Code | Description | Schema |
-| ---- | ----------- | ------ |
-| 200 | No Content |  |
-| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [server.ErrorData](#servererrordata) |
-| 404 | Not Found | [server.ErrorData](#servererrordata) |
-| 500 | Internal Server Error | [server.ErrorData](#servererrordata) |
-
-### /v1/cart/validate
-
-#### GET
-##### Summary
-
-Validar Carrito
-
-##### Description
-
-Valida el carrito para checkout
-
-##### Parameters
-
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ------ |
-| Authorization | header | Bearer {token} | Yes | string |
-
-##### Responses
-
-| Code | Description | Schema |
-| ---- | ----------- | ------ |
-| 200 | No Content |  |
-| 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [server.ErrorData](#servererrordata) |
-| 404 | Not Found | [server.ErrorData](#servererrordata) |
-| 500 | Internal Server Error | [server.ErrorData](#servererrordata) |
-
----
 ### Models
 
 #### cart.Article
@@ -410,6 +410,12 @@ Valida el carrito para checkout
 | message | [emit.ArticleValidationData](#emitarticlevalidationdata) |  | No |
 | routing_key | string | *Example:* `""` | No |
 
+#### engine.ErrorData
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| error | string |  | No |
+
 #### errs.ValidationErr
 
 | Name | Type | Description | Required |
@@ -429,9 +435,3 @@ Valida el carrito para checkout
 | ---- | ---- | ----------- | -------- |
 | articleId | string |  | Yes |
 | quantity | integer |  | Yes |
-
-#### server.ErrorData
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| error | string |  | No |

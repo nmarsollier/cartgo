@@ -1,0 +1,16 @@
+mode: set
+github.com/nmarsollier/cartgo/internal/rabbit/listeners.go:9.27,12.12 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/listeners.go:12.12,13.7 1 0
+github.com/nmarsollier/cartgo/internal/rabbit/listeners.go:13.7,15.18 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/listeners.go:15.18,17.5 1 0
+github.com/nmarsollier/cartgo/internal/rabbit/listeners.go:18.4,19.31 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/listeners.go:23.2,23.12 1 0
+github.com/nmarsollier/cartgo/internal/rabbit/listeners.go:23.12,24.7 1 0
+github.com/nmarsollier/cartgo/internal/rabbit/listeners.go:24.7,26.18 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/listeners.go:26.18,28.5 1 0
+github.com/nmarsollier/cartgo/internal/rabbit/listeners.go:29.4,30.31 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/listeners.go:34.2,34.12 1 0
+github.com/nmarsollier/cartgo/internal/rabbit/listeners.go:34.12,35.7 1 0
+github.com/nmarsollier/cartgo/internal/rabbit/listeners.go:35.7,37.18 2 0
+github.com/nmarsollier/cartgo/internal/rabbit/listeners.go:37.18,39.5 1 0
+github.com/nmarsollier/cartgo/internal/rabbit/listeners.go:40.4,41.31 2 0
