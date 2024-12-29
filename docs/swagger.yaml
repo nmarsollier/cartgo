@@ -91,53 +91,6 @@ definitions:
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg
         type: string
     type: object
-  emit.ArticleValidationData:
-    properties:
-      articleId:
-        example: ArticleId
-        type: string
-      referenceId:
-        example: UserId
-        type: string
-    type: object
-  emit.PlaceArticlesData:
-    properties:
-      id:
-        example: ArticleId
-        type: string
-      quantity:
-        example: 10
-        type: integer
-    type: object
-  emit.PlacedData:
-    properties:
-      articles:
-        items:
-          $ref: '#/definitions/emit.PlaceArticlesData'
-        type: array
-      cartId:
-        example: CartId
-        type: string
-      userId:
-        example: UserId
-        type: string
-    type: object
-  emit.SendPlacedMessage:
-    type: object
-  emit.SendValidationMessage:
-    properties:
-      correlation_id:
-        example: "123123"
-        type: string
-      exchange:
-        example: cart
-        type: string
-      message:
-        $ref: '#/definitions/emit.ArticleValidationData'
-      routing_key:
-        example: ""
-        type: string
-    type: object
   errs.ValidationErr:
     properties:
       messages:
@@ -482,24 +435,6 @@ paths:
       summary: Mensage Rabbit article_exist/cart_article_exist
       tags:
       - Rabbit
-    put:
-      consumes:
-      - application/json
-      description: Solicitamos las validaciones ar articulos a catalogo. Responde
-        en article_exist/cart_article_exist.
-      parameters:
-      - description: Mensage de validacion article_exist/cart_article_exist
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/emit.SendValidationMessage'
-      produces:
-      - application/json
-      responses: {}
-      summary: Emite Validar Artículos a Cart article_exist/article_exist
-      tags:
-      - Rabbit
   /rabbit/logout:
     get:
       consumes:
@@ -535,25 +470,6 @@ paths:
       - application/json
       responses: {}
       summary: Mensage Rabbit order_placed/order_placed
-      tags:
-      - Rabbit
-  /rabbit/place_order:
-    put:
-      consumes:
-      - application/json
-      description: Cuando se hace checkout enviamos un comando a orders para que inicie
-        el proceso de la orden.
-      parameters:
-      - description: Place order
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/emit.SendPlacedMessage'
-      produces:
-      - application/json
-      responses: {}
-      summary: Emite place_order/place_order
       tags:
       - Rabbit
 swagger: "2.0"

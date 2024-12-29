@@ -226,26 +226,6 @@ Luego de solicitar validaciones de catalogo, Escucha article_exist/cart_article_
 | Code | Description |
 | ---- | ----------- |
 
-#### PUT
-##### Summary
-
-Emite Validar Artículos a Cart article_exist/article_exist
-
-##### Description
-
-Solicitamos las validaciones ar articulos a catalogo. Responde en article_exist/cart_article_exist.
-
-##### Parameters
-
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ------ |
-| body | body | Mensage de validacion article_exist/cart_article_exist | Yes | [emit.SendValidationMessage](#emitsendvalidationmessage) |
-
-##### Responses
-
-| Code | Description |
-| ---- | ----------- |
-
 ### /rabbit/logout
 
 #### GET
@@ -284,28 +264,6 @@ Cuando se recibe order_placed se actualiza el order id del carrito. No se respod
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
 | type | body | Message order_placed | Yes | [consume.consumeOrderPlacedMessage](#consumeconsumeorderplacedmessage) |
-
-##### Responses
-
-| Code | Description |
-| ---- | ----------- |
-
-### /rabbit/place_order
-
-#### PUT
-##### Summary
-
-Emite place_order/place_order
-
-##### Description
-
-Cuando se hace checkout enviamos un comando a orders para que inicie el proceso de la orden.
-
-##### Parameters
-
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ------ |
-| body | body | Place order | Yes | [emit.SendPlacedMessage](#emitsendplacedmessage) |
 
 ##### Responses
 
@@ -372,43 +330,6 @@ Cuando se hace checkout enviamos un comando a orders para que inicie el proceso 
 | ---- | ---- | ----------- | -------- |
 | correlation_id | string | *Example:* `"123123"` | No |
 | message | string | *Example:* `"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg"` | No |
-
-#### emit.ArticleValidationData
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| articleId | string | *Example:* `"ArticleId"` | No |
-| referenceId | string | *Example:* `"UserId"` | No |
-
-#### emit.PlaceArticlesData
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| id | string | *Example:* `"ArticleId"` | No |
-| quantity | integer | *Example:* `10` | No |
-
-#### emit.PlacedData
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| articles | [ [emit.PlaceArticlesData](#emitplacearticlesdata) ] |  | No |
-| cartId | string | *Example:* `"CartId"` | No |
-| userId | string | *Example:* `"UserId"` | No |
-
-#### emit.SendPlacedMessage
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| emit.SendPlacedMessage | object |  |  |
-
-#### emit.SendValidationMessage
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| correlation_id | string | *Example:* `"123123"` | No |
-| exchange | string | *Example:* `"cart"` | No |
-| message | [emit.ArticleValidationData](#emitarticlevalidationdata) |  | No |
-| routing_key | string | *Example:* `""` | No |
 
 #### errs.ValidationErr
 

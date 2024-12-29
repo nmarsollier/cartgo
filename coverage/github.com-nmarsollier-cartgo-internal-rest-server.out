@@ -1,0 +1,19 @@
+mode: set
+github.com/nmarsollier/cartgo/internal/rest/server/authorization.go:13.45,15.16 2 0
+github.com/nmarsollier/cartgo/internal/rest/server/authorization.go:15.16,19.3 3 0
+github.com/nmarsollier/cartgo/internal/rest/server/authorization.go:21.2,22.57 2 0
+github.com/nmarsollier/cartgo/internal/rest/server/authorization.go:25.60,27.16 2 0
+github.com/nmarsollier/cartgo/internal/rest/server/authorization.go:27.16,29.3 1 0
+github.com/nmarsollier/cartgo/internal/rest/server/authorization.go:30.2,35.16 5 0
+github.com/nmarsollier/cartgo/internal/rest/server/authorization.go:35.16,37.3 1 0
+github.com/nmarsollier/cartgo/internal/rest/server/authorization.go:39.2,39.18 1 0
+github.com/nmarsollier/cartgo/internal/rest/server/di_middleware.go:11.45,12.30 1 0
+github.com/nmarsollier/cartgo/internal/rest/server/di_middleware.go:12.30,16.14 3 0
+github.com/nmarsollier/cartgo/internal/rest/server/di_middleware.go:16.14,20.4 3 0
+github.com/nmarsollier/cartgo/internal/rest/server/di_middleware.go:20.9,22.4 1 0
+github.com/nmarsollier/cartgo/internal/rest/server/di_middleware.go:24.3,26.36 2 0
+github.com/nmarsollier/cartgo/internal/rest/server/di_middleware.go:26.36,28.4 1 0
+github.com/nmarsollier/cartgo/internal/rest/server/di_middleware.go:32.40,34.2 1 0
+github.com/nmarsollier/cartgo/internal/rest/server/engine.go:17.27,18.19 1 0
+github.com/nmarsollier/cartgo/internal/rest/server/engine.go:18.19,20.3 1 0
+github.com/nmarsollier/cartgo/internal/rest/server/engine.go:22.2,39.15 7 0

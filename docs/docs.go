@@ -470,31 +470,6 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {}
-            },
-            "put": {
-                "description": "Solicitamos las validaciones ar articulos a catalogo. Responde en article_exist/cart_article_exist.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Rabbit"
-                ],
-                "summary": "Emite Validar Artículos a Cart article_exist/article_exist",
-                "parameters": [
-                    {
-                        "description": "Mensage de validacion article_exist/cart_article_exist",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/emit.SendValidationMessage"
-                        }
-                    }
-                ],
-                "responses": {}
             }
         },
         "/rabbit/logout": {
@@ -545,33 +520,6 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/consume.consumeOrderPlacedMessage"
-                        }
-                    }
-                ],
-                "responses": {}
-            }
-        },
-        "/rabbit/place_order": {
-            "put": {
-                "description": "Cuando se hace checkout enviamos un comando a orders para que inicie el proceso de la orden.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Rabbit"
-                ],
-                "summary": "Emite place_order/place_order",
-                "parameters": [
-                    {
-                        "description": "Place order",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/emit.SendPlacedMessage"
                         }
                     }
                 ],
@@ -708,74 +656,6 @@ const docTemplate = `{
                 "message": {
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg"
-                }
-            }
-        },
-        "emit.ArticleValidationData": {
-            "type": "object",
-            "properties": {
-                "articleId": {
-                    "type": "string",
-                    "example": "ArticleId"
-                },
-                "referenceId": {
-                    "type": "string",
-                    "example": "UserId"
-                }
-            }
-        },
-        "emit.PlaceArticlesData": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "example": "ArticleId"
-                },
-                "quantity": {
-                    "type": "integer",
-                    "example": 10
-                }
-            }
-        },
-        "emit.PlacedData": {
-            "type": "object",
-            "properties": {
-                "articles": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/emit.PlaceArticlesData"
-                    }
-                },
-                "cartId": {
-                    "type": "string",
-                    "example": "CartId"
-                },
-                "userId": {
-                    "type": "string",
-                    "example": "UserId"
-                }
-            }
-        },
-        "emit.SendPlacedMessage": {
-            "type": "object"
-        },
-        "emit.SendValidationMessage": {
-            "type": "object",
-            "properties": {
-                "correlation_id": {
-                    "type": "string",
-                    "example": "123123"
-                },
-                "exchange": {
-                    "type": "string",
-                    "example": "cart"
-                },
-                "message": {
-                    "$ref": "#/definitions/emit.ArticleValidationData"
-                },
-                "routing_key": {
-                    "type": "string",
-                    "example": ""
                 }
             }
         },
