@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/nmarsollier/cartgo/internal/engine/di"
-	"github.com/nmarsollier/cartgo/internal/engine/env"
-	"github.com/nmarsollier/cartgo/internal/engine/log"
-	server "github.com/nmarsollier/cartgo/internal/graph"
+	"github.com/nmarsollier/cartgo/internal/di"
+	"github.com/nmarsollier/cartgo/internal/env"
+	"github.com/nmarsollier/cartgo/internal/graph"
 	"github.com/nmarsollier/cartgo/internal/rabbit"
 	"github.com/nmarsollier/cartgo/internal/rest"
+	"github.com/nmarsollier/commongo/log"
 )
 
 //	@title			CartGo
@@ -20,9 +20,9 @@ import (
 //
 // Main Method
 func main() {
-	deps := di.NewInjector(log.Get(env.Get().FluentUrl))
+	deps := di.NewInjector(log.Get(env.Get().FluentUrl, "cartgo"))
 
-	go server.Start(deps.Logger())
+	go graph.Start(deps.Logger())
 
 	rabbit.Init(deps)
 

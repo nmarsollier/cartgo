@@ -1,6 +1,6 @@
 package cart
 
-import "github.com/nmarsollier/cartgo/internal/engine/log"
+import "github.com/nmarsollier/commongo/log"
 
 type CartService interface {
 	CurrentCart(userId string) (*Cart, error)

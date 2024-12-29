@@ -2,8 +2,9 @@ package rest
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/nmarsollier/cartgo/internal/rest/engine"
-	"github.com/nmarsollier/cartgo/internal/security"
+	"github.com/nmarsollier/cartgo/internal/rest/server"
+	"github.com/nmarsollier/commongo/rst"
+	"github.com/nmarsollier/commongo/security"
 )
 
 //	@Summary		Eliminar Articulo
@@ -15,16 +16,16 @@ import (
 //	@Param			Authorization	header	string	true	"Bearer {token}"
 //	@Success		200				"No Content"
 //	@Failure		400				{object}	errs.ValidationErr	"Bad Request"
-//	@Failure		401				{object}	engine.ErrorData	"Unauthorized"
-//	@Failure		404				{object}	engine.ErrorData	"Not Found"
-//	@Failure		500				{object}	engine.ErrorData	"Internal Server Error"
+//	@Failure		401				{object}	rst.ErrorData		"Unauthorized"
+//	@Failure		404				{object}	rst.ErrorData		"Not Found"
+//	@Failure		500				{object}	rst.ErrorData		"Internal Server Error"
 //	@Router			/cart/article/:articleId [delete]
 //
 // Elimina un articulo del carrito actual.
-func initDeleteCart() {
-	engine.Router().DELETE(
+func initDeleteCart(engine *gin.Engine) {
+	engine.DELETE(
 		"/cart/article/:articleId",
-		engine.ValidateAuthentication,
+		server.ValidateAuthentication,
 		deleteArticle,
 	)
 }
@@ -33,10 +34,10 @@ func deleteArticle(c *gin.Context) {
 	user := c.MustGet("user").(security.User)
 	articleId := c.Param("articleId")
 
-	deps := engine.GinDi(c)
+	deps := server.GinDi(c)
 	_, err := deps.CartService().RemoveArticle(user.ID, articleId)
 	if err != nil {
-		engine.AbortWithError(c, err)
+		rst.AbortWithError(c, err)
 		return
 	}
 

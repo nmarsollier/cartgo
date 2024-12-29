@@ -2,15 +2,17 @@ package di
 
 import (
 	"github.com/nmarsollier/cartgo/internal/cart"
-	"github.com/nmarsollier/cartgo/internal/engine/db"
-	"github.com/nmarsollier/cartgo/internal/engine/env"
-	"github.com/nmarsollier/cartgo/internal/engine/httpx"
-	"github.com/nmarsollier/cartgo/internal/engine/log"
+	"github.com/nmarsollier/cartgo/internal/env"
 	"github.com/nmarsollier/cartgo/internal/rabbit/consume"
 	"github.com/nmarsollier/cartgo/internal/rabbit/emit"
-	"github.com/nmarsollier/cartgo/internal/security"
 	"github.com/nmarsollier/cartgo/internal/services"
+	"github.com/nmarsollier/commongo/db"
+	"github.com/nmarsollier/commongo/httpx"
+	"github.com/nmarsollier/commongo/log"
+	"github.com/nmarsollier/commongo/rbt"
+	"github.com/nmarsollier/commongo/security"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/x/mongo/driver/topology"
 )
 
 // Singletons
@@ -30,26 +32,26 @@ type Injector interface {
 	ArticleExistConsumer() consume.ArticleExistConsumer
 	LogoutConsumer() consume.LogoutConsumer
 	ConsumeOrderPlaced() consume.OrderPlacedConsumer
-	RabbitEmiter() emit.RabbitEmiter
-	RabbitChannel() emit.RabbitChannel
+	ArticleValidatorPublisher() emit.ArticleValidationPublisher
+	PlacedDataPublisher() emit.PlacedDataPublisher
 	Service() services.Service
 }
 
 type Deps struct {
-	CurrLog        log.LogRusEntry
-	CurrHttpClient httpx.HTTPClient
-	CurrDatabase   *mongo.Database
-	CurrSecRepo    security.SecurityRepository
-	CurrSecSvc     security.SecurityService
-	CurrCartColl   db.Collection
-	CurrCartRepo   cart.CartRepository
-	CurrCartSvc    cart.CartService
-	CurrExistCons  consume.ArticleExistConsumer
-	CurrLogoutCons consume.LogoutConsumer
-	CurrOrderCons  consume.OrderPlacedConsumer
-	CurrEmiter     emit.RabbitEmiter
-	CurrChannel    emit.RabbitChannel
-	CurrService    services.Service
+	CurrLog          log.LogRusEntry
+	CurrHttpClient   httpx.HTTPClient
+	CurrDatabase     *mongo.Database
+	CurrSecRepo      security.SecurityRepository
+	CurrSecSvc       security.SecurityService
+	CurrCartColl     db.Collection
+	CurrCartRepo     cart.CartRepository
+	CurrCartSvc      cart.CartService
+	CurrExistCons    consume.ArticleExistConsumer
+	CurrLogoutCons   consume.LogoutConsumer
+	CurrOrderCons    consume.OrderPlacedConsumer
+	CurrValPublisher emit.ArticleValidationPublisher
+	CurrPldPublisher emit.PlacedDataPublisher
+	CurrService      services.Service
 }
 
 func NewInjector(log log.LogRusEntry) Injector {
@@ -97,7 +99,7 @@ func (i *Deps) SecurityRepository() security.SecurityRepository {
 	if i.CurrSecRepo != nil {
 		return i.CurrSecRepo
 	}
-	i.CurrSecRepo = security.NewSecurityRepository(i.Logger(), i.HttpClient())
+	i.CurrSecRepo = security.NewSecurityRepository(i.Logger(), i.HttpClient(), env.Get().SecurityServerURL)
 	return i.CurrSecRepo
 }
 
@@ -118,7 +120,7 @@ func (i *Deps) CartCollection() db.Collection {
 		return cartCollection
 	}
 
-	cartCollection, err := db.NewCollection(i.CurrLog, i.Database(), "cart")
+	cartCollection, err := db.NewCollection(i.CurrLog, i.Database(), "cart", IsDbTimeoutError)
 	if err != nil {
 		i.CurrLog.Fatal(err)
 		return nil
@@ -166,33 +168,68 @@ func (i *Deps) ConsumeOrderPlaced() consume.OrderPlacedConsumer {
 	return i.CurrOrderCons
 }
 
-func (i *Deps) RabbitChannel() emit.RabbitChannel {
-	if i.CurrChannel != nil {
-		return i.CurrChannel
-	}
-
-	chn, err := emit.NewChannel(env.Get().RabbitURL, i.Logger())
-	if err != nil {
-		i.Logger().Fatal(err)
-		return nil
-	}
-
-	i.CurrChannel = chn
-	return i.CurrChannel
-}
-
-func (i *Deps) RabbitEmiter() emit.RabbitEmiter {
-	if i.CurrEmiter != nil {
-		return i.CurrEmiter
-	}
-	i.CurrEmiter = emit.NewRabbitEmiter(i.Logger(), i.RabbitChannel())
-	return i.CurrEmiter
-}
-
 func (i *Deps) Service() services.Service {
 	if i.CurrService != nil {
 		return i.CurrService
 	}
-	i.CurrService = services.NewService(i.Logger(), i.HttpClient(), i.CartService(), i.RabbitEmiter())
+	i.CurrService = services.NewService(
+		i.Logger(),
+		i.HttpClient(),
+		i.CartService(),
+		i.ArticleValidatorPublisher(),
+		i.PlacedDataPublisher(),
+	)
+
 	return i.CurrService
+}
+
+func (i *Deps) ArticleValidatorPublisher() emit.ArticleValidationPublisher {
+	if i.CurrValPublisher != nil {
+		return i.CurrValPublisher
+	}
+
+	logger := i.Logger().
+		WithField(log.LOG_FIELD_RABBIT_ACTION, "Emit").
+		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "article_exist").
+		WithField(log.LOG_FIELD_RABBIT_QUEUE, "article_exist")
+
+	i.CurrValPublisher, _ = rbt.NewRabbitPublisher[*emit.ArticleValidationData](
+		logger,
+		env.Get().RabbitURL,
+		"article_exist",
+		"direct",
+		"article_exist",
+	)
+
+	return i.CurrValPublisher
+}
+
+func (i *Deps) PlacedDataPublisher() emit.PlacedDataPublisher {
+
+	if i.CurrPldPublisher != nil {
+		return i.CurrPldPublisher
+	}
+
+	logger := i.Logger().
+		WithField(log.LOG_FIELD_RABBIT_ACTION, "Emit").
+		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "place_order").
+		WithField(log.LOG_FIELD_RABBIT_QUEUE, "place_order")
+
+	i.CurrPldPublisher, _ = rbt.NewRabbitPublisher[*emit.PlacedData](
+		logger,
+		env.Get().RabbitURL,
+		"place_order",
+		"direct",
+		"place_order",
+	)
+
+	return i.CurrPldPublisher
+}
+
+// IsDbTimeoutError función a llamar cuando se produce un error de db
+func IsDbTimeoutError(err error) {
+	if err == topology.ErrServerSelectionTimeout {
+		database = nil
+		cartCollection = nil
+	}
 }

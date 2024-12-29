@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 
 	"github.com/nmarsollier/cartgo/internal/cart"
-	"github.com/nmarsollier/cartgo/internal/engine/log"
-	"github.com/nmarsollier/cartgo/internal/engine/strs"
+	"github.com/nmarsollier/commongo/log"
+	"github.com/nmarsollier/commongo/strs"
 	uuid "github.com/satori/go.uuid"
 	"github.com/streadway/amqp"
 )
@@ -15,7 +15,7 @@ type ArticleExistConsumer interface {
 }
 
 func NewArticleExistConsumer(fluentUrl string, rabbitUrl string, service cart.CartService) ArticleExistConsumer {
-	log := log.Get(fluentUrl).
+	log := log.Get(fluentUrl, "cartgo").
 		WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
 		WithField(log.LOG_FIELD_RABBIT_QUEUE, "cart_article_exist").
 		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "article_exist").

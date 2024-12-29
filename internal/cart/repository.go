@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/nmarsollier/cartgo/internal/engine/db"
-	"github.com/nmarsollier/cartgo/internal/engine/errs"
-	"github.com/nmarsollier/cartgo/internal/engine/log"
+	"github.com/nmarsollier/commongo/db"
+	"github.com/nmarsollier/commongo/errs"
+	"github.com/nmarsollier/commongo/log"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

@@ -2,8 +2,9 @@ package rest
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/nmarsollier/cartgo/internal/rest/engine"
-	"github.com/nmarsollier/cartgo/internal/security"
+	"github.com/nmarsollier/cartgo/internal/rest/server"
+	"github.com/nmarsollier/commongo/rst"
+	"github.com/nmarsollier/commongo/security"
 )
 
 //	@Summary		Agregar 1 Articulo
@@ -15,16 +16,16 @@ import (
 //	@Param			Authorization	header		string				true	"Bearer {token}"
 //	@Success		200				{object}	cart.Cart			"Cart"
 //	@Failure		400				{object}	errs.ValidationErr	"Bad Request"
-//	@Failure		401				{object}	engine.ErrorData	"Unauthorized"
-//	@Failure		404				{object}	engine.ErrorData	"Not Found"
-//	@Failure		500				{object}	engine.ErrorData	"Internal Server Error"
+//	@Failure		401				{object}	rst.ErrorData		"Unauthorized"
+//	@Failure		404				{object}	rst.ErrorData		"Not Found"
+//	@Failure		500				{object}	rst.ErrorData		"Internal Server Error"
 //	@Router			/cart/article/:articleId/increment [post]
 //
 // Agregar 1 al articulo actual.
-func initPostCartArticleIncrement() {
-	engine.Router().POST(
+func initPostCartArticleIncrement(engine *gin.Engine) {
+	engine.POST(
 		"/cart/article/:articleId/increment",
-		engine.ValidateAuthentication,
+		server.ValidateAuthentication,
 		incrementArticle,
 	)
 }
@@ -34,10 +35,10 @@ func incrementArticle(c *gin.Context) {
 	user := c.MustGet("user").(security.User)
 	articleId := c.Param("articleId")
 
-	deps := engine.GinDi(c)
+	deps := server.GinDi(c)
 	_, err := deps.Service().AddArticle(user.ID, articleId, 1)
 	if err != nil {
-		engine.AbortWithError(c, err)
+		rst.AbortWithError(c, err)
 		return
 	}
 

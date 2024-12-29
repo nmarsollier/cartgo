@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 
 	"github.com/nmarsollier/cartgo/internal/cart"
-	"github.com/nmarsollier/cartgo/internal/engine/log"
-	"github.com/nmarsollier/cartgo/internal/engine/strs"
+	"github.com/nmarsollier/commongo/log"
+	"github.com/nmarsollier/commongo/strs"
 	uuid "github.com/satori/go.uuid"
 	"github.com/streadway/amqp"
 )
@@ -15,7 +15,7 @@ type OrderPlacedConsumer interface {
 }
 
 func NewOrderPlacedConsumer(fluentUrl string, rabbitUrl string, cart cart.CartService) OrderPlacedConsumer {
-	logger := log.Get(fluentUrl).
+	logger := log.Get(fluentUrl, "cartgo").
 		WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
 		WithField(log.LOG_FIELD_RABBIT_QUEUE, "cart_order_placed").
 		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "order_placed").

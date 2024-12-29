@@ -31,9 +31,9 @@ Obtiene el carrito actual.
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
-| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
-| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+| 401 | Unauthorized | [rst.ErrorData](#rsterrordata) |
+| 404 | Not Found | [rst.ErrorData](#rsterrordata) |
+| 500 | Internal Server Error | [rst.ErrorData](#rsterrordata) |
 
 ### /cart/article
 
@@ -60,9 +60,9 @@ Agrega un articulo del carrito actual.
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
-| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
-| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+| 401 | Unauthorized | [rst.ErrorData](#rsterrordata) |
+| 404 | Not Found | [rst.ErrorData](#rsterrordata) |
+| 500 | Internal Server Error | [rst.ErrorData](#rsterrordata) |
 
 ### /cart/article/:articleId
 
@@ -88,9 +88,9 @@ Elimina un articulo del carrito actual.
 | ---- | ----------- | ------ |
 | 200 | No Content |  |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
-| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
-| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+| 401 | Unauthorized | [rst.ErrorData](#rsterrordata) |
+| 404 | Not Found | [rst.ErrorData](#rsterrordata) |
+| 500 | Internal Server Error | [rst.ErrorData](#rsterrordata) |
 
 ### /cart/article/:articleId/decrement
 
@@ -116,9 +116,9 @@ Eliminar 1 al articulo actual.
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
-| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
-| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+| 401 | Unauthorized | [rst.ErrorData](#rsterrordata) |
+| 404 | Not Found | [rst.ErrorData](#rsterrordata) |
+| 500 | Internal Server Error | [rst.ErrorData](#rsterrordata) |
 
 ### /cart/article/:articleId/increment
 
@@ -144,9 +144,9 @@ Agregar 1 al articulo actual.
 | ---- | ----------- | ------ |
 | 200 | Cart | [cart.Cart](#cartcart) |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
-| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
-| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+| 401 | Unauthorized | [rst.ErrorData](#rsterrordata) |
+| 404 | Not Found | [rst.ErrorData](#rsterrordata) |
+| 500 | Internal Server Error | [rst.ErrorData](#rsterrordata) |
 
 ### /cart/checkouts
 
@@ -172,9 +172,9 @@ Hace checkout del carrito actual
 | ---- | ----------- | ------ |
 | 200 | No Content |  |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
-| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
-| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+| 401 | Unauthorized | [rst.ErrorData](#rsterrordata) |
+| 404 | Not Found | [rst.ErrorData](#rsterrordata) |
+| 500 | Internal Server Error | [rst.ErrorData](#rsterrordata) |
 
 ### /cart/validate
 
@@ -199,9 +199,9 @@ Valida el carrito para checkout
 | ---- | ----------- | ------ |
 | 200 | No Content |  |
 | 400 | Bad Request | [errs.ValidationErr](#errsvalidationerr) |
-| 401 | Unauthorized | [engine.ErrorData](#engineerrordata) |
-| 404 | Not Found | [engine.ErrorData](#engineerrordata) |
-| 500 | Internal Server Error | [engine.ErrorData](#engineerrordata) |
+| 401 | Unauthorized | [rst.ErrorData](#rsterrordata) |
+| 404 | Not Found | [rst.ErrorData](#rsterrordata) |
+| 500 | Internal Server Error | [rst.ErrorData](#rsterrordata) |
 
 ---
 ### /rabbit/article_exist
@@ -410,12 +410,6 @@ Cuando se hace checkout enviamos un comando a orders para que inicie el proceso 
 | message | [emit.ArticleValidationData](#emitarticlevalidationdata) |  | No |
 | routing_key | string | *Example:* `""` | No |
 
-#### engine.ErrorData
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| error | string |  | No |
-
 #### errs.ValidationErr
 
 | Name | Type | Description | Required |
@@ -435,3 +429,9 @@ Cuando se hace checkout enviamos un comando a orders para que inicie el proceso 
 | ---- | ---- | ----------- | -------- |
 | articleId | string |  | Yes |
 | quantity | integer |  | Yes |
+
+#### rst.ErrorData
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| error | string |  | No |

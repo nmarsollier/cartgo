@@ -3,9 +3,9 @@ package consume
 import (
 	"encoding/json"
 
-	"github.com/nmarsollier/cartgo/internal/engine/log"
-	"github.com/nmarsollier/cartgo/internal/engine/strs"
-	"github.com/nmarsollier/cartgo/internal/security"
+	"github.com/nmarsollier/commongo/log"
+	"github.com/nmarsollier/commongo/security"
+	"github.com/nmarsollier/commongo/strs"
 	uuid "github.com/satori/go.uuid"
 	"github.com/streadway/amqp"
 )
@@ -15,7 +15,7 @@ type LogoutConsumer interface {
 }
 
 func NewLogoutConsumer(fluentUrl string, rabbitUrl string, secService security.SecurityService) LogoutConsumer {
-	logger := log.Get(fluentUrl).
+	logger := log.Get(fluentUrl, "cartgo").
 		WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
 		WithField(log.LOG_FIELD_RABBIT_QUEUE, "logout").
 		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "auth").

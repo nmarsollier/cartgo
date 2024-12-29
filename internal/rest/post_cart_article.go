@@ -2,8 +2,9 @@ package rest
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/nmarsollier/cartgo/internal/rest/engine"
-	"github.com/nmarsollier/cartgo/internal/security"
+	"github.com/nmarsollier/cartgo/internal/rest/server"
+	"github.com/nmarsollier/commongo/rst"
+	"github.com/nmarsollier/commongo/security"
 )
 
 type AddArticleData struct {
@@ -21,16 +22,16 @@ type AddArticleData struct {
 //	@Success		200				{object}	cart.Cart			"Cart"
 //	@Param			body			body		AddArticleData		true	"Articulo a Agregar"
 //	@Failure		400				{object}	errs.ValidationErr	"Bad Request"
-//	@Failure		401				{object}	engine.ErrorData	"Unauthorized"
-//	@Failure		404				{object}	engine.ErrorData	"Not Found"
-//	@Failure		500				{object}	engine.ErrorData	"Internal Server Error"
+//	@Failure		401				{object}	rst.ErrorData		"Unauthorized"
+//	@Failure		404				{object}	rst.ErrorData		"Not Found"
+//	@Failure		500				{object}	rst.ErrorData		"Internal Server Error"
 //	@Router			/cart/article [post]
 //
 // Agrega un articulo del carrito actual.
-func initPostCartArticle() {
-	engine.Router().POST(
+func initPostCartArticle(engine *gin.Engine) {
+	engine.POST(
 		"/cart/article",
-		engine.ValidateAuthentication,
+		server.ValidateAuthentication,
 		addArticle,
 	)
 }
@@ -39,14 +40,14 @@ func addArticle(c *gin.Context) {
 	user := c.MustGet("user").(security.User)
 	body := AddArticleData{}
 	if err := c.ShouldBindJSON(&body); err != nil {
-		engine.AbortWithError(c, err)
+		rst.AbortWithError(c, err)
 		return
 	}
 
-	deps := engine.GinDi(c)
+	deps := server.GinDi(c)
 	_, err := deps.Service().AddArticle(user.ID, body.ArticleId, body.Quantity)
 	if err != nil {
-		engine.AbortWithError(c, err)
+		rst.AbortWithError(c, err)
 		return
 	}
 

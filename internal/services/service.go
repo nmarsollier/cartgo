@@ -4,11 +4,11 @@ import (
 	"net/http"
 
 	"github.com/nmarsollier/cartgo/internal/cart"
-	"github.com/nmarsollier/cartgo/internal/engine/env"
-	"github.com/nmarsollier/cartgo/internal/engine/errs"
-	"github.com/nmarsollier/cartgo/internal/engine/httpx"
-	"github.com/nmarsollier/cartgo/internal/engine/log"
+	"github.com/nmarsollier/cartgo/internal/env"
 	"github.com/nmarsollier/cartgo/internal/rabbit/emit"
+	"github.com/nmarsollier/commongo/errs"
+	"github.com/nmarsollier/commongo/httpx"
+	"github.com/nmarsollier/commongo/log"
 )
 
 type Service interface {
@@ -19,20 +19,28 @@ type Service interface {
 	ValidateCheckout(cart *cart.Cart, token string) error
 }
 
-func NewService(log log.LogRusEntry, http httpx.HTTPClient, cart cart.CartService, emit emit.RabbitEmiter) Service {
+func NewService(
+	log log.LogRusEntry,
+	http httpx.HTTPClient,
+	cart cart.CartService,
+	validationPublisher emit.ArticleValidationPublisher,
+	placedPublisher emit.PlacedDataPublisher,
+) Service {
 	return &service{
-		log:  log,
-		http: http,
-		cart: cart,
-		emit: emit,
+		log:                 log,
+		http:                http,
+		cart:                cart,
+		validationPublisher: validationPublisher,
+		placedPublisher:     placedPublisher,
 	}
 }
 
 type service struct {
-	log  log.LogRusEntry
-	http httpx.HTTPClient
-	cart cart.CartService
-	emit emit.RabbitEmiter
+	log                 log.LogRusEntry
+	http                httpx.HTTPClient
+	cart                cart.CartService
+	validationPublisher emit.ArticleValidationPublisher
+	placedPublisher     emit.PlacedDataPublisher
 }
 
 func (s *service) AddArticle(userId string, articleID string, quantity int) (*cart.Cart, error) {
@@ -43,11 +51,15 @@ func (s *service) AddArticle(userId string, articleID string, quantity int) (*ca
 
 	for _, a := range cart.Articles {
 		if !a.Validated {
-			s.emit.SendArticleValidation(
-				emit.ArticleValidationData{
+			s.validationPublisher.PublishForResult(
+				s.log.CorrelationId(),
+				&emit.ArticleValidationData{
 					ReferenceId: cart.UserId,
 					ArticleId:   a.ArticleId,
-				})
+				},
+				"article_exist",
+				"cart_article_exist",
+			)
 		}
 	}
 
@@ -70,7 +82,21 @@ func (s *service) Checkout(userId string, token string) (*cart.Cart, error) {
 		return nil, err
 	}
 
-	s.emit.SendPlaceOrder(currentCart)
+	articles := []emit.PlaceArticlesData{}
+	for _, a := range currentCart.Articles {
+		articles = append(articles, emit.PlaceArticlesData{
+			Id:       a.ArticleId,
+			Quantity: a.Quantity,
+		})
+	}
+
+	s.placedPublisher.Publish(
+		s.log.CorrelationId(),
+		&emit.PlacedData{
+			CartId:   currentCart.ID.Hex(),
+			UserId:   currentCart.UserId,
+			Articles: articles,
+		})
 
 	return currentCart, nil
 }
@@ -105,11 +131,14 @@ func (s *service) GetCurrentCart(userId string) (*cart.Cart, error) {
 
 	for _, a := range cart.Articles {
 		if !a.Validated {
-			s.emit.SendArticleValidation(
-				emit.ArticleValidationData{
+			s.validationPublisher.PublishForResult(
+				s.log.CorrelationId(),
+				&emit.ArticleValidationData{
 					ReferenceId: cart.UserId,
 					ArticleId:   a.ArticleId,
 				},
+				"article_exist",
+				"cart_article_exist",
 			)
 		}
 	}

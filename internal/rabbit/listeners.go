@@ -3,7 +3,7 @@ package rabbit
 import (
 	"time"
 
-	"github.com/nmarsollier/cartgo/internal/engine/di"
+	"github.com/nmarsollier/cartgo/internal/di"
 )
 
 func Init(di di.Injector) {

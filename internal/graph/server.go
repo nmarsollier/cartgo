@@ -1,4 +1,4 @@
-package server
+package graph
 
 import (
 	"fmt"
@@ -6,10 +6,10 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/nmarsollier/cartgo/internal/engine/env"
-	"github.com/nmarsollier/cartgo/internal/engine/log"
+	"github.com/nmarsollier/cartgo/internal/env"
 	"github.com/nmarsollier/cartgo/internal/graph/model"
 	"github.com/nmarsollier/cartgo/internal/graph/schema"
+	"github.com/nmarsollier/commongo/log"
 )
 
 func Start(logger log.LogRusEntry) {

@@ -3,22 +3,24 @@ package rest
 import (
 	"fmt"
 
-	"github.com/nmarsollier/cartgo/internal/engine/env"
-	"github.com/nmarsollier/cartgo/internal/rest/engine"
+	"github.com/gin-gonic/gin"
+	"github.com/nmarsollier/cartgo/internal/env"
+	"github.com/nmarsollier/cartgo/internal/rest/server"
 )
 
 // Start this server
 func Start() {
-	InitRoutes()
-	engine.Router().Run(fmt.Sprintf(":%d", env.Get().Port))
+	engine := server.Router()
+	InitRoutes(engine)
+	engine.Run(fmt.Sprintf(":%d", env.Get().Port))
 }
 
-func InitRoutes() {
-	initDeleteCart()
-	initGetCartValidate()
-	initGetCart()
-	initPostCartArticleDecrement()
-	initPostCartArticleIncrement()
-	initPostCartArticle()
-	initPostCartCheckout()
+func InitRoutes(engine *gin.Engine) {
+	initDeleteCart(engine)
+	initGetCartValidate(engine)
+	initGetCart(engine)
+	initPostCartArticleDecrement(engine)
+	initPostCartArticleIncrement(engine)
+	initPostCartArticle(engine)
+	initPostCartCheckout(engine)
 }
