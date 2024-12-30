@@ -103,51 +103,39 @@
 				
 				<option value="file23">github.com/nmarsollier/cartgo/internal/graph/tools/logger.go (0.0%)</option>
 				
-				<option value="file24">github.com/nmarsollier/cartgo/internal/rabbit/consume/consume_article_exist.go (0.0%)</option>
+				<option value="file24">github.com/nmarsollier/cartgo/internal/rabbit/listeners.go (0.0%)</option>
 				
-				<option value="file25">github.com/nmarsollier/cartgo/internal/rabbit/consume/consume_logout.go (0.0%)</option>
+				<option value="file25">github.com/nmarsollier/cartgo/internal/rest/delete_cart_article_id.go (0.0%)</option>
 				
-				<option value="file26">github.com/nmarsollier/cartgo/internal/rabbit/consume/consume_order_placed.go (0.0%)</option>
+				<option value="file26">github.com/nmarsollier/cartgo/internal/rest/get_cart.go (0.0%)</option>
 				
-				<option value="file27">github.com/nmarsollier/cartgo/internal/rabbit/listeners.go (0.0%)</option>
+				<option value="file27">github.com/nmarsollier/cartgo/internal/rest/get_cart_validate.go (0.0%)</option>
 				
-				<option value="file28">github.com/nmarsollier/cartgo/internal/rest/delete_cart_article_id.go (0.0%)</option>
+				<option value="file28">github.com/nmarsollier/cartgo/internal/rest/post_cart_article.go (0.0%)</option>
 				
-				<option value="file29">github.com/nmarsollier/cartgo/internal/rest/get_cart.go (0.0%)</option>
+				<option value="file29">github.com/nmarsollier/cartgo/internal/rest/post_cart_article_id_decrement.go (0.0%)</option>
 				
-				<option value="file30">github.com/nmarsollier/cartgo/internal/rest/get_cart_validate.go (0.0%)</option>
+				<option value="file30">github.com/nmarsollier/cartgo/internal/rest/post_cart_article_id_increment.go (0.0%)</option>
 				
-				<option value="file31">github.com/nmarsollier/cartgo/internal/rest/post_cart_article.go (0.0%)</option>
+				<option value="file31">github.com/nmarsollier/cartgo/internal/rest/post_cart_checkout.go (0.0%)</option>
 				
-				<option value="file32">github.com/nmarsollier/cartgo/internal/rest/post_cart_article_id_decrement.go (0.0%)</option>
+				<option value="file32">github.com/nmarsollier/cartgo/internal/rest/router.go (0.0%)</option>
 				
-				<option value="file33">github.com/nmarsollier/cartgo/internal/rest/post_cart_article_id_increment.go (0.0%)</option>
+				<option value="file33">github.com/nmarsollier/cartgo/internal/rest/server/authorization.go (0.0%)</option>
 				
-				<option value="file34">github.com/nmarsollier/cartgo/internal/rest/post_cart_checkout.go (0.0%)</option>
+				<option value="file34">github.com/nmarsollier/cartgo/internal/rest/server/di_middleware.go (0.0%)</option>
 				
-				<option value="file35">github.com/nmarsollier/cartgo/internal/rest/router.go (0.0%)</option>
+				<option value="file35">github.com/nmarsollier/cartgo/internal/rest/server/engine.go (0.0%)</option>
 				
-				<option value="file36">github.com/nmarsollier/cartgo/internal/rest/server/authorization.go (0.0%)</option>
+				<option value="file36">github.com/nmarsollier/cartgo/internal/services/service.go (0.0%)</option>
 				
-				<option value="file37">github.com/nmarsollier/cartgo/internal/rest/server/di_middleware.go (0.0%)</option>
+				<option value="file37">github.com/nmarsollier/cartgo/main.go (0.0%)</option>
 				
-				<option value="file38">github.com/nmarsollier/cartgo/internal/rest/server/engine.go (0.0%)</option>
+				<option value="file38">github.com/nmarsollier/cartgo/tests/mocks/cart_repository.go (0.0%)</option>
 				
-				<option value="file39">github.com/nmarsollier/cartgo/internal/services/service.go (0.0%)</option>
+				<option value="file39">github.com/nmarsollier/cartgo/tests/mocks/cart_service.go (0.0%)</option>
 				
-				<option value="file40">github.com/nmarsollier/cartgo/main.go (0.0%)</option>
-				
-				<option value="file41">github.com/nmarsollier/cartgo/tests/mocks/cart_repository.go (0.0%)</option>
-				
-				<option value="file42">github.com/nmarsollier/cartgo/tests/mocks/cart_service.go (0.0%)</option>
-				
-				<option value="file43">github.com/nmarsollier/cartgo/tests/mocks/consume_article_exist.go (0.0%)</option>
-				
-				<option value="file44">github.com/nmarsollier/cartgo/tests/mocks/consume_logout.go (0.0%)</option>
-				
-				<option value="file45">github.com/nmarsollier/cartgo/tests/mocks/consume_order_placed.go (0.0%)</option>
-				
-				<option value="file46">github.com/nmarsollier/cartgo/tests/mocks/services_service.go (0.0%)</option>
+				<option value="file40">github.com/nmarsollier/cartgo/tests/mocks/services_service.go (0.0%)</option>
 				
 				</select>
 			</div>
@@ -628,7 +616,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/consume.consumeArticleExistMessage"
+                            "$ref": "#/definitions/rbt.InputMessage-cart_ValidationEvent"
                         }
                     }
                 ],
@@ -655,7 +643,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/consume.logoutMessage"
+                            "$ref": "#/definitions/rbt.InputMessage-string"
                         }
                     }
                 ],
@@ -682,7 +670,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/consume.consumeOrderPlacedMessage"
+                            "$ref": "#/definitions/rbt.InputMessage-cart_OrderPlacedEvent"
                         }
                     }
                 ],
@@ -785,43 +773,6 @@ const docTemplate = `{
                 }
             }
         },
-        "consume.consumeArticleExistMessage": {
-            "type": "object",
-            "properties": {
-                "correlation_id": {
-                    "type": "string",
-                    "example": "123123"
-                },
-                "message": {
-                    "$ref": "#/definitions/cart.ValidationEvent"
-                }
-            }
-        },
-        "consume.consumeOrderPlacedMessage": {
-            "type": "object",
-            "properties": {
-                "correlation_id": {
-                    "type": "string",
-                    "example": "123123"
-                },
-                "message": {
-                    "$ref": "#/definitions/cart.OrderPlacedEvent"
-                }
-            }
-        },
-        "consume.logoutMessage": {
-            "type": "object",
-            "properties": {
-                "correlation_id": {
-                    "type": "string",
-                    "example": "123123"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg"
-                }
-            }
-        },
         "errs.ValidationErr": {
             "type": "object",
             "properties": {
@@ -840,6 +791,42 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "rbt.InputMessage-cart_OrderPlacedEvent": {
+            "type": "object",
+            "properties": {
+                "correlation_id": {
+                    "type": "string",
+                    "example": "123123"
+                },
+                "message": {
+                    "$ref": "#/definitions/cart.OrderPlacedEvent"
+                }
+            }
+        },
+        "rbt.InputMessage-cart_ValidationEvent": {
+            "type": "object",
+            "properties": {
+                "correlation_id": {
+                    "type": "string",
+                    "example": "123123"
+                },
+                "message": {
+                    "$ref": "#/definitions/cart.ValidationEvent"
+                }
+            }
+        },
+        "rbt.InputMessage-string": {
+            "type": "object",
+            "properties": {
+                "correlation_id": {
+                    "type": "string",
+                    "example": "123123"
+                },
+                "message": {
                     "type": "string"
                 }
             }
@@ -1255,8 +1242,7 @@ func (s *cartService) AddArticle(userId string, articleId string, quantity int) 
 import (
         "github.com/nmarsollier/cartgo/internal/cart"
         "github.com/nmarsollier/cartgo/internal/env"
-        "github.com/nmarsollier/cartgo/internal/rabbit/consume"
-        "github.com/nmarsollier/cartgo/internal/rabbit/emit"
+        "github.com/nmarsollier/cartgo/internal/rabbit/rbtschema"
         "github.com/nmarsollier/cartgo/internal/services"
         "github.com/nmarsollier/commongo/db"
         "github.com/nmarsollier/commongo/httpx"
@@ -1281,11 +1267,8 @@ type Injector interface {
         CartCollection() db.Collection
         CartRepository() cart.CartRepository
         CartService() cart.CartService
-        ArticleExistConsumer() consume.ArticleExistConsumer
-        LogoutConsumer() consume.LogoutConsumer
-        ConsumeOrderPlaced() consume.OrderPlacedConsumer
-        ArticleValidatorPublisher() emit.ArticleValidationPublisher
-        PlacedDataPublisher() emit.PlacedDataPublisher
+        ArticleValidatorPublisher() rbtschema.ArticleValidationPublisher
+        PlacedDataPublisher() rbtschema.PlacedDataPublisher
         Service() services.Service
 }
 
@@ -1298,11 +1281,8 @@ type Deps struct {
         CurrCartColl     db.Collection
         CurrCartRepo     cart.CartRepository
         CurrCartSvc      cart.CartService
-        CurrExistCons    consume.ArticleExistConsumer
-        CurrLogoutCons   consume.LogoutConsumer
-        CurrOrderCons    consume.OrderPlacedConsumer
-        CurrValPublisher emit.ArticleValidationPublisher
-        CurrPldPublisher emit.PlacedDataPublisher
+        CurrValPublisher rbtschema.ArticleValidationPublisher
+        CurrPldPublisher rbtschema.PlacedDataPublisher
         CurrService      services.Service
 }
 
@@ -1396,30 +1376,6 @@ func (i *Deps) CartService() cart.CartService <span class="cov0" title="0">{
         return i.CurrCartSvc</span>
 }
 
-func (i *Deps) ArticleExistConsumer() consume.ArticleExistConsumer <span class="cov0" title="0">{
-        if i.CurrExistCons != nil </span><span class="cov0" title="0">{
-                return i.CurrExistCons
-        }</span>
-        <span class="cov0" title="0">i.CurrExistCons = consume.NewArticleExistConsumer(env.Get().FluentUrl, env.Get().RabbitURL, i.CartService())
-        return i.CurrExistCons</span>
-}
-
-func (i *Deps) LogoutConsumer() consume.LogoutConsumer <span class="cov0" title="0">{
-        if i.CurrLogoutCons != nil </span><span class="cov0" title="0">{
-                return i.CurrLogoutCons
-        }</span>
-        <span class="cov0" title="0">i.CurrLogoutCons = consume.NewLogoutConsumer(env.Get().FluentUrl, env.Get().RabbitURL, i.SecurityService())
-        return i.CurrLogoutCons</span>
-}
-
-func (i *Deps) ConsumeOrderPlaced() consume.OrderPlacedConsumer <span class="cov0" title="0">{
-        if i.CurrOrderCons != nil </span><span class="cov0" title="0">{
-                return i.CurrOrderCons
-        }</span>
-        <span class="cov0" title="0">i.CurrOrderCons = consume.NewOrderPlacedConsumer(env.Get().FluentUrl, env.Get().RabbitURL, i.CartService())
-        return i.CurrOrderCons</span>
-}
-
 func (i *Deps) Service() services.Service <span class="cov0" title="0">{
         if i.CurrService != nil </span><span class="cov0" title="0">{
                 return i.CurrService
@@ -1435,18 +1391,13 @@ func (i *Deps) Service() services.Service <span class="cov0" title="0">{
         return i.CurrService</span>
 }
 
-func (i *Deps) ArticleValidatorPublisher() emit.ArticleValidationPublisher <span class="cov0" title="0">{
+func (i *Deps) ArticleValidatorPublisher() rbtschema.ArticleValidationPublisher <span class="cov0" title="0">{
         if i.CurrValPublisher != nil </span><span class="cov0" title="0">{
                 return i.CurrValPublisher
         }</span>
 
-        <span class="cov0" title="0">logger := i.Logger().
-                WithField(log.LOG_FIELD_RABBIT_ACTION, "Emit").
-                WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "article_exist").
-                WithField(log.LOG_FIELD_RABBIT_QUEUE, "article_exist")
-
-        i.CurrValPublisher, _ = rbt.NewRabbitPublisher[*emit.ArticleValidationData](
-                logger,
+        <span class="cov0" title="0">i.CurrValPublisher, _ = rbt.NewRabbitPublisher[*rbtschema.ArticleValidationData](
+                rbt.RbtLogger(env.Get().FluentURL, env.Get().ServerName, i.Logger().CorrelationId()),
                 env.Get().RabbitURL,
                 "article_exist",
                 "direct",
@@ -1456,19 +1407,14 @@ func (i *Deps) ArticleValidatorPublisher() emit.ArticleValidationPublisher <span
         return i.CurrValPublisher</span>
 }
 
-func (i *Deps) PlacedDataPublisher() emit.PlacedDataPublisher <span class="cov0" title="0">{
+func (i *Deps) PlacedDataPublisher() rbtschema.PlacedDataPublisher <span class="cov0" title="0">{
 
         if i.CurrPldPublisher != nil </span><span class="cov0" title="0">{
                 return i.CurrPldPublisher
         }</span>
 
-        <span class="cov0" title="0">logger := i.Logger().
-                WithField(log.LOG_FIELD_RABBIT_ACTION, "Emit").
-                WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "place_order").
-                WithField(log.LOG_FIELD_RABBIT_QUEUE, "place_order")
-
-        i.CurrPldPublisher, _ = rbt.NewRabbitPublisher[*emit.PlacedData](
-                logger,
+        <span class="cov0" title="0">i.CurrPldPublisher, _ = rbt.NewRabbitPublisher[*rbtschema.PlacedData](
+                rbt.RbtLogger(env.Get().FluentURL, env.Get().ServerName, i.Logger().CorrelationId()),
                 env.Get().RabbitURL,
                 "place_order",
                 "direct",
@@ -1496,26 +1442,28 @@ import (
 
 // Configuration properties
 type Configuration struct {
+        ServerName        string `json:"serverName"`
         Port              int    `json:"port"`
         GqlPort           int    `json:"gqlPort"`
         RabbitURL         string `json:"rabbitUrl"`
         MongoURL          string `json:"mongoUrl"`
         SecurityServerURL string `json:"securityServerUrl"`
         CatalogServerURL  string `json:"catalogUrl"`
-        FluentUrl         string `json:"fluentUrl"`
+        FluentURL         string `json:"fluentUrl"`
 }
 
 var config *Configuration
 
 func new() *Configuration <span class="cov0" title="0">{
         return &amp;Configuration{
+                ServerName:        "cartgo",
                 Port:              3003,
                 GqlPort:           4003,
                 RabbitURL:         "amqp://localhost",
                 MongoURL:          "mongodb://localhost:27017",
                 SecurityServerURL: "http://localhost:3000",
                 CatalogServerURL:  "http://localhost:3002",
-                FluentUrl:         "localhost:24224",
+                FluentURL:         "localhost:24224",
         }
 }</span>
 
@@ -1532,7 +1480,11 @@ func Get() *Configuration <span class="cov0" title="0">{
 func load() *Configuration <span class="cov0" title="0">{
         result := new()
 
-        if value := os.Getenv("RABBIT_URL"); len(value) &gt; 0 </span><span class="cov0" title="0">{
+        if value := os.Getenv("SERVER_NAME"); len(value) &gt; 0 </span><span class="cov0" title="0">{
+                result.ServerName = value
+        }</span>
+
+        <span class="cov0" title="0">if value := os.Getenv("RABBIT_URL"); len(value) &gt; 0 </span><span class="cov0" title="0">{
                 result.RabbitURL = value
         }</span>
 
@@ -1557,7 +1509,7 @@ func load() *Configuration <span class="cov0" title="0">{
         }</span>
 
         <span class="cov0" title="0">if value := os.Getenv("FLUENT_URL"); len(value) &gt; 0 </span><span class="cov0" title="0">{
-                result.FluentUrl = value
+                result.FluentURL = value
         }</span>
 
         <span class="cov0" title="0">if value := os.Getenv("CATALOG_SERVICE_URL"); len(value) &gt; 0 </span><span class="cov0" title="0">{
@@ -7908,7 +7860,7 @@ import (
 func newLogger(ctx context.Context) log.LogRusEntry <span class="cov0" title="0">{
         operationContext := graphql.GetOperationContext(ctx)
 
-        return log.Get(env.Get().FluentUrl, "cartgo").
+        return log.Get(env.Get().FluentURL, env.Get().ServerName).
                 WithField(log.LOG_FIELD_CORRELATION_ID, getCorrelationId(ctx)).
                 WithField(log.LOG_FIELD_CONTROLLER, "GraphQL").
                 WithField(log.LOG_FIELD_HTTP_METHOD, operationContext.OperationName).
@@ -7927,497 +7879,16 @@ func getCorrelationId(ctx context.Context) string <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file24" style="display: none">package consume
-
-import (
-        "encoding/json"
-
-        "github.com/nmarsollier/cartgo/internal/cart"
-        "github.com/nmarsollier/commongo/log"
-        "github.com/nmarsollier/commongo/strs"
-        uuid "github.com/satori/go.uuid"
-        "github.com/streadway/amqp"
-)
-
-type ArticleExistConsumer interface {
-        ConsumeArticleExist() error
-}
-
-func NewArticleExistConsumer(fluentUrl string, rabbitUrl string, service cart.CartService) ArticleExistConsumer <span class="cov0" title="0">{
-        log := log.Get(fluentUrl, "cartgo").
-                WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
-                WithField(log.LOG_FIELD_RABBIT_QUEUE, "cart_article_exist").
-                WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "article_exist").
-                WithField(log.LOG_FIELD_RABBIT_ACTION, "Consume")
-
-        return &amp;articleExistConsumer{
-                log:       log,
-                rabbitUrl: rabbitUrl,
-                service:   service,
-        }
-}</span>
-
-type articleExistConsumer struct {
-        log       log.LogRusEntry
-        rabbitUrl string
-        service   cart.CartService
-}
-
-//        @Summary                Mensage Rabbit article_exist/cart_article_exist
-//        @Description        Luego de solicitar validaciones de catalogo, Escucha article_exist/cart_article_exist.
-//        @Tags                        Rabbit
-//        @Accept                        json
-//        @Produce                json
-//        @Param                        type        body        consumeArticleExistMessage        true        "Mensaje"
-//        @Router                        /rabbit/article_exist [get]
-//
-// Validar Artículos
-func (c *articleExistConsumer) ConsumeArticleExist() error <span class="cov0" title="0">{
-
-        conn, err := amqp.Dial(c.rabbitUrl)
-        if err != nil </span><span class="cov0" title="0">{
-                c.log.Error(err)
-                return err
-        }</span>
-        <span class="cov0" title="0">defer conn.Close()
-
-        chn, err := conn.Channel()
-        if err != nil </span><span class="cov0" title="0">{
-                c.log.Error(err)
-                return err
-        }</span>
-        <span class="cov0" title="0">defer chn.Close()
-
-        err = chn.ExchangeDeclare(
-                "article_exist", // name
-                "direct",        // type
-                false,           // durable
-                false,           // auto-deleted
-                false,           // internal
-                false,           // no-wait
-                nil,             // arguments
-        )
-        if err != nil </span><span class="cov0" title="0">{
-                c.log.Error(err)
-                return err
-        }</span>
-
-        <span class="cov0" title="0">queue, err := chn.QueueDeclare(
-                "cart_article_exist", // name
-                false,                // durable
-                false,                // delete when unused
-                false,                // exclusive
-                false,                // no-wait
-                nil,                  // arguments
-        )
-        if err != nil </span><span class="cov0" title="0">{
-                c.log.Error(err)
-                return err
-        }</span>
-
-        <span class="cov0" title="0">err = chn.QueueBind(
-                queue.Name,           // queue name
-                "cart_article_exist", // routing key
-                "article_exist",      // exchange
-                false,
-                nil)
-        if err != nil </span><span class="cov0" title="0">{
-                c.log.Error(err)
-                return err
-        }</span>
-
-        <span class="cov0" title="0">mgs, err := chn.Consume(
-                queue.Name, // queue
-                "",         // consumer
-                false,      // auto-ack
-                false,      // exclusive
-                false,      // no-local
-                false,      // no-wait
-                nil,        // args
-        )
-        if err != nil </span><span class="cov0" title="0">{
-                c.log.Error(err)
-                return err
-        }</span>
-
-        <span class="cov0" title="0">go func() </span><span class="cov0" title="0">{
-                for d := range mgs </span><span class="cov0" title="0">{
-                        newMessage := &amp;consumeArticleExistMessage{}
-                        body := d.Body
-
-                        err = json.Unmarshal(body, newMessage)
-                        if err == nil </span><span class="cov0" title="0">{
-                                c.log.WithField(log.LOG_FIELD_CORRELATION_ID, getArticleExistCorrelationId(newMessage))
-                                c.log.Info("Incoming article_exist :", string(body))
-
-                                c.processArticleExist(newMessage)
-
-                                if err := d.Ack(false); err != nil </span><span class="cov0" title="0">{
-                                        c.log.Info("Failed ACK article_exist :", strs.ToJson(newMessage), err)
-                                }</span> else<span class="cov0" title="0"> {
-                                        c.log.Info("Consumed article_exist :", strs.ToJson(newMessage))
-                                }</span>
-                        } else<span class="cov0" title="0"> {
-                                c.log.Error(err)
-                        }</span>
-                }
-        }()
-
-        <span class="cov0" title="0">c.log.Info("Closed connection: ", &lt;-conn.NotifyClose(make(chan *amqp.Error)))
-
-        return nil</span>
-}
-
-func (c *articleExistConsumer) processArticleExist(newMessage *consumeArticleExistMessage) <span class="cov0" title="0">{
-        data := newMessage.Message
-
-        err := c.service.ProcessArticleData(data)
-        if err != nil </span><span class="cov0" title="0">{
-                c.log.Error(err)
-                return
-        }</span>
-}
-
-type consumeArticleExistMessage struct {
-        CorrelationId string `json:"correlation_id" example:"123123" `
-        Message       *cart.ValidationEvent
-}
-
-func getArticleExistCorrelationId(c *consumeArticleExistMessage) string <span class="cov0" title="0">{
-        value := c.CorrelationId
-
-        if len(value) == 0 </span><span class="cov0" title="0">{
-                value = uuid.NewV4().String()
-        }</span>
-
-        <span class="cov0" title="0">return value</span>
-}
-</pre>
-		
-		<pre class="file" id="file25" style="display: none">package consume
-
-import (
-        "encoding/json"
-
-        "github.com/nmarsollier/commongo/log"
-        "github.com/nmarsollier/commongo/security"
-        "github.com/nmarsollier/commongo/strs"
-        uuid "github.com/satori/go.uuid"
-        "github.com/streadway/amqp"
-)
-
-type LogoutConsumer interface {
-        ConsumeLogout() error
-}
-
-func NewLogoutConsumer(fluentUrl string, rabbitUrl string, secService security.SecurityService) LogoutConsumer <span class="cov0" title="0">{
-        logger := log.Get(fluentUrl, "cartgo").
-                WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
-                WithField(log.LOG_FIELD_RABBIT_QUEUE, "logout").
-                WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "auth").
-                WithField(log.LOG_FIELD_RABBIT_ACTION, "Consume")
-
-        return &amp;logoutConsumer{
-                logger:     logger,
-                rabbitUrl:  rabbitUrl,
-                secService: secService,
-        }
-}</span>
-
-type logoutConsumer struct {
-        logger     log.LogRusEntry
-        rabbitUrl  string
-        secService security.SecurityService
-}
-
-//        @Summary                Mensage Rabbit logout
-//        @Description        Escucha de mensajes logout desde auth.
-//        @Tags                        Rabbit
-//        @Accept                        json
-//        @Produce                json
-//        @Param                        body        body        logoutMessage        true        "Estructura general del mensage"
-//        @Router                        /rabbit/logout [get]
-//
-// Escucha de mensajes logout desde auth.
-func (c *logoutConsumer) ConsumeLogout() error <span class="cov0" title="0">{
-        conn, err := amqp.Dial(c.rabbitUrl)
-        if err != nil </span><span class="cov0" title="0">{
-                c.logger.Error(err)
-                return err
-        }</span>
-        <span class="cov0" title="0">defer conn.Close()
-
-        chn, err := conn.Channel()
-        if err != nil </span><span class="cov0" title="0">{
-                c.logger.Error(err)
-                return err
-        }</span>
-        <span class="cov0" title="0">defer chn.Close()
-
-        err = chn.ExchangeDeclare(
-                "auth",   // name
-                "fanout", // type
-                false,    // durable
-                false,    // auto-deleted
-                false,    // internal
-                false,    // no-wait
-                nil,      // arguments
-        )
-        if err != nil </span><span class="cov0" title="0">{
-                c.logger.Error(err)
-                return err
-        }</span>
-
-        <span class="cov0" title="0">queue, err := chn.QueueDeclare(
-                "",    // name
-                false, // durable
-                false, // delete when unused
-                false, // exclusive
-                false, // no-wait
-                nil,   // arguments
-        )
-        if err != nil </span><span class="cov0" title="0">{
-                c.logger.Error(err)
-                return err
-        }</span>
-
-        <span class="cov0" title="0">err = chn.QueueBind(
-                queue.Name, // queue name
-                "",         // routing key
-                "auth",     // exchange
-                false,
-                nil)
-        if err != nil </span><span class="cov0" title="0">{
-                c.logger.Error(err)
-                return err
-        }</span>
-
-        <span class="cov0" title="0">mgs, err := chn.Consume(
-                queue.Name, // queue
-                "",         // consumer
-                true,       // auto-ack
-                false,      // exclusive
-                false,      // no-local
-                false,      // no-wait
-                nil,        // args
-        )
-        if err != nil </span><span class="cov0" title="0">{
-                c.logger.Error(err)
-                return err
-        }</span>
-
-        <span class="cov0" title="0">go func() </span><span class="cov0" title="0">{
-                for d := range mgs </span><span class="cov0" title="0">{
-                        newMessage := &amp;logoutMessage{}
-                        body := d.Body
-
-                        err = json.Unmarshal(body, newMessage)
-                        if err == nil </span><span class="cov0" title="0">{
-                                c.logger.WithField(log.LOG_FIELD_CORRELATION_ID, getLogoutCorrelationId(newMessage))
-                                c.logger.Info("Incoming logout :", string(body))
-
-                                c.secService.Invalidate(newMessage.Message)
-                                c.logger.Info("Consumed :", strs.ToJson(newMessage))
-
-                        }</span> else<span class="cov0" title="0"> {
-                                c.logger.Error(err)
-                        }</span>
-                }
-        }()
-
-        <span class="cov0" title="0">c.logger.Info("Closed connection: ", &lt;-conn.NotifyClose(make(chan *amqp.Error)))
-
-        return nil</span>
-}
-
-type logoutMessage struct {
-        CorrelationId string `json:"correlation_id" example:"123123" `
-        Message       string `json:"message" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg"`
-}
-
-func getLogoutCorrelationId(c *logoutMessage) string <span class="cov0" title="0">{
-        value := c.CorrelationId
-
-        if len(value) == 0 </span><span class="cov0" title="0">{
-                value = uuid.NewV4().String()
-        }</span>
-
-        <span class="cov0" title="0">return value</span>
-}
-</pre>
-		
-		<pre class="file" id="file26" style="display: none">package consume
-
-import (
-        "encoding/json"
-
-        "github.com/nmarsollier/cartgo/internal/cart"
-        "github.com/nmarsollier/commongo/log"
-        "github.com/nmarsollier/commongo/strs"
-        uuid "github.com/satori/go.uuid"
-        "github.com/streadway/amqp"
-)
-
-type OrderPlacedConsumer interface {
-        ConsumeOrderPlaced() error
-}
-
-func NewOrderPlacedConsumer(fluentUrl string, rabbitUrl string, cart cart.CartService) OrderPlacedConsumer <span class="cov0" title="0">{
-        logger := log.Get(fluentUrl, "cartgo").
-                WithField(log.LOG_FIELD_CONTROLLER, "Rabbit").
-                WithField(log.LOG_FIELD_RABBIT_QUEUE, "cart_order_placed").
-                WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "order_placed").
-                WithField(log.LOG_FIELD_RABBIT_ACTION, "Consume")
-
-        return &amp;orderPlacedConsumer{
-                logger:    logger,
-                rabbitUrl: rabbitUrl,
-                cart:      cart,
-        }
-}</span>
-
-type orderPlacedConsumer struct {
-        logger    log.LogRusEntry
-        rabbitUrl string
-        cart      cart.CartService
-}
-
-//        @Summary                Mensage Rabbit order_placed/order_placed
-//        @Description        Cuando se recibe order_placed se actualiza el order id del carrito. No se respode a este evento.
-//        @Tags                        Rabbit
-//        @Accept                        json
-//        @Produce                json
-//        @Param                        type        body        consumeOrderPlacedMessage        true        "Message order_placed"
-//        @Router                        /rabbit/order_placed [get]
-//
-// Consume Order Placed
-func (c *orderPlacedConsumer) ConsumeOrderPlaced() error <span class="cov0" title="0">{
-        conn, err := amqp.Dial(c.rabbitUrl)
-        if err != nil </span><span class="cov0" title="0">{
-                c.logger.Error(err)
-                return err
-        }</span>
-        <span class="cov0" title="0">defer conn.Close()
-
-        chn, err := conn.Channel()
-        if err != nil </span><span class="cov0" title="0">{
-                c.logger.Error(err)
-                return err
-        }</span>
-        <span class="cov0" title="0">defer chn.Close()
-
-        err = chn.ExchangeDeclare(
-                "order_placed", // name
-                "fanout",       // type
-                false,          // durable
-                false,          // auto-deleted
-                false,          // internal
-                false,          // no-wait
-                nil,            // arguments
-        )
-        if err != nil </span><span class="cov0" title="0">{
-                c.logger.Error(err)
-                return err
-        }</span>
-
-        <span class="cov0" title="0">queue, err := chn.QueueDeclare(
-                "cart_order_placed", // name
-                false,               // durable
-                false,               // delete when unused
-                false,               // exclusive
-                false,               // no-wait
-                nil,                 // arguments
-        )
-        if err != nil </span><span class="cov0" title="0">{
-                c.logger.Error(err)
-                return err
-        }</span>
-
-        <span class="cov0" title="0">err = chn.QueueBind(
-                queue.Name,     // queue name
-                "",             // routing key
-                "order_placed", // exchange
-                false,
-                nil)
-        if err != nil </span><span class="cov0" title="0">{
-                c.logger.Error(err)
-                return err
-        }</span>
-
-        <span class="cov0" title="0">mgs, err := chn.Consume(
-                queue.Name, // queue
-                "",         // consumer
-                false,      // auto-ack
-                false,      // exclusive
-                false,      // no-local
-                false,      // no-wait
-                nil,        // args
-        )
-        if err != nil </span><span class="cov0" title="0">{
-                c.logger.Error(err)
-                return err
-        }</span>
-
-        <span class="cov0" title="0">go func() </span><span class="cov0" title="0">{
-                for d := range mgs </span><span class="cov0" title="0">{
-                        newMessage := &amp;consumeOrderPlacedMessage{}
-                        body := d.Body
-
-                        err = json.Unmarshal(body, newMessage)
-                        if err == nil </span><span class="cov0" title="0">{
-                                c.logger.WithField(log.LOG_FIELD_CORRELATION_ID, getOrderPlacedCorrelationId(newMessage))
-                                c.logger.Info("Incoming order_placed :", string(body))
-
-                                c.processOrderPlaced(newMessage)
-
-                                if err := d.Ack(false); err != nil </span><span class="cov0" title="0">{
-                                        c.logger.Info("Failed ACK order_placed : ", strs.ToJson(newMessage), err)
-                                }</span> else<span class="cov0" title="0"> {
-                                        c.logger.Info("Consumed order_placed :", strs.ToJson(newMessage))
-                                }</span>
-                        } else<span class="cov0" title="0"> {
-                                c.logger.Error(err)
-                        }</span>
-                }
-        }()
-
-        <span class="cov0" title="0">c.logger.Info("Closed connection: ", &lt;-conn.NotifyClose(make(chan *amqp.Error)))
-
-        return nil</span>
-}
-
-func (c *orderPlacedConsumer) processOrderPlaced(newMessage *consumeOrderPlacedMessage) <span class="cov0" title="0">{
-        data := newMessage.Message
-
-        err := c.cart.ProcessOrderPlaced(data)
-        if err != nil </span><span class="cov0" title="0">{
-                c.logger.Error(err)
-                return
-        }</span>
-}
-
-type consumeOrderPlacedMessage struct {
-        CorrelationId string `json:"correlation_id" example:"123123" `
-        Message       *cart.OrderPlacedEvent
-}
-
-func getOrderPlacedCorrelationId(c *consumeOrderPlacedMessage) string <span class="cov0" title="0">{
-        value := c.CorrelationId
-
-        if len(value) == 0 </span><span class="cov0" title="0">{
-                value = uuid.NewV4().String()
-        }</span>
-
-        <span class="cov0" title="0">return value</span>
-}
-</pre>
-		
-		<pre class="file" id="file27" style="display: none">package rabbit
+		<pre class="file" id="file24" style="display: none">package rabbit
 
 import (
         "time"
 
+        "github.com/nmarsollier/cartgo/internal/cart"
         "github.com/nmarsollier/cartgo/internal/di"
+        "github.com/nmarsollier/cartgo/internal/env"
+        "github.com/nmarsollier/commongo/log"
+        "github.com/nmarsollier/commongo/rbt"
 )
 
 func Init(di di.Injector) <span class="cov0" title="0">{
@@ -8425,7 +7896,17 @@ func Init(di di.Injector) <span class="cov0" title="0">{
 
         go func() </span><span class="cov0" title="0">{
                 for </span><span class="cov0" title="0">{
-                        err := di.LogoutConsumer().ConsumeLogout()
+                        err := rbt.ConsumeRabbitEvent[string](
+                                env.Get().FluentURL,
+                                env.Get().RabbitURL,
+                                env.Get().ServerName,
+                                "auth",
+                                "fanout",
+                                "",
+                                "",
+                                processLogout,
+                        )
+
                         if err != nil </span><span class="cov0" title="0">{
                                 logger.Error(err)
                         }</span>
@@ -8436,7 +7917,17 @@ func Init(di di.Injector) <span class="cov0" title="0">{
 
         <span class="cov0" title="0">go func() </span><span class="cov0" title="0">{
                 for </span><span class="cov0" title="0">{
-                        err := di.ArticleExistConsumer().ConsumeArticleExist()
+                        err := rbt.ConsumeRabbitEvent[*cart.ValidationEvent](
+                                env.Get().FluentURL,
+                                env.Get().RabbitURL,
+                                env.Get().ServerName,
+                                "article_exist",
+                                "direct",
+                                "cart_article_exist",
+                                "cart_article_exist",
+                                processArticleExist,
+                        )
+
                         if err != nil </span><span class="cov0" title="0">{
                                 logger.Error(err)
                         }</span>
@@ -8447,7 +7938,16 @@ func Init(di di.Injector) <span class="cov0" title="0">{
 
         <span class="cov0" title="0">go func() </span><span class="cov0" title="0">{
                 for </span><span class="cov0" title="0">{
-                        err := di.ConsumeOrderPlaced().ConsumeOrderPlaced()
+                        err := rbt.ConsumeRabbitEvent[*cart.OrderPlacedEvent](
+                                env.Get().FluentURL,
+                                env.Get().RabbitURL,
+                                env.Get().ServerName,
+                                "order_placed",
+                                "fanout",
+                                "cart_order_placed",
+                                "",
+                                processOrderPlaced,
+                        )
                         if err != nil </span><span class="cov0" title="0">{
                                 logger.Error(err)
                         }</span>
@@ -8457,9 +7957,66 @@ func Init(di di.Injector) <span class="cov0" title="0">{
         }()
 
 }
+
+//        @Summary                Mensage Rabbit article_exist/cart_article_exist
+//        @Description        Luego de solicitar validaciones de catalogo, Escucha article_exist/cart_article_exist.
+//        @Tags                        Rabbit
+//        @Accept                        json
+//        @Produce                json
+//        @Param                        type        body        rbt.InputMessage[cart.ValidationEvent]        true        "Mensaje"
+//        @Router                        /rabbit/article_exist [get]
+//
+// Validar Artículos
+func processArticleExist(logger log.LogRusEntry, newMessage *rbt.InputMessage[*cart.ValidationEvent]) <span class="cov0" title="0">{
+        deps := di.NewInjector(logger)
+
+        data := newMessage.Message
+
+        err := deps.CartService().ProcessArticleData(data)
+        if err != nil </span><span class="cov0" title="0">{
+                deps.Logger().Error(err)
+                return
+        }</span>
+}
+
+//        @Summary                Mensage Rabbit logout
+//        @Description        Escucha de mensajes logout desde auth.
+//        @Tags                        Rabbit
+//        @Accept                        json
+//        @Produce                json
+//        @Param                        body        body        rbt.InputMessage[string]        true        "Estructura general del mensage"
+//        @Router                        /rabbit/logout [get]
+//
+// Escucha de mensajes logout desde auth.
+func processLogout(logger log.LogRusEntry, newMessage *rbt.InputMessage[string]) <span class="cov0" title="0">{
+        deps := di.NewInjector(logger)
+
+        deps.SecurityService().Invalidate(newMessage.Message)
+}</span>
+
+//        @Summary                Mensage Rabbit order_placed/order_placed
+//        @Description        Cuando se recibe order_placed se actualiza el order id del carrito. No se respode a este evento.
+//        @Tags                        Rabbit
+//        @Accept                        json
+//        @Produce                json
+//        @Param                        type        body        rbt.InputMessage[cart.OrderPlacedEvent]        true        "Message order_placed"
+//        @Router                        /rabbit/order_placed [get]
+//
+// Consume Order Placed
+func processOrderPlaced(logger log.LogRusEntry, newMessage *rbt.InputMessage[*cart.OrderPlacedEvent]) <span class="cov0" title="0">{
+        deps := di.NewInjector(logger)
+
+        data := newMessage.Message
+
+        err := deps.CartService().ProcessOrderPlaced(data)
+        if err != nil </span><span class="cov0" title="0">{
+                deps.Logger().Error(err)
+                return
+        }</span>
+}
 </pre>
 		
-		<pre class="file" id="file28" style="display: none">package rest
+		<pre class="file" id="file25" style="display: none">package rest
 
 import (
         "github.com/gin-gonic/gin"
@@ -8506,7 +8063,7 @@ func deleteArticle(c *gin.Context) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file29" style="display: none">package rest
+		<pre class="file" id="file26" style="display: none">package rest
 
 import (
         "github.com/gin-gonic/gin"
@@ -8552,7 +8109,7 @@ func currentCart(c *gin.Context) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file30" style="display: none">package rest
+		<pre class="file" id="file27" style="display: none">package rest
 
 import (
         "github.com/gin-gonic/gin"
@@ -8604,7 +8161,7 @@ func validate(c *gin.Context) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file31" style="display: none">package rest
+		<pre class="file" id="file28" style="display: none">package rest
 
 import (
         "github.com/gin-gonic/gin"
@@ -8661,7 +8218,7 @@ func addArticle(c *gin.Context) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file32" style="display: none">package rest
+		<pre class="file" id="file29" style="display: none">package rest
 
 import (
         "github.com/gin-gonic/gin"
@@ -8708,7 +8265,7 @@ func decrementArticle(c *gin.Context) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file33" style="display: none">package rest
+		<pre class="file" id="file30" style="display: none">package rest
 
 import (
         "github.com/gin-gonic/gin"
@@ -8756,7 +8313,7 @@ func incrementArticle(c *gin.Context) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file34" style="display: none">package rest
+		<pre class="file" id="file31" style="display: none">package rest
 
 import (
         "github.com/gin-gonic/gin"
@@ -8803,7 +8360,7 @@ func checkout(c *gin.Context) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file35" style="display: none">package rest
+		<pre class="file" id="file32" style="display: none">package rest
 
 import (
         "fmt"
@@ -8831,7 +8388,7 @@ func InitRoutes(engine *gin.Engine) <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file36" style="display: none">package server
+		<pre class="file" id="file33" style="display: none">package server
 
 import (
         "github.com/gin-gonic/gin"
@@ -8873,7 +8430,7 @@ func validateToken(c *gin.Context) (*security.User, error) <span class="cov0" ti
 }
 </pre>
 		
-		<pre class="file" id="file37" style="display: none">package server
+		<pre class="file" id="file34" style="display: none">package server
 
 import (
         "github.com/gin-gonic/gin"
@@ -8889,7 +8446,7 @@ func DiInjectorMiddleware() gin.HandlerFunc <span class="cov0" title="0">{
                 dep_param, exists := c.Get("di")
 
                 if !exists </span><span class="cov0" title="0">{
-                        logger := rst.GinLogger(c, env.Get().FluentUrl, "cartgo")
+                        logger := rst.GinLogger(c, env.Get().FluentURL, env.Get().ServerName)
                         deps = di.NewInjector(logger)
                         c.Set("di", deps)
                 }</span> else<span class="cov0" title="0"> {
@@ -8909,7 +8466,7 @@ func GinDi(c *gin.Context) di.Injector <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file38" style="display: none">package server
+		<pre class="file" id="file35" style="display: none">package server
 
 import (
         "time"
@@ -8951,14 +8508,14 @@ func Router() *gin.Engine <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file39" style="display: none">package services
+		<pre class="file" id="file36" style="display: none">package services
 
 import (
         "net/http"
 
         "github.com/nmarsollier/cartgo/internal/cart"
         "github.com/nmarsollier/cartgo/internal/env"
-        "github.com/nmarsollier/cartgo/internal/rabbit/emit"
+        "github.com/nmarsollier/cartgo/internal/rabbit/rbtschema"
         "github.com/nmarsollier/commongo/errs"
         "github.com/nmarsollier/commongo/httpx"
         "github.com/nmarsollier/commongo/log"
@@ -8976,8 +8533,8 @@ func NewService(
         log log.LogRusEntry,
         http httpx.HTTPClient,
         cart cart.CartService,
-        validationPublisher emit.ArticleValidationPublisher,
-        placedPublisher emit.PlacedDataPublisher,
+        validationPublisher rbtschema.ArticleValidationPublisher,
+        placedPublisher rbtschema.PlacedDataPublisher,
 ) Service <span class="cov0" title="0">{
         return &amp;service{
                 log:                 log,
@@ -8992,8 +8549,8 @@ type service struct {
         log                 log.LogRusEntry
         http                httpx.HTTPClient
         cart                cart.CartService
-        validationPublisher emit.ArticleValidationPublisher
-        placedPublisher     emit.PlacedDataPublisher
+        validationPublisher rbtschema.ArticleValidationPublisher
+        placedPublisher     rbtschema.PlacedDataPublisher
 }
 
 func (s *service) AddArticle(userId string, articleID string, quantity int) (*cart.Cart, error) <span class="cov0" title="0">{
@@ -9004,9 +8561,9 @@ func (s *service) AddArticle(userId string, articleID string, quantity int) (*ca
 
         <span class="cov0" title="0">for _, a := range cart.Articles </span><span class="cov0" title="0">{
                 if !a.Validated </span><span class="cov0" title="0">{
+                        s.validationPublisher.Logger().WithField(log.LOG_FIELD_CORRELATION_ID, s.log.CorrelationId())
                         s.validationPublisher.PublishForResult(
-                                s.log.CorrelationId(),
-                                &amp;emit.ArticleValidationData{
+                                &amp;rbtschema.ArticleValidationData{
                                         ReferenceId: cart.UserId,
                                         ArticleId:   a.ArticleId,
                                 },
@@ -9035,17 +8592,17 @@ func (s *service) Checkout(userId string, token string) (*cart.Cart, error) <spa
                 return nil, err
         }</span>
 
-        <span class="cov0" title="0">articles := []emit.PlaceArticlesData{}
+        <span class="cov0" title="0">articles := []rbtschema.PlaceArticlesData{}
         for _, a := range currentCart.Articles </span><span class="cov0" title="0">{
-                articles = append(articles, emit.PlaceArticlesData{
+                articles = append(articles, rbtschema.PlaceArticlesData{
                         Id:       a.ArticleId,
                         Quantity: a.Quantity,
                 })
         }</span>
 
-        <span class="cov0" title="0">s.placedPublisher.Publish(
-                s.log.CorrelationId(),
-                &amp;emit.PlacedData{
+        <span class="cov0" title="0">s.placedPublisher.Logger().WithField(log.LOG_FIELD_CORRELATION_ID, s.log.CorrelationId())
+        s.placedPublisher.Publish(
+                &amp;rbtschema.PlacedData{
                         CartId:   currentCart.ID.Hex(),
                         UserId:   currentCart.UserId,
                         Articles: articles,
@@ -9084,9 +8641,9 @@ func (s *service) GetCurrentCart(userId string) (*cart.Cart, error) <span class=
 
         <span class="cov0" title="0">for _, a := range cart.Articles </span><span class="cov0" title="0">{
                 if !a.Validated </span><span class="cov0" title="0">{
+                        s.validationPublisher.Logger().WithField(log.LOG_FIELD_CORRELATION_ID, s.log.CorrelationId())
                         s.validationPublisher.PublishForResult(
-                                s.log.CorrelationId(),
-                                &amp;emit.ArticleValidationData{
+                                &amp;rbtschema.ArticleValidationData{
                                         ReferenceId: cart.UserId,
                                         ArticleId:   a.ArticleId,
                                 },
@@ -9121,7 +8678,7 @@ func (s *service) ValidateCheckout(cart *cart.Cart, token string) error <span cl
 }
 </pre>
 		
-		<pre class="file" id="file40" style="display: none">package main
+		<pre class="file" id="file37" style="display: none">package main
 
 import (
         "github.com/nmarsollier/cartgo/internal/di"
@@ -9143,7 +8700,7 @@ import (
 //
 // Main Method
 func main() <span class="cov0" title="0">{
-        deps := di.NewInjector(log.Get(env.Get().FluentUrl, "cartgo"))
+        deps := di.NewInjector(log.Get(env.Get().FluentURL, env.Get().ServerName))
 
         go graph.Start(deps.Logger())
 
@@ -9153,7 +8710,7 @@ func main() <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file41" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+		<pre class="file" id="file38" style="display: none">// Code generated by MockGen. DO NOT EDIT.
 // Source: ./internal/cart/repository.go
 
 // Package mocks is a generated GoMock package.
@@ -9279,7 +8836,7 @@ func (mr *MockCartRepositoryMockRecorder) Replace(crt interface{}) *gomock.Call 
 }</span>
 </pre>
 		
-		<pre class="file" id="file42" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+		<pre class="file" id="file39" style="display: none">// Code generated by MockGen. DO NOT EDIT.
 // Source: ./internal/cart/service.go
 
 // Package mocks is a generated GoMock package.
@@ -9419,157 +8976,7 @@ func (mr *MockCartServiceMockRecorder) RemoveArticle(userId, articleId interface
 }</span>
 </pre>
 		
-		<pre class="file" id="file43" style="display: none">// Code generated by MockGen. DO NOT EDIT.
-// Source: ./internal/rabbit/consume/consume_article_exist.go
-
-// Package mocks is a generated GoMock package.
-package mocks
-
-import (
-        reflect "reflect"
-
-        gomock "github.com/golang/mock/gomock"
-)
-
-// MockArticleExistConsumer is a mock of ArticleExistConsumer interface.
-type MockArticleExistConsumer struct {
-        ctrl     *gomock.Controller
-        recorder *MockArticleExistConsumerMockRecorder
-}
-
-// MockArticleExistConsumerMockRecorder is the mock recorder for MockArticleExistConsumer.
-type MockArticleExistConsumerMockRecorder struct {
-        mock *MockArticleExistConsumer
-}
-
-// NewMockArticleExistConsumer creates a new mock instance.
-func NewMockArticleExistConsumer(ctrl *gomock.Controller) *MockArticleExistConsumer <span class="cov0" title="0">{
-        mock := &amp;MockArticleExistConsumer{ctrl: ctrl}
-        mock.recorder = &amp;MockArticleExistConsumerMockRecorder{mock}
-        return mock
-}</span>
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockArticleExistConsumer) EXPECT() *MockArticleExistConsumerMockRecorder <span class="cov0" title="0">{
-        return m.recorder
-}</span>
-
-// ConsumeArticleExist mocks base method.
-func (m *MockArticleExistConsumer) ConsumeArticleExist() error <span class="cov0" title="0">{
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "ConsumeArticleExist")
-        ret0, _ := ret[0].(error)
-        return ret0
-}</span>
-
-// ConsumeArticleExist indicates an expected call of ConsumeArticleExist.
-func (mr *MockArticleExistConsumerMockRecorder) ConsumeArticleExist() *gomock.Call <span class="cov0" title="0">{
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ConsumeArticleExist", reflect.TypeOf((*MockArticleExistConsumer)(nil).ConsumeArticleExist))
-}</span>
-</pre>
-		
-		<pre class="file" id="file44" style="display: none">// Code generated by MockGen. DO NOT EDIT.
-// Source: ./internal/rabbit/consume/consume_logout.go
-
-// Package mocks is a generated GoMock package.
-package mocks
-
-import (
-        reflect "reflect"
-
-        gomock "github.com/golang/mock/gomock"
-)
-
-// MockLogoutConsumer is a mock of LogoutConsumer interface.
-type MockLogoutConsumer struct {
-        ctrl     *gomock.Controller
-        recorder *MockLogoutConsumerMockRecorder
-}
-
-// MockLogoutConsumerMockRecorder is the mock recorder for MockLogoutConsumer.
-type MockLogoutConsumerMockRecorder struct {
-        mock *MockLogoutConsumer
-}
-
-// NewMockLogoutConsumer creates a new mock instance.
-func NewMockLogoutConsumer(ctrl *gomock.Controller) *MockLogoutConsumer <span class="cov0" title="0">{
-        mock := &amp;MockLogoutConsumer{ctrl: ctrl}
-        mock.recorder = &amp;MockLogoutConsumerMockRecorder{mock}
-        return mock
-}</span>
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockLogoutConsumer) EXPECT() *MockLogoutConsumerMockRecorder <span class="cov0" title="0">{
-        return m.recorder
-}</span>
-
-// ConsumeLogout mocks base method.
-func (m *MockLogoutConsumer) ConsumeLogout() error <span class="cov0" title="0">{
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "ConsumeLogout")
-        ret0, _ := ret[0].(error)
-        return ret0
-}</span>
-
-// ConsumeLogout indicates an expected call of ConsumeLogout.
-func (mr *MockLogoutConsumerMockRecorder) ConsumeLogout() *gomock.Call <span class="cov0" title="0">{
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ConsumeLogout", reflect.TypeOf((*MockLogoutConsumer)(nil).ConsumeLogout))
-}</span>
-</pre>
-		
-		<pre class="file" id="file45" style="display: none">// Code generated by MockGen. DO NOT EDIT.
-// Source: ./internal/rabbit/consume/consume_order_placed.go
-
-// Package mocks is a generated GoMock package.
-package mocks
-
-import (
-        reflect "reflect"
-
-        gomock "github.com/golang/mock/gomock"
-)
-
-// MockOrderPlacedConsumer is a mock of OrderPlacedConsumer interface.
-type MockOrderPlacedConsumer struct {
-        ctrl     *gomock.Controller
-        recorder *MockOrderPlacedConsumerMockRecorder
-}
-
-// MockOrderPlacedConsumerMockRecorder is the mock recorder for MockOrderPlacedConsumer.
-type MockOrderPlacedConsumerMockRecorder struct {
-        mock *MockOrderPlacedConsumer
-}
-
-// NewMockOrderPlacedConsumer creates a new mock instance.
-func NewMockOrderPlacedConsumer(ctrl *gomock.Controller) *MockOrderPlacedConsumer <span class="cov0" title="0">{
-        mock := &amp;MockOrderPlacedConsumer{ctrl: ctrl}
-        mock.recorder = &amp;MockOrderPlacedConsumerMockRecorder{mock}
-        return mock
-}</span>
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockOrderPlacedConsumer) EXPECT() *MockOrderPlacedConsumerMockRecorder <span class="cov0" title="0">{
-        return m.recorder
-}</span>
-
-// ConsumeOrderPlaced mocks base method.
-func (m *MockOrderPlacedConsumer) ConsumeOrderPlaced() error <span class="cov0" title="0">{
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "ConsumeOrderPlaced")
-        ret0, _ := ret[0].(error)
-        return ret0
-}</span>
-
-// ConsumeOrderPlaced indicates an expected call of ConsumeOrderPlaced.
-func (mr *MockOrderPlacedConsumerMockRecorder) ConsumeOrderPlaced() *gomock.Call <span class="cov0" title="0">{
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ConsumeOrderPlaced", reflect.TypeOf((*MockOrderPlacedConsumer)(nil).ConsumeOrderPlaced))
-}</span>
-</pre>
-		
-		<pre class="file" id="file46" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+		<pre class="file" id="file40" style="display: none">// Code generated by MockGen. DO NOT EDIT.
 // Source: ./internal/services/service.go
 
 // Package mocks is a generated GoMock package.

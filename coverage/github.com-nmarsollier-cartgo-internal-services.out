@@ -4,7 +4,7 @@ github.com/nmarsollier/cartgo/internal/services/service.go:46.97,48.16 2 0
 github.com/nmarsollier/cartgo/internal/services/service.go:48.16,50.3 1 0
 github.com/nmarsollier/cartgo/internal/services/service.go:52.2,52.34 1 0
 github.com/nmarsollier/cartgo/internal/services/service.go:52.34,53.19 1 0
-github.com/nmarsollier/cartgo/internal/services/service.go:53.19,63.4 1 0
+github.com/nmarsollier/cartgo/internal/services/service.go:53.19,63.4 2 0
 github.com/nmarsollier/cartgo/internal/services/service.go:66.2,66.18 1 0
 github.com/nmarsollier/cartgo/internal/services/service.go:69.77,71.16 2 0
 github.com/nmarsollier/cartgo/internal/services/service.go:71.16,73.3 1 0
@@ -14,7 +14,7 @@ github.com/nmarsollier/cartgo/internal/services/service.go:80.2,81.16 2 0
 github.com/nmarsollier/cartgo/internal/services/service.go:81.16,83.3 1 0
 github.com/nmarsollier/cartgo/internal/services/service.go:85.2,86.41 2 0
 github.com/nmarsollier/cartgo/internal/services/service.go:86.41,91.3 1 0
-github.com/nmarsollier/cartgo/internal/services/service.go:93.2,101.25 2 0
+github.com/nmarsollier/cartgo/internal/services/service.go:93.2,101.25 3 0
 github.com/nmarsollier/cartgo/internal/services/service.go:104.75,107.75 2 0
 github.com/nmarsollier/cartgo/internal/services/service.go:107.75,109.3 1 0
 github.com/nmarsollier/cartgo/internal/services/service.go:111.2,111.16 1 0
@@ -26,7 +26,7 @@ github.com/nmarsollier/cartgo/internal/services/service.go:126.69,128.16 2 0
 github.com/nmarsollier/cartgo/internal/services/service.go:128.16,130.3 1 0
 github.com/nmarsollier/cartgo/internal/services/service.go:132.2,132.34 1 0
 github.com/nmarsollier/cartgo/internal/services/service.go:132.34,133.19 1 0
-github.com/nmarsollier/cartgo/internal/services/service.go:133.19,143.4 1 0
+github.com/nmarsollier/cartgo/internal/services/service.go:133.19,143.4 2 0
 github.com/nmarsollier/cartgo/internal/services/service.go:146.2,146.18 1 0
 github.com/nmarsollier/cartgo/internal/services/service.go:148.67,150.16 2 0
 github.com/nmarsollier/cartgo/internal/services/service.go:150.16,151.53 1 0
