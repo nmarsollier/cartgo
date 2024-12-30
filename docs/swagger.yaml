@@ -42,18 +42,6 @@ definitions:
     - articles
     - userId
     type: object
-  cart.OrderPlacedEvent:
-    properties:
-      cartId:
-        example: CartId
-        type: string
-      orderId:
-        example: OrderId
-        type: string
-      valid:
-        example: true
-        type: boolean
-    type: object
   cart.ValidationEvent:
     properties:
       articleId:
@@ -79,14 +67,6 @@ definitions:
         type: string
       path:
         type: string
-    type: object
-  rbt.InputMessage-cart_OrderPlacedEvent:
-    properties:
-      correlation_id:
-        example: "123123"
-        type: string
-      message:
-        $ref: '#/definitions/cart.OrderPlacedEvent'
     type: object
   rbt.InputMessage-cart_ValidationEvent:
     properties:
@@ -450,25 +430,6 @@ paths:
       - application/json
       responses: {}
       summary: Mensage Rabbit logout
-      tags:
-      - Rabbit
-  /rabbit/order_placed:
-    get:
-      consumes:
-      - application/json
-      description: Cuando se recibe order_placed se actualiza el order id del carrito.
-        No se respode a este evento.
-      parameters:
-      - description: Message order_placed
-        in: body
-        name: type
-        required: true
-        schema:
-          $ref: '#/definitions/rbt.InputMessage-cart_OrderPlacedEvent'
-      produces:
-      - application/json
-      responses: {}
-      summary: Mensage Rabbit order_placed/order_placed
       tags:
       - Rabbit
 swagger: "2.0"

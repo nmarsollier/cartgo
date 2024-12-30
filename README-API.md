@@ -248,28 +248,6 @@ Escucha de mensajes logout desde auth.
 | Code | Description |
 | ---- | ----------- |
 
-### /rabbit/order_placed
-
-#### GET
-##### Summary
-
-Mensage Rabbit order_placed/order_placed
-
-##### Description
-
-Cuando se recibe order_placed se actualiza el order id del carrito. No se respode a este evento.
-
-##### Parameters
-
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ------ |
-| type | body | Message order_placed | Yes | [rbt.InputMessage-cart_OrderPlacedEvent](#rbtinputmessage-cart_orderplacedevent) |
-
-##### Responses
-
-| Code | Description |
-| ---- | ----------- |
-
 ---
 ### Models
 
@@ -294,14 +272,6 @@ Cuando se recibe order_placed se actualiza el order id del carrito. No se respod
 | updated | string |  | No |
 | userId | string |  | Yes |
 
-#### cart.OrderPlacedEvent
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| cartId | string | *Example:* `"CartId"` | No |
-| orderId | string | *Example:* `"OrderId"` | No |
-| valid | boolean | *Example:* `true` | No |
-
 #### cart.ValidationEvent
 
 | Name | Type | Description | Required |
@@ -322,13 +292,6 @@ Cuando se recibe order_placed se actualiza el order id del carrito. No se respod
 | ---- | ---- | ----------- | -------- |
 | message | string |  | No |
 | path | string |  | No |
-
-#### rbt.InputMessage-cart_OrderPlacedEvent
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| correlation_id | string | *Example:* `"123123"` | No |
-| message | [cart.OrderPlacedEvent](#cartorderplacedevent) |  | No |
 
 #### rbt.InputMessage-cart_ValidationEvent
 

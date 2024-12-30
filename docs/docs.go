@@ -498,33 +498,6 @@ const docTemplate = `{
                 ],
                 "responses": {}
             }
-        },
-        "/rabbit/order_placed": {
-            "get": {
-                "description": "Cuando se recibe order_placed se actualiza el order id del carrito. No se respode a este evento.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Rabbit"
-                ],
-                "summary": "Mensage Rabbit order_placed/order_placed",
-                "parameters": [
-                    {
-                        "description": "Message order_placed",
-                        "name": "type",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/rbt.InputMessage-cart_OrderPlacedEvent"
-                        }
-                    }
-                ],
-                "responses": {}
-            }
         }
     },
     "definitions": {
@@ -588,23 +561,6 @@ const docTemplate = `{
                 }
             }
         },
-        "cart.OrderPlacedEvent": {
-            "type": "object",
-            "properties": {
-                "cartId": {
-                    "type": "string",
-                    "example": "CartId"
-                },
-                "orderId": {
-                    "type": "string",
-                    "example": "OrderId"
-                },
-                "valid": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
         "cart.ValidationEvent": {
             "type": "object",
             "properties": {
@@ -641,18 +597,6 @@ const docTemplate = `{
                 },
                 "path": {
                     "type": "string"
-                }
-            }
-        },
-        "rbt.InputMessage-cart_OrderPlacedEvent": {
-            "type": "object",
-            "properties": {
-                "correlation_id": {
-                    "type": "string",
-                    "example": "123123"
-                },
-                "message": {
-                    "$ref": "#/definitions/cart.OrderPlacedEvent"
                 }
             }
         },
