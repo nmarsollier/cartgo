@@ -1,8 +1,10 @@
 package env
 
 import (
+	"cmp"
 	"os"
-	"strconv"
+
+	"github.com/nmarsollier/commongo/strs"
 )
 
 // Configuration properties
@@ -19,19 +21,6 @@ type Configuration struct {
 
 var config *Configuration
 
-func new() *Configuration {
-	return &Configuration{
-		ServerName:        "cartgo",
-		Port:              3003,
-		GqlPort:           4003,
-		RabbitURL:         "amqp://localhost",
-		MongoURL:          "mongodb://localhost:27017",
-		SecurityServerURL: "http://localhost:3000",
-		CatalogServerURL:  "http://localhost:3002",
-		FluentURL:         "localhost:24224",
-	}
-}
-
 // Get Obtiene las variables de entorno del sistema
 func Get() *Configuration {
 	if config == nil {
@@ -43,43 +32,14 @@ func Get() *Configuration {
 
 // Load file properties
 func load() *Configuration {
-	result := new()
-
-	if value := os.Getenv("SERVER_NAME"); len(value) > 0 {
-		result.ServerName = value
+	return &Configuration{
+		ServerName:        cmp.Or(os.Getenv("SERVER_NAME"), "cartgo"),
+		Port:              cmp.Or(strs.AtoiZero(os.Getenv("PORT")), 3003),
+		GqlPort:           cmp.Or(strs.AtoiZero(os.Getenv("GQL_PORT")), 4003),
+		RabbitURL:         cmp.Or(os.Getenv("RABBIT_URL"), "amqp://localhost"),
+		MongoURL:          cmp.Or(os.Getenv("MONGO_URL"), "mongodb://localhost:27017"),
+		SecurityServerURL: cmp.Or(os.Getenv("AUTH_SERVICE_URL"), "http://localhost:3000"),
+		CatalogServerURL:  cmp.Or(os.Getenv("CATALOG_SERVICE_URL"), "http://localhost:3002"),
+		FluentURL:         cmp.Or(os.Getenv("FLUENT_URL"), "localhost:24224"),
 	}
-
-	if value := os.Getenv("RABBIT_URL"); len(value) > 0 {
-		result.RabbitURL = value
-	}
-
-	if value := os.Getenv("MONGO_URL"); len(value) > 0 {
-		result.MongoURL = value
-	}
-
-	if value := os.Getenv("PORT"); len(value) > 0 {
-		if intVal, err := strconv.Atoi(value); err == nil {
-			result.Port = intVal
-		}
-	}
-
-	if value := os.Getenv("GQL_PORT"); len(value) > 0 {
-		if intVal, err := strconv.Atoi(value); err == nil {
-			result.GqlPort = intVal
-		}
-	}
-
-	if value := os.Getenv("AUTH_SERVICE_URL"); len(value) > 0 {
-		result.SecurityServerURL = value
-	}
-
-	if value := os.Getenv("FLUENT_URL"); len(value) > 0 {
-		result.FluentURL = value
-	}
-
-	if value := os.Getenv("CATALOG_SERVICE_URL"); len(value) > 0 {
-		result.CatalogServerURL = value
-	}
-
-	return result
 }
