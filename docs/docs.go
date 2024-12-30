@@ -607,8 +607,16 @@ const docTemplate = `{
                     "type": "string",
                     "example": "123123"
                 },
+                "exchange": {
+                    "type": "string",
+                    "example": "Remote Exchange to Reply"
+                },
                 "message": {
                     "$ref": "#/definitions/cart.ValidationEvent"
+                },
+                "routing_key": {
+                    "type": "string",
+                    "example": "Remote RoutingKey to Reply"
                 }
             }
         },
@@ -619,8 +627,16 @@ const docTemplate = `{
                     "type": "string",
                     "example": "123123"
                 },
+                "exchange": {
+                    "type": "string",
+                    "example": "Remote Exchange to Reply"
+                },
                 "message": {
                     "type": "string"
+                },
+                "routing_key": {
+                    "type": "string",
+                    "example": "Remote RoutingKey to Reply"
                 }
             }
         },

@@ -21,7 +21,7 @@ github.com/nmarsollier/cartgo/internal/cart/repository.go:111.16,114.3 2 0
 github.com/nmarsollier/cartgo/internal/cart/repository.go:116.2,116.18 1 0
 github.com/nmarsollier/cartgo/internal/cart/repository.go:119.64,120.46 1 0
 github.com/nmarsollier/cartgo/internal/cart/repository.go:120.46,123.3 2 0
-github.com/nmarsollier/cartgo/internal/cart/repository.go:125.2,136.18 3 0
+github.com/nmarsollier/cartgo/internal/cart/repository.go:125.2,137.18 3 0
 github.com/nmarsollier/cartgo/internal/cart/schema.go:22.39,24.2 1 0
 github.com/nmarsollier/cartgo/internal/cart/service.go:15.81,20.2 1 0
 github.com/nmarsollier/cartgo/internal/cart/service.go:27.85,29.16 2 0

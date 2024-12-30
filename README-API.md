@@ -298,14 +298,18 @@ Escucha de mensajes logout desde auth.
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
 | correlation_id | string | *Example:* `"123123"` | No |
+| exchange | string | *Example:* `"Remote Exchange to Reply"` | No |
 | message | [cart.ValidationEvent](#cartvalidationevent) |  | No |
+| routing_key | string | *Example:* `"Remote RoutingKey to Reply"` | No |
 
 #### rbt.InputMessage-string
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
 | correlation_id | string | *Example:* `"123123"` | No |
+| exchange | string | *Example:* `"Remote Exchange to Reply"` | No |
 | message | string |  | No |
+| routing_key | string | *Example:* `"Remote RoutingKey to Reply"` | No |
 
 #### rest.AddArticleData
 
