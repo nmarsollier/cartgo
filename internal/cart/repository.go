@@ -131,6 +131,7 @@ func (r *cartRepository) Invalidate(cart *Cart) (*Cart, error) {
 				Enabled: false,
 			},
 		},
+		nil,
 	)
 
 	return cart, err
