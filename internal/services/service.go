@@ -5,7 +5,7 @@ import (
 
 	"github.com/nmarsollier/cartgo/internal/cart"
 	"github.com/nmarsollier/cartgo/internal/env"
-	"github.com/nmarsollier/cartgo/internal/rabbit/emit"
+	"github.com/nmarsollier/cartgo/internal/rabbit/rbtschema"
 	"github.com/nmarsollier/commongo/errs"
 	"github.com/nmarsollier/commongo/httpx"
 	"github.com/nmarsollier/commongo/log"
@@ -23,8 +23,8 @@ func NewService(
 	log log.LogRusEntry,
 	http httpx.HTTPClient,
 	cart cart.CartService,
-	validationPublisher emit.ArticleValidationPublisher,
-	placedPublisher emit.PlacedDataPublisher,
+	validationPublisher rbtschema.ArticleValidationPublisher,
+	placedPublisher rbtschema.PlacedDataPublisher,
 ) Service {
 	return &service{
 		log:                 log,
@@ -39,8 +39,8 @@ type service struct {
 	log                 log.LogRusEntry
 	http                httpx.HTTPClient
 	cart                cart.CartService
-	validationPublisher emit.ArticleValidationPublisher
-	placedPublisher     emit.PlacedDataPublisher
+	validationPublisher rbtschema.ArticleValidationPublisher
+	placedPublisher     rbtschema.PlacedDataPublisher
 }
 
 func (s *service) AddArticle(userId string, articleID string, quantity int) (*cart.Cart, error) {
@@ -51,9 +51,9 @@ func (s *service) AddArticle(userId string, articleID string, quantity int) (*ca
 
 	for _, a := range cart.Articles {
 		if !a.Validated {
+			s.validationPublisher.Logger().WithField(log.LOG_FIELD_CORRELATION_ID, s.log.CorrelationId())
 			s.validationPublisher.PublishForResult(
-				s.log.CorrelationId(),
-				&emit.ArticleValidationData{
+				&rbtschema.ArticleValidationData{
 					ReferenceId: cart.UserId,
 					ArticleId:   a.ArticleId,
 				},
@@ -82,17 +82,17 @@ func (s *service) Checkout(userId string, token string) (*cart.Cart, error) {
 		return nil, err
 	}
 
-	articles := []emit.PlaceArticlesData{}
+	articles := []rbtschema.PlaceArticlesData{}
 	for _, a := range currentCart.Articles {
-		articles = append(articles, emit.PlaceArticlesData{
+		articles = append(articles, rbtschema.PlaceArticlesData{
 			Id:       a.ArticleId,
 			Quantity: a.Quantity,
 		})
 	}
 
+	s.placedPublisher.Logger().WithField(log.LOG_FIELD_CORRELATION_ID, s.log.CorrelationId())
 	s.placedPublisher.Publish(
-		s.log.CorrelationId(),
-		&emit.PlacedData{
+		&rbtschema.PlacedData{
 			CartId:   currentCart.ID.Hex(),
 			UserId:   currentCart.UserId,
 			Articles: articles,
@@ -131,9 +131,9 @@ func (s *service) GetCurrentCart(userId string) (*cart.Cart, error) {
 
 	for _, a := range cart.Articles {
 		if !a.Validated {
+			s.validationPublisher.Logger().WithField(log.LOG_FIELD_CORRELATION_ID, s.log.CorrelationId())
 			s.validationPublisher.PublishForResult(
-				s.log.CorrelationId(),
-				&emit.ArticleValidationData{
+				&rbtschema.ArticleValidationData{
 					ReferenceId: cart.UserId,
 					ArticleId:   a.ArticleId,
 				},

@@ -7,26 +7,28 @@ import (
 
 // Configuration properties
 type Configuration struct {
+	ServerName        string `json:"serverName"`
 	Port              int    `json:"port"`
 	GqlPort           int    `json:"gqlPort"`
 	RabbitURL         string `json:"rabbitUrl"`
 	MongoURL          string `json:"mongoUrl"`
 	SecurityServerURL string `json:"securityServerUrl"`
 	CatalogServerURL  string `json:"catalogUrl"`
-	FluentUrl         string `json:"fluentUrl"`
+	FluentURL         string `json:"fluentUrl"`
 }
 
 var config *Configuration
 
 func new() *Configuration {
 	return &Configuration{
+		ServerName:        "cartgo",
 		Port:              3003,
 		GqlPort:           4003,
 		RabbitURL:         "amqp://localhost",
 		MongoURL:          "mongodb://localhost:27017",
 		SecurityServerURL: "http://localhost:3000",
 		CatalogServerURL:  "http://localhost:3002",
-		FluentUrl:         "localhost:24224",
+		FluentURL:         "localhost:24224",
 	}
 }
 
@@ -42,6 +44,10 @@ func Get() *Configuration {
 // Load file properties
 func load() *Configuration {
 	result := new()
+
+	if value := os.Getenv("SERVER_NAME"); len(value) > 0 {
+		result.ServerName = value
+	}
 
 	if value := os.Getenv("RABBIT_URL"); len(value) > 0 {
 		result.RabbitURL = value
@@ -68,7 +74,7 @@ func load() *Configuration {
 	}
 
 	if value := os.Getenv("FLUENT_URL"); len(value) > 0 {
-		result.FluentUrl = value
+		result.FluentURL = value
 	}
 
 	if value := os.Getenv("CATALOG_SERVICE_URL"); len(value) > 0 {

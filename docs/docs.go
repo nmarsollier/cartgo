@@ -465,7 +465,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/consume.consumeArticleExistMessage"
+                            "$ref": "#/definitions/rbt.InputMessage-cart_ValidationEvent"
                         }
                     }
                 ],
@@ -492,7 +492,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/consume.logoutMessage"
+                            "$ref": "#/definitions/rbt.InputMessage-string"
                         }
                     }
                 ],
@@ -519,7 +519,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/consume.consumeOrderPlacedMessage"
+                            "$ref": "#/definitions/rbt.InputMessage-cart_OrderPlacedEvent"
                         }
                     }
                 ],
@@ -622,43 +622,6 @@ const docTemplate = `{
                 }
             }
         },
-        "consume.consumeArticleExistMessage": {
-            "type": "object",
-            "properties": {
-                "correlation_id": {
-                    "type": "string",
-                    "example": "123123"
-                },
-                "message": {
-                    "$ref": "#/definitions/cart.ValidationEvent"
-                }
-            }
-        },
-        "consume.consumeOrderPlacedMessage": {
-            "type": "object",
-            "properties": {
-                "correlation_id": {
-                    "type": "string",
-                    "example": "123123"
-                },
-                "message": {
-                    "$ref": "#/definitions/cart.OrderPlacedEvent"
-                }
-            }
-        },
-        "consume.logoutMessage": {
-            "type": "object",
-            "properties": {
-                "correlation_id": {
-                    "type": "string",
-                    "example": "123123"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg"
-                }
-            }
-        },
         "errs.ValidationErr": {
             "type": "object",
             "properties": {
@@ -677,6 +640,42 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "rbt.InputMessage-cart_OrderPlacedEvent": {
+            "type": "object",
+            "properties": {
+                "correlation_id": {
+                    "type": "string",
+                    "example": "123123"
+                },
+                "message": {
+                    "$ref": "#/definitions/cart.OrderPlacedEvent"
+                }
+            }
+        },
+        "rbt.InputMessage-cart_ValidationEvent": {
+            "type": "object",
+            "properties": {
+                "correlation_id": {
+                    "type": "string",
+                    "example": "123123"
+                },
+                "message": {
+                    "$ref": "#/definitions/cart.ValidationEvent"
+                }
+            }
+        },
+        "rbt.InputMessage-string": {
+            "type": "object",
+            "properties": {
+                "correlation_id": {
+                    "type": "string",
+                    "example": "123123"
+                },
+                "message": {
                     "type": "string"
                 }
             }

@@ -20,7 +20,7 @@ import (
 //
 // Main Method
 func main() {
-	deps := di.NewInjector(log.Get(env.Get().FluentUrl, "cartgo"))
+	deps := di.NewInjector(log.Get(env.Get().FluentURL, env.Get().ServerName))
 
 	go graph.Start(deps.Logger())
 

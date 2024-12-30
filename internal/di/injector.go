@@ -3,8 +3,7 @@ package di
 import (
 	"github.com/nmarsollier/cartgo/internal/cart"
 	"github.com/nmarsollier/cartgo/internal/env"
-	"github.com/nmarsollier/cartgo/internal/rabbit/consume"
-	"github.com/nmarsollier/cartgo/internal/rabbit/emit"
+	"github.com/nmarsollier/cartgo/internal/rabbit/rbtschema"
 	"github.com/nmarsollier/cartgo/internal/services"
 	"github.com/nmarsollier/commongo/db"
 	"github.com/nmarsollier/commongo/httpx"
@@ -29,11 +28,8 @@ type Injector interface {
 	CartCollection() db.Collection
 	CartRepository() cart.CartRepository
 	CartService() cart.CartService
-	ArticleExistConsumer() consume.ArticleExistConsumer
-	LogoutConsumer() consume.LogoutConsumer
-	ConsumeOrderPlaced() consume.OrderPlacedConsumer
-	ArticleValidatorPublisher() emit.ArticleValidationPublisher
-	PlacedDataPublisher() emit.PlacedDataPublisher
+	ArticleValidatorPublisher() rbtschema.ArticleValidationPublisher
+	PlacedDataPublisher() rbtschema.PlacedDataPublisher
 	Service() services.Service
 }
 
@@ -46,11 +42,8 @@ type Deps struct {
 	CurrCartColl     db.Collection
 	CurrCartRepo     cart.CartRepository
 	CurrCartSvc      cart.CartService
-	CurrExistCons    consume.ArticleExistConsumer
-	CurrLogoutCons   consume.LogoutConsumer
-	CurrOrderCons    consume.OrderPlacedConsumer
-	CurrValPublisher emit.ArticleValidationPublisher
-	CurrPldPublisher emit.PlacedDataPublisher
+	CurrValPublisher rbtschema.ArticleValidationPublisher
+	CurrPldPublisher rbtschema.PlacedDataPublisher
 	CurrService      services.Service
 }
 
@@ -144,30 +137,6 @@ func (i *Deps) CartService() cart.CartService {
 	return i.CurrCartSvc
 }
 
-func (i *Deps) ArticleExistConsumer() consume.ArticleExistConsumer {
-	if i.CurrExistCons != nil {
-		return i.CurrExistCons
-	}
-	i.CurrExistCons = consume.NewArticleExistConsumer(env.Get().FluentUrl, env.Get().RabbitURL, i.CartService())
-	return i.CurrExistCons
-}
-
-func (i *Deps) LogoutConsumer() consume.LogoutConsumer {
-	if i.CurrLogoutCons != nil {
-		return i.CurrLogoutCons
-	}
-	i.CurrLogoutCons = consume.NewLogoutConsumer(env.Get().FluentUrl, env.Get().RabbitURL, i.SecurityService())
-	return i.CurrLogoutCons
-}
-
-func (i *Deps) ConsumeOrderPlaced() consume.OrderPlacedConsumer {
-	if i.CurrOrderCons != nil {
-		return i.CurrOrderCons
-	}
-	i.CurrOrderCons = consume.NewOrderPlacedConsumer(env.Get().FluentUrl, env.Get().RabbitURL, i.CartService())
-	return i.CurrOrderCons
-}
-
 func (i *Deps) Service() services.Service {
 	if i.CurrService != nil {
 		return i.CurrService
@@ -183,18 +152,13 @@ func (i *Deps) Service() services.Service {
 	return i.CurrService
 }
 
-func (i *Deps) ArticleValidatorPublisher() emit.ArticleValidationPublisher {
+func (i *Deps) ArticleValidatorPublisher() rbtschema.ArticleValidationPublisher {
 	if i.CurrValPublisher != nil {
 		return i.CurrValPublisher
 	}
 
-	logger := i.Logger().
-		WithField(log.LOG_FIELD_RABBIT_ACTION, "Emit").
-		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "article_exist").
-		WithField(log.LOG_FIELD_RABBIT_QUEUE, "article_exist")
-
-	i.CurrValPublisher, _ = rbt.NewRabbitPublisher[*emit.ArticleValidationData](
-		logger,
+	i.CurrValPublisher, _ = rbt.NewRabbitPublisher[*rbtschema.ArticleValidationData](
+		rbt.RbtLogger(env.Get().FluentURL, env.Get().ServerName, i.Logger().CorrelationId()),
 		env.Get().RabbitURL,
 		"article_exist",
 		"direct",
@@ -204,19 +168,14 @@ func (i *Deps) ArticleValidatorPublisher() emit.ArticleValidationPublisher {
 	return i.CurrValPublisher
 }
 
-func (i *Deps) PlacedDataPublisher() emit.PlacedDataPublisher {
+func (i *Deps) PlacedDataPublisher() rbtschema.PlacedDataPublisher {
 
 	if i.CurrPldPublisher != nil {
 		return i.CurrPldPublisher
 	}
 
-	logger := i.Logger().
-		WithField(log.LOG_FIELD_RABBIT_ACTION, "Emit").
-		WithField(log.LOG_FIELD_RABBIT_EXCHANGE, "place_order").
-		WithField(log.LOG_FIELD_RABBIT_QUEUE, "place_order")
-
-	i.CurrPldPublisher, _ = rbt.NewRabbitPublisher[*emit.PlacedData](
-		logger,
+	i.CurrPldPublisher, _ = rbt.NewRabbitPublisher[*rbtschema.PlacedData](
+		rbt.RbtLogger(env.Get().FluentURL, env.Get().ServerName, i.Logger().CorrelationId()),
 		env.Get().RabbitURL,
 		"place_order",
 		"direct",

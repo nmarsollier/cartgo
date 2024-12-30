@@ -219,7 +219,7 @@ Luego de solicitar validaciones de catalogo, Escucha article_exist/cart_article_
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| type | body | Mensaje | Yes | [consume.consumeArticleExistMessage](#consumeconsumearticleexistmessage) |
+| type | body | Mensaje | Yes | [rbt.InputMessage-cart_ValidationEvent](#rbtinputmessage-cart_validationevent) |
 
 ##### Responses
 
@@ -241,7 +241,7 @@ Escucha de mensajes logout desde auth.
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| body | body | Estructura general del mensage | Yes | [consume.logoutMessage](#consumelogoutmessage) |
+| body | body | Estructura general del mensage | Yes | [rbt.InputMessage-string](#rbtinputmessage-string) |
 
 ##### Responses
 
@@ -263,7 +263,7 @@ Cuando se recibe order_placed se actualiza el order id del carrito. No se respod
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
-| type | body | Message order_placed | Yes | [consume.consumeOrderPlacedMessage](#consumeconsumeorderplacedmessage) |
+| type | body | Message order_placed | Yes | [rbt.InputMessage-cart_OrderPlacedEvent](#rbtinputmessage-cart_orderplacedevent) |
 
 ##### Responses
 
@@ -310,27 +310,6 @@ Cuando se recibe order_placed se actualiza el order id del carrito. No se respod
 | referenceId | string | *Example:* `"UserId"` | No |
 | valid | boolean | *Example:* `true` | No |
 
-#### consume.consumeArticleExistMessage
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| correlation_id | string | *Example:* `"123123"` | No |
-| message | [cart.ValidationEvent](#cartvalidationevent) |  | No |
-
-#### consume.consumeOrderPlacedMessage
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| correlation_id | string | *Example:* `"123123"` | No |
-| message | [cart.OrderPlacedEvent](#cartorderplacedevent) |  | No |
-
-#### consume.logoutMessage
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| correlation_id | string | *Example:* `"123123"` | No |
-| message | string | *Example:* `"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg"` | No |
-
 #### errs.ValidationErr
 
 | Name | Type | Description | Required |
@@ -343,6 +322,27 @@ Cuando se recibe order_placed se actualiza el order id del carrito. No se respod
 | ---- | ---- | ----------- | -------- |
 | message | string |  | No |
 | path | string |  | No |
+
+#### rbt.InputMessage-cart_OrderPlacedEvent
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| correlation_id | string | *Example:* `"123123"` | No |
+| message | [cart.OrderPlacedEvent](#cartorderplacedevent) |  | No |
+
+#### rbt.InputMessage-cart_ValidationEvent
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| correlation_id | string | *Example:* `"123123"` | No |
+| message | [cart.ValidationEvent](#cartvalidationevent) |  | No |
+
+#### rbt.InputMessage-string
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| correlation_id | string | *Example:* `"123123"` | No |
+| message | string |  | No |
 
 #### rest.AddArticleData
 

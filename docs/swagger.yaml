@@ -66,31 +66,6 @@ definitions:
         example: true
         type: boolean
     type: object
-  consume.consumeArticleExistMessage:
-    properties:
-      correlation_id:
-        example: "123123"
-        type: string
-      message:
-        $ref: '#/definitions/cart.ValidationEvent'
-    type: object
-  consume.consumeOrderPlacedMessage:
-    properties:
-      correlation_id:
-        example: "123123"
-        type: string
-      message:
-        $ref: '#/definitions/cart.OrderPlacedEvent'
-    type: object
-  consume.logoutMessage:
-    properties:
-      correlation_id:
-        example: "123123"
-        type: string
-      message:
-        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklEIjoiNjZiNjBlYzhlMGYzYzY4OTUzMzJlOWNmIiwidXNlcklEIjoiNjZhZmQ3ZWU4YTBhYjRjZjQ0YTQ3NDcyIn0.who7upBctOpmlVmTvOgH1qFKOHKXmuQCkEjMV3qeySg
-        type: string
-    type: object
   errs.ValidationErr:
     properties:
       messages:
@@ -103,6 +78,30 @@ definitions:
       message:
         type: string
       path:
+        type: string
+    type: object
+  rbt.InputMessage-cart_OrderPlacedEvent:
+    properties:
+      correlation_id:
+        example: "123123"
+        type: string
+      message:
+        $ref: '#/definitions/cart.OrderPlacedEvent'
+    type: object
+  rbt.InputMessage-cart_ValidationEvent:
+    properties:
+      correlation_id:
+        example: "123123"
+        type: string
+      message:
+        $ref: '#/definitions/cart.ValidationEvent'
+    type: object
+  rbt.InputMessage-string:
+    properties:
+      correlation_id:
+        example: "123123"
+        type: string
+      message:
         type: string
     type: object
   rest.AddArticleData:
@@ -428,7 +427,7 @@ paths:
         name: type
         required: true
         schema:
-          $ref: '#/definitions/consume.consumeArticleExistMessage'
+          $ref: '#/definitions/rbt.InputMessage-cart_ValidationEvent'
       produces:
       - application/json
       responses: {}
@@ -446,7 +445,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/consume.logoutMessage'
+          $ref: '#/definitions/rbt.InputMessage-string'
       produces:
       - application/json
       responses: {}
@@ -465,7 +464,7 @@ paths:
         name: type
         required: true
         schema:
-          $ref: '#/definitions/consume.consumeOrderPlacedMessage'
+          $ref: '#/definitions/rbt.InputMessage-cart_OrderPlacedEvent'
       produces:
       - application/json
       responses: {}

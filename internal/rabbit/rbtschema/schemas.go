@@ -1,4 +1,4 @@
-package emit
+package rbtschema
 
 import (
 	"github.com/nmarsollier/commongo/rbt"
