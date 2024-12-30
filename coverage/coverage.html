@@ -105,37 +105,43 @@
 				
 				<option value="file24">github.com/nmarsollier/cartgo/internal/rabbit/listeners.go (0.0%)</option>
 				
-				<option value="file25">github.com/nmarsollier/cartgo/internal/rest/delete_cart_article_id.go (0.0%)</option>
+				<option value="file25">github.com/nmarsollier/cartgo/internal/rabbit/process_article_validation.go (0.0%)</option>
 				
-				<option value="file26">github.com/nmarsollier/cartgo/internal/rest/get_cart.go (0.0%)</option>
+				<option value="file26">github.com/nmarsollier/cartgo/internal/rabbit/process_logout.go (0.0%)</option>
 				
-				<option value="file27">github.com/nmarsollier/cartgo/internal/rest/get_cart_validate.go (0.0%)</option>
+				<option value="file27">github.com/nmarsollier/cartgo/internal/rabbit/process_order_placed.go (0.0%)</option>
 				
-				<option value="file28">github.com/nmarsollier/cartgo/internal/rest/post_cart_article.go (0.0%)</option>
+				<option value="file28">github.com/nmarsollier/cartgo/internal/rest/delete_cart_article_id.go (0.0%)</option>
 				
-				<option value="file29">github.com/nmarsollier/cartgo/internal/rest/post_cart_article_id_decrement.go (0.0%)</option>
+				<option value="file29">github.com/nmarsollier/cartgo/internal/rest/get_cart.go (0.0%)</option>
 				
-				<option value="file30">github.com/nmarsollier/cartgo/internal/rest/post_cart_article_id_increment.go (0.0%)</option>
+				<option value="file30">github.com/nmarsollier/cartgo/internal/rest/get_cart_validate.go (0.0%)</option>
 				
-				<option value="file31">github.com/nmarsollier/cartgo/internal/rest/post_cart_checkout.go (0.0%)</option>
+				<option value="file31">github.com/nmarsollier/cartgo/internal/rest/post_cart_article.go (0.0%)</option>
 				
-				<option value="file32">github.com/nmarsollier/cartgo/internal/rest/router.go (0.0%)</option>
+				<option value="file32">github.com/nmarsollier/cartgo/internal/rest/post_cart_article_id_decrement.go (0.0%)</option>
 				
-				<option value="file33">github.com/nmarsollier/cartgo/internal/rest/server/authorization.go (0.0%)</option>
+				<option value="file33">github.com/nmarsollier/cartgo/internal/rest/post_cart_article_id_increment.go (0.0%)</option>
 				
-				<option value="file34">github.com/nmarsollier/cartgo/internal/rest/server/di_middleware.go (0.0%)</option>
+				<option value="file34">github.com/nmarsollier/cartgo/internal/rest/post_cart_checkout.go (0.0%)</option>
 				
-				<option value="file35">github.com/nmarsollier/cartgo/internal/rest/server/engine.go (0.0%)</option>
+				<option value="file35">github.com/nmarsollier/cartgo/internal/rest/router.go (0.0%)</option>
 				
-				<option value="file36">github.com/nmarsollier/cartgo/internal/services/service.go (0.0%)</option>
+				<option value="file36">github.com/nmarsollier/cartgo/internal/rest/server/authorization.go (0.0%)</option>
 				
-				<option value="file37">github.com/nmarsollier/cartgo/main.go (0.0%)</option>
+				<option value="file37">github.com/nmarsollier/cartgo/internal/rest/server/di_middleware.go (0.0%)</option>
 				
-				<option value="file38">github.com/nmarsollier/cartgo/tests/mocks/cart_repository.go (0.0%)</option>
+				<option value="file38">github.com/nmarsollier/cartgo/internal/rest/server/engine.go (0.0%)</option>
 				
-				<option value="file39">github.com/nmarsollier/cartgo/tests/mocks/cart_service.go (0.0%)</option>
+				<option value="file39">github.com/nmarsollier/cartgo/internal/services/service.go (0.0%)</option>
 				
-				<option value="file40">github.com/nmarsollier/cartgo/tests/mocks/services_service.go (0.0%)</option>
+				<option value="file40">github.com/nmarsollier/cartgo/main.go (0.0%)</option>
+				
+				<option value="file41">github.com/nmarsollier/cartgo/tests/mocks/cart_repository.go (0.0%)</option>
+				
+				<option value="file42">github.com/nmarsollier/cartgo/tests/mocks/cart_service.go (0.0%)</option>
+				
+				<option value="file43">github.com/nmarsollier/cartgo/tests/mocks/services_service.go (0.0%)</option>
 				
 				</select>
 			</div>
@@ -649,33 +655,6 @@ const docTemplate = `{
                 ],
                 "responses": {}
             }
-        },
-        "/rabbit/order_placed": {
-            "get": {
-                "description": "Cuando se recibe order_placed se actualiza el order id del carrito. No se respode a este evento.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Rabbit"
-                ],
-                "summary": "Mensage Rabbit order_placed/order_placed",
-                "parameters": [
-                    {
-                        "description": "Message order_placed",
-                        "name": "type",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/rbt.InputMessage-cart_OrderPlacedEvent"
-                        }
-                    }
-                ],
-                "responses": {}
-            }
         }
     },
     "definitions": {
@@ -739,23 +718,6 @@ const docTemplate = `{
                 }
             }
         },
-        "cart.OrderPlacedEvent": {
-            "type": "object",
-            "properties": {
-                "cartId": {
-                    "type": "string",
-                    "example": "CartId"
-                },
-                "orderId": {
-                    "type": "string",
-                    "example": "OrderId"
-                },
-                "valid": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
         "cart.ValidationEvent": {
             "type": "object",
             "properties": {
@@ -792,18 +754,6 @@ const docTemplate = `{
                 },
                 "path": {
                     "type": "string"
-                }
-            }
-        },
-        "rbt.InputMessage-cart_OrderPlacedEvent": {
-            "type": "object",
-            "properties": {
-                "correlation_id": {
-                    "type": "string",
-                    "example": "123123"
-                },
-                "message": {
-                    "$ref": "#/definitions/cart.OrderPlacedEvent"
                 }
             }
         },
@@ -7882,6 +7832,24 @@ func getCorrelationId(ctx context.Context) string <span class="cov0" title="0">{
 		<pre class="file" id="file24" style="display: none">package rabbit
 
 import (
+        "github.com/nmarsollier/cartgo/internal/di"
+)
+
+func Init(di di.Injector) <span class="cov0" title="0">{
+        logger := di.Logger()
+
+        go listenLogout(logger)
+
+        go listenArticleValidation(logger)
+
+        go listenOrderPlaced(logger)
+
+}</span>
+</pre>
+		
+		<pre class="file" id="file25" style="display: none">package rabbit
+
+import (
         "time"
 
         "github.com/nmarsollier/cartgo/internal/cart"
@@ -7890,73 +7858,6 @@ import (
         "github.com/nmarsollier/commongo/log"
         "github.com/nmarsollier/commongo/rbt"
 )
-
-func Init(di di.Injector) <span class="cov0" title="0">{
-        logger := di.Logger()
-
-        go func() </span><span class="cov0" title="0">{
-                for </span><span class="cov0" title="0">{
-                        err := rbt.ConsumeRabbitEvent[string](
-                                env.Get().FluentURL,
-                                env.Get().RabbitURL,
-                                env.Get().ServerName,
-                                "auth",
-                                "fanout",
-                                "",
-                                "",
-                                processLogout,
-                        )
-
-                        if err != nil </span><span class="cov0" title="0">{
-                                logger.Error(err)
-                        }</span>
-                        <span class="cov0" title="0">logger.Info("RabbitMQ listenLogout conectando en 5 segundos.")
-                        time.Sleep(5 * time.Second)</span>
-                }
-        }()
-
-        <span class="cov0" title="0">go func() </span><span class="cov0" title="0">{
-                for </span><span class="cov0" title="0">{
-                        err := rbt.ConsumeRabbitEvent[*cart.ValidationEvent](
-                                env.Get().FluentURL,
-                                env.Get().RabbitURL,
-                                env.Get().ServerName,
-                                "article_exist",
-                                "direct",
-                                "cart_article_exist",
-                                "cart_article_exist",
-                                processArticleExist,
-                        )
-
-                        if err != nil </span><span class="cov0" title="0">{
-                                logger.Error(err)
-                        }</span>
-                        <span class="cov0" title="0">logger.Info("RabbitMQ consumeCart conectando en 5 segundos.")
-                        time.Sleep(5 * time.Second)</span>
-                }
-        }()
-
-        <span class="cov0" title="0">go func() </span><span class="cov0" title="0">{
-                for </span><span class="cov0" title="0">{
-                        err := rbt.ConsumeRabbitEvent[*cart.OrderPlacedEvent](
-                                env.Get().FluentURL,
-                                env.Get().RabbitURL,
-                                env.Get().ServerName,
-                                "order_placed",
-                                "fanout",
-                                "cart_order_placed",
-                                "",
-                                processOrderPlaced,
-                        )
-                        if err != nil </span><span class="cov0" title="0">{
-                                logger.Error(err)
-                        }</span>
-                        <span class="cov0" title="0">logger.Info("RabbitMQ consumeOrderPlaced conectando en 5 segundos.")
-                        time.Sleep(5 * time.Second)</span>
-                }
-        }()
-
-}
 
 //        @Summary                Mensage Rabbit article_exist/cart_article_exist
 //        @Description        Luego de solicitar validaciones de catalogo, Escucha article_exist/cart_article_exist.
@@ -7967,6 +7868,27 @@ func Init(di di.Injector) <span class="cov0" title="0">{
 //        @Router                        /rabbit/article_exist [get]
 //
 // Validar Artículos
+func listenArticleValidation(logger log.LogRusEntry) <span class="cov0" title="0">{
+        for </span><span class="cov0" title="0">{
+                err := rbt.ConsumeRabbitEvent[*cart.ValidationEvent](
+                        env.Get().FluentURL,
+                        env.Get().RabbitURL,
+                        env.Get().ServerName,
+                        "article_exist",
+                        "direct",
+                        "cart_article_exist",
+                        "cart_article_exist",
+                        processArticleExist,
+                )
+
+                if err != nil </span><span class="cov0" title="0">{
+                        logger.Error(err)
+                }</span>
+                <span class="cov0" title="0">logger.Info("RabbitMQ consumeCart conectando en 5 segundos.")
+                time.Sleep(5 * time.Second)</span>
+        }
+}
+
 func processArticleExist(logger log.LogRusEntry, newMessage *rbt.InputMessage[*cart.ValidationEvent]) <span class="cov0" title="0">{
         deps := di.NewInjector(logger)
 
@@ -7978,6 +7900,18 @@ func processArticleExist(logger log.LogRusEntry, newMessage *rbt.InputMessage[*c
                 return
         }</span>
 }
+</pre>
+		
+		<pre class="file" id="file26" style="display: none">package rabbit
+
+import (
+        "time"
+
+        "github.com/nmarsollier/cartgo/internal/di"
+        "github.com/nmarsollier/cartgo/internal/env"
+        "github.com/nmarsollier/commongo/log"
+        "github.com/nmarsollier/commongo/rbt"
+)
 
 //        @Summary                Mensage Rabbit logout
 //        @Description        Escucha de mensajes logout desde auth.
@@ -7988,11 +7922,45 @@ func processArticleExist(logger log.LogRusEntry, newMessage *rbt.InputMessage[*c
 //        @Router                        /rabbit/logout [get]
 //
 // Escucha de mensajes logout desde auth.
+func listenLogout(logger log.LogRusEntry) <span class="cov0" title="0">{
+        for </span><span class="cov0" title="0">{
+                err := rbt.ConsumeRabbitEvent[string](
+                        env.Get().FluentURL,
+                        env.Get().RabbitURL,
+                        env.Get().ServerName,
+                        "auth",
+                        "fanout",
+                        "",
+                        "",
+                        processLogout,
+                )
+
+                if err != nil </span><span class="cov0" title="0">{
+                        logger.Error(err)
+                }</span>
+                <span class="cov0" title="0">logger.Info("RabbitMQ listenLogout conectando en 5 segundos.")
+                time.Sleep(5 * time.Second)</span>
+        }
+}
+
 func processLogout(logger log.LogRusEntry, newMessage *rbt.InputMessage[string]) <span class="cov0" title="0">{
         deps := di.NewInjector(logger)
 
         deps.SecurityService().Invalidate(newMessage.Message)
 }</span>
+</pre>
+		
+		<pre class="file" id="file27" style="display: none">package rabbit
+
+import (
+        "time"
+
+        "github.com/nmarsollier/cartgo/internal/cart"
+        "github.com/nmarsollier/cartgo/internal/di"
+        "github.com/nmarsollier/cartgo/internal/env"
+        "github.com/nmarsollier/commongo/log"
+        "github.com/nmarsollier/commongo/rbt"
+)
 
 //        @Summary                Mensage Rabbit order_placed/order_placed
 //        @Description        Cuando se recibe order_placed se actualiza el order id del carrito. No se respode a este evento.
@@ -8003,6 +7971,27 @@ func processLogout(logger log.LogRusEntry, newMessage *rbt.InputMessage[string])
 //        @Router                        /rabbit/order_placed [get]
 //
 // Consume Order Placed
+
+func listenOrderPlaced(logger log.LogRusEntry) <span class="cov0" title="0">{
+        for </span><span class="cov0" title="0">{
+                err := rbt.ConsumeRabbitEvent[*cart.OrderPlacedEvent](
+                        env.Get().FluentURL,
+                        env.Get().RabbitURL,
+                        env.Get().ServerName,
+                        "order_placed",
+                        "fanout",
+                        "cart_order_placed",
+                        "",
+                        processOrderPlaced,
+                )
+                if err != nil </span><span class="cov0" title="0">{
+                        logger.Error(err)
+                }</span>
+                <span class="cov0" title="0">logger.Info("RabbitMQ consumeOrderPlaced conectando en 5 segundos.")
+                time.Sleep(5 * time.Second)</span>
+        }
+}
+
 func processOrderPlaced(logger log.LogRusEntry, newMessage *rbt.InputMessage[*cart.OrderPlacedEvent]) <span class="cov0" title="0">{
         deps := di.NewInjector(logger)
 
@@ -8016,7 +8005,7 @@ func processOrderPlaced(logger log.LogRusEntry, newMessage *rbt.InputMessage[*ca
 }
 </pre>
 		
-		<pre class="file" id="file25" style="display: none">package rest
+		<pre class="file" id="file28" style="display: none">package rest
 
 import (
         "github.com/gin-gonic/gin"
@@ -8063,7 +8052,7 @@ func deleteArticle(c *gin.Context) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file26" style="display: none">package rest
+		<pre class="file" id="file29" style="display: none">package rest
 
 import (
         "github.com/gin-gonic/gin"
@@ -8109,7 +8098,7 @@ func currentCart(c *gin.Context) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file27" style="display: none">package rest
+		<pre class="file" id="file30" style="display: none">package rest
 
 import (
         "github.com/gin-gonic/gin"
@@ -8161,7 +8150,7 @@ func validate(c *gin.Context) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file28" style="display: none">package rest
+		<pre class="file" id="file31" style="display: none">package rest
 
 import (
         "github.com/gin-gonic/gin"
@@ -8218,7 +8207,7 @@ func addArticle(c *gin.Context) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file29" style="display: none">package rest
+		<pre class="file" id="file32" style="display: none">package rest
 
 import (
         "github.com/gin-gonic/gin"
@@ -8265,7 +8254,7 @@ func decrementArticle(c *gin.Context) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file30" style="display: none">package rest
+		<pre class="file" id="file33" style="display: none">package rest
 
 import (
         "github.com/gin-gonic/gin"
@@ -8313,7 +8302,7 @@ func incrementArticle(c *gin.Context) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file31" style="display: none">package rest
+		<pre class="file" id="file34" style="display: none">package rest
 
 import (
         "github.com/gin-gonic/gin"
@@ -8360,7 +8349,7 @@ func checkout(c *gin.Context) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file32" style="display: none">package rest
+		<pre class="file" id="file35" style="display: none">package rest
 
 import (
         "fmt"
@@ -8388,7 +8377,7 @@ func InitRoutes(engine *gin.Engine) <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file33" style="display: none">package server
+		<pre class="file" id="file36" style="display: none">package server
 
 import (
         "github.com/gin-gonic/gin"
@@ -8430,7 +8419,7 @@ func validateToken(c *gin.Context) (*security.User, error) <span class="cov0" ti
 }
 </pre>
 		
-		<pre class="file" id="file34" style="display: none">package server
+		<pre class="file" id="file37" style="display: none">package server
 
 import (
         "github.com/gin-gonic/gin"
@@ -8466,7 +8455,7 @@ func GinDi(c *gin.Context) di.Injector <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file35" style="display: none">package server
+		<pre class="file" id="file38" style="display: none">package server
 
 import (
         "time"
@@ -8508,7 +8497,7 @@ func Router() *gin.Engine <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file36" style="display: none">package services
+		<pre class="file" id="file39" style="display: none">package services
 
 import (
         "net/http"
@@ -8678,7 +8667,7 @@ func (s *service) ValidateCheckout(cart *cart.Cart, token string) error <span cl
 }
 </pre>
 		
-		<pre class="file" id="file37" style="display: none">package main
+		<pre class="file" id="file40" style="display: none">package main
 
 import (
         "github.com/nmarsollier/cartgo/internal/di"
@@ -8710,7 +8699,7 @@ func main() <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file38" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+		<pre class="file" id="file41" style="display: none">// Code generated by MockGen. DO NOT EDIT.
 // Source: ./internal/cart/repository.go
 
 // Package mocks is a generated GoMock package.
@@ -8836,7 +8825,7 @@ func (mr *MockCartRepositoryMockRecorder) Replace(crt interface{}) *gomock.Call 
 }</span>
 </pre>
 		
-		<pre class="file" id="file39" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+		<pre class="file" id="file42" style="display: none">// Code generated by MockGen. DO NOT EDIT.
 // Source: ./internal/cart/service.go
 
 // Package mocks is a generated GoMock package.
@@ -8976,7 +8965,7 @@ func (mr *MockCartServiceMockRecorder) RemoveArticle(userId, articleId interface
 }</span>
 </pre>
 		
-		<pre class="file" id="file40" style="display: none">// Code generated by MockGen. DO NOT EDIT.
+		<pre class="file" id="file43" style="display: none">// Code generated by MockGen. DO NOT EDIT.
 // Source: ./internal/services/service.go
 
 // Package mocks is a generated GoMock package.
